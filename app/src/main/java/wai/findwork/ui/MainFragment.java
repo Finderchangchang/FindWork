@@ -16,25 +16,45 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import net.tsz.afinal.FinalDb;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import wai.findwork.R;
 import wai.findwork.adapter.CategoryAdapter;
 import wai.findwork.adapter.CommonAdapter;
 import wai.findwork.adapter.CommonViewHolder;
+import wai.findwork.method.HttpUtil;
 import wai.findwork.method.Utils;
 import wai.findwork.model.ArticleModel;
 import wai.findwork.model.CodeModel;
 import wai.findwork.model.Config;
+import wai.findwork.model.IPAddress;
 import wai.findwork.model.TypeOfWorkModel;
+import wai.findwork.model.URL;
 import wai.findwork.model.UserInfo;
 import wai.findwork.view.GlideCircleTransform;
 
@@ -97,6 +117,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
     TextView tel_tv;
     TextView gz_tv;
     TextView remark_tv;
+    TextView ts_tv;
+    TextView tq_tv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -113,7 +135,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 tel_tv = (TextView) view.findViewById(R.id.tel_tv);
                 gz_tv = (TextView) view.findViewById(R.id.gz_tv);
                 remark_tv = (TextView) view.findViewById(R.id.remark_tv);
-
+                ts_tv = (TextView) view.findViewById(R.id.ts_tv);
+                tq_tv = (TextView) view.findViewById(R.id.tq_tv);
                 break;
             case 4:
                 view = inflater.inflate(R.layout.frag_zx, container, false);
@@ -129,6 +152,9 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                         }
                     }
                 });
+                listView.setOnItemClickListener((parent, view1, position, id) ->
+                        Utils.IntentPost(NewDetailActivity.class, intent -> intent.putExtra(Config.KEY_NEW_ID, articleModels.get(position)))
+                );
                 break;
             default:
                 view = inflater.inflate(R.layout.frag_gz, container, false);
@@ -174,9 +200,25 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                     remark_tv.setText("备注：" + info.getRemark());
                 }
                 user_left_ll.setOnClickListener(v -> {
-                    String s = "";
                     Utils.IntentPost(RiLiActivity.class);
                 });
+                HttpUtil.load(URL.ip_address)
+                        .getIpAddress()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(ipAddress -> {
+                            HttpUtil.load(URL.city_weather)
+                                    .getWeather(ipAddress.getCity())
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(model -> {
+                                        tq_tv.setText(model.getData().getForecast().get(0).getType() + "\n" + model.getData().getWendu() + "℃");
+                                        ts_tv.setText("温馨提示：" + model.getData().getGanmao());
+
+                                    }, throwable -> {
+                                    });
+                        }, throwable -> {
+                        });
                 break;
         }
     }

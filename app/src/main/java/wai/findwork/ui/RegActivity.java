@@ -14,6 +14,7 @@ import wai.findwork.BaseActivity;
 import wai.findwork.R;
 import wai.findwork.method.Utils;
 import wai.findwork.model.Config;
+import wai.findwork.model.UserInfo;
 
 public class
 RegActivity extends BaseActivity {
@@ -51,9 +52,6 @@ RegActivity extends BaseActivity {
                     @Override
                     public void done(BmobUser s, BmobException e) {
                         if (e == null) {
-                            Utils.IntentPost(RegPersonActivity.class);
-                            Utils.putCache(Config.KEY_User_ID, tel);
-                            LoginActivity.mInstail.finish();
                             finish();
                         } else {
                             ToastShort(getResources().getString(R.string.no_wang));
