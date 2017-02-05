@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/user_iv"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:padding="5dp" />
+
+    <LinearLayout
+        android:id="@+id/goodsInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@id/user_iv"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="多特蒙德"
+            android:textSize="16sp"
+            android:textColor="#000"/>
+
+        <TextView
+            android:id="@+id/price_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥10.00"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/content_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/goodsInfo"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@id/user_iv"
+        android:maxLines="2"
+        android:text="来自长白山的深层岩水"
+        android:textSize="12sp" />
+
+
+</RelativeLayout>

@@ -1,0 +1,34 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 23
+    }
+}
+
+dependencies {
+//    compile 'com.android.support:cardview-v7:24.2.1'
+//    compile 'com.android.support:design:24.2.1'
+    compile 'com.github.bumptech.glide:glide:3.6.1'//glide谷歌加载图片包
+//    compile 'in.srain.cube:ultra-ptr:1.0.11'//下拉刷新组件
+    compile('com.squareup.retrofit2:retrofit:2.1.0')
+            { exclude group: 'com.squareup.okhttp3' }
+    compile('com.squareup.retrofit2:converter-gson:2.1.0')
+            {
+                exclude group: 'com.google.code.gson'
+                exclude group: 'com.squareup.okhttp3'
+            }
+    compile('com.squareup.retrofit2:adapter-rxjava:2.1.0')
+            {
+                exclude group: 'io.reactivex'
+                exclude group: 'com.squareup.okhttp3'
+            }
+//    compile 'io.reactivex:rxandroid:1.1.0'
+//    compile 'io.reactivex:rxjava:1.1.5'
+//    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+}
