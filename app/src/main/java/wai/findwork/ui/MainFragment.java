@@ -75,10 +75,11 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 holder.setText(R.id.content_tv, userInfo.getRemark());
             }
         };
-        articleModelCommonAdapter = new CommonAdapter<ArticleModel>(MainActivity.main, articleModels, R.layout.item_team) {
+        articleModelCommonAdapter = new CommonAdapter<ArticleModel>(MainActivity.main, articleModels, R.layout.item_new) {
             @Override
             public void convert(CommonViewHolder holder, ArticleModel articleModel, int position) {
-
+                holder.setText(R.id.title_tv, articleModel.getTitle());
+                holder.setText(R.id.content_tv, articleModel.getContent());
             }
         };
     }
