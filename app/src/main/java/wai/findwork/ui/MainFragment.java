@@ -119,6 +119,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
     TextView remark_tv;
     TextView ts_tv;
     TextView tq_tv;
+    LinearLayout user_center_ll;
+    LinearLayout user_bottom_ll;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -137,6 +139,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 remark_tv = (TextView) view.findViewById(R.id.remark_tv);
                 ts_tv = (TextView) view.findViewById(R.id.ts_tv);
                 tq_tv = (TextView) view.findViewById(R.id.tq_tv);
+                user_center_ll = (LinearLayout) view.findViewById(R.id.user_center_ll);
+                user_bottom_ll = (LinearLayout) view.findViewById(R.id.user_bottom_ll);
                 break;
             case 4:
                 view = inflater.inflate(R.layout.frag_zx, container, false);
@@ -176,11 +180,6 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         switch (mContent) {
-            case 1:
-            case 2:
-            case 3:
-
-                break;
             case 0:
                 List<UserInfo> list = db.findAll(UserInfo.class);
                 if (list.size() > 0) {
@@ -199,9 +198,13 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                     gz_tv.setText("工资：" + info.getGongzi());
                     remark_tv.setText("备注：" + info.getRemark());
                 }
-                user_left_ll.setOnClickListener(v -> {
-                    Utils.IntentPost(RiLiActivity.class);
-                });
+                user_left_ll.setOnClickListener(v ->
+                        Utils.IntentPost(RiLiActivity.class, intent -> intent.putExtra("type", "left"))
+                );
+                user_right_ll.setOnClickListener(v ->
+                        Utils.IntentPost(RiLiActivity.class, intent -> intent.putExtra("type", "right"))
+                );
+                user_center_ll.setOnClickListener(v->Utils.IntentPost(EditUserActivity.class));
                 HttpUtil.load(URL.ip_address)
                         .getIpAddress()
                         .subscribeOn(Schedulers.io())

@@ -21,6 +21,7 @@ import wai.findwork.adapter.CommonViewHolder;
 import wai.findwork.method.Utils;
 import wai.findwork.model.Config;
 import wai.findwork.model.RiLi;
+import wai.findwork.model.UserBuy;
 import wai.findwork.model.UserInfo;
 
 /**
@@ -31,30 +32,67 @@ import wai.findwork.model.UserInfo;
 
 public class RiLiActivity extends BaseActivity {
     CommonAdapter<RiLi> commonAdapter;
+    CommonAdapter<UserBuy> rightAdapter;
     List<RiLi> list;
+    List<UserBuy> right_list;
     @Bind(R.id.title_bar)
     TitleBar titleBar;
     @Bind(R.id.rili_lv)
     ListView riliLv;
+    String type;
 
     @Override
     public void initViews() {
         titleBar.setLeftClick(() -> finish());
         titleBar.setRightClick(() -> startActivityForResult(new Intent(this, AddRiLiActivity.class), 11));
         list = new ArrayList<>();
-        commonAdapter = new CommonAdapter<RiLi>(this, list, R.layout.item_new) {
-            @Override
-            public void convert(CommonViewHolder holder, RiLi riLi, int position) {
-                holder.setVisible(R.id.title_tv, false);
-                holder.setText(R.id.content_tv, riLi.getContent());
-            }
-        };
-        riliLv.setAdapter(commonAdapter);
+        right_list = new ArrayList<>();
+        type = getIntent().getStringExtra("type");
     }
 
     @Override
     public void initEvents() {
-        refresh();
+        switch (type) {
+            case "left":
+                commonAdapter = new CommonAdapter<RiLi>(this, list, R.layout.item_new) {
+                    @Override
+                    public void convert(CommonViewHolder holder, RiLi riLi, int position) {
+                        holder.setVisible(R.id.title_tv, false);
+                        holder.setText(R.id.content_tv, riLi.getContent());
+                    }
+                };
+                riliLv.setAdapter(commonAdapter);
+                refresh();
+                break;
+            default:
+                rightAdapter = new CommonAdapter<UserBuy>(this, right_list, R.layout.item_new) {
+                    @Override
+                    public void convert(CommonViewHolder holder, UserBuy riLi, int position) {
+                        holder.setText(R.id.title_tv, riLi.getUser().getRealname());
+                        holder.setText(R.id.content_tv, riLi.getUser().getUsername());
+                    }
+                };
+                riliLv.setAdapter(rightAdapter);
+                loadRight();
+                break;
+        }
+
+    }
+
+    private void loadRight() {
+        BmobQuery<UserBuy> query = new BmobQuery<>();
+        UserInfo buyer = new UserInfo();
+        buyer.setObjectId(Utils.getCache(Config.KEY_ID));
+        query.addWhereEqualTo("buyer", buyer);
+        query.include("user");
+        query.findObjects(new FindListener<UserBuy>() {
+            @Override
+            public void done(List<UserBuy> list, BmobException e) {
+                if (e == null && list.size() > 0) {
+                    rightAdapter.refresh(list);
+                }
+            }
+        });
     }
 
     private void refresh() {
