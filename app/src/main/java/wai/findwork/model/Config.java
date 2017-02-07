@@ -8,4 +8,5 @@ package wai.findwork.model;
 public class Config {
     public static final String KEY_User_ID = "User_ID";
     public static final String KEY_ID="KEY_ID";
+    public static final String KEY_NEW_ID = "NEW_ID";
 }

@@ -1,5 +1,7 @@
 package wai.findwork.model;
 
+import java.io.Serializable;
+
 import cn.bmob.v3.BmobObject;
 
 /**
@@ -7,7 +9,7 @@ import cn.bmob.v3.BmobObject;
  * QQ群481606175
  */
 
-public class ArticleModel extends BmobObject {
+public class ArticleModel extends BmobObject implements Serializable{
     int id;
     String title;
     String content;

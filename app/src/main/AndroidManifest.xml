@@ -30,8 +30,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.PersonDetailActivity"/>
-        <activity android:name=".ui.RiLiActivity"/>
+        <activity android:name=".ui.PersonDetailActivity" />
+        <activity android:name=".ui.RiLiActivity" />
+        <activity android:name=".ui.NewDetailActivity" />
     </application>
 
 </manifest>

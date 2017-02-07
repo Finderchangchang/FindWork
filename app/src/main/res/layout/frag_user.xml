@@ -93,6 +93,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/ts_tv"
             android:layout_width="match_parent"
             android:layout_height="43dp"
             android:background="#248EB5"
