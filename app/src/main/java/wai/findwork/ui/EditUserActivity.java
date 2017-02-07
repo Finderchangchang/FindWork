@@ -1,6 +1,7 @@
 package wai.findwork.ui;
 
 import wai.findwork.BaseActivity;
+import wai.findwork.R;
 
 /**
  * Created by Administrator on 2017/2/7.
@@ -19,6 +20,6 @@ public class EditUserActivity extends BaseActivity {
 
     @Override
     public int setLayout() {
-        return 0;
+        return R.layout.ac_edit_user;
     }
 }

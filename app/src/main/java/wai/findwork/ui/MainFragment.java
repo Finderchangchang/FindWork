@@ -204,7 +204,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 user_right_ll.setOnClickListener(v ->
                         Utils.IntentPost(RiLiActivity.class, intent -> intent.putExtra("type", "right"))
                 );
-                user_center_ll.setOnClickListener(v->Utils.IntentPost(EditUserActivity.class));
+                user_center_ll.setOnClickListener(v -> Utils.IntentPost(EditUserActivity.class));
+                user_bottom_ll.setOnClickListener(v -> Utils.IntentPost(EditUserActivity.class));
                 HttpUtil.load(URL.ip_address)
                         .getIpAddress()
                         .subscribeOn(Schedulers.io())
