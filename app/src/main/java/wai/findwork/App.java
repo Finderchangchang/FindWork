@@ -20,6 +20,7 @@ public class App extends Application {
         Bmob.initialize(this,"15e70d22f52e3af14f325cbb8e66989e");
     }
 
+
     public static Context getContext() {
         return context;
     }

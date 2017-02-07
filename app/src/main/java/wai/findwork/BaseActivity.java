@@ -29,8 +29,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         initViews();
     }
 
-
-
     @Override
     protected void onStart() {
         super.onStart();

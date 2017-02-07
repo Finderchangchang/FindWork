@@ -39,10 +39,11 @@ public class RiLiActivity extends BaseActivity {
     @Override
     public void initViews() {
         list = new ArrayList<>();
-        commonAdapter = new CommonAdapter<RiLi>(this, list, R.layout.item_team) {
+        commonAdapter = new CommonAdapter<RiLi>(this, list, R.layout.item_new) {
             @Override
             public void convert(CommonViewHolder holder, RiLi riLi, int position) {
-                holder.setText(R.id.name_tv, riLi.getContent());
+                holder.setVisible(R.id.title_tv, false);
+                holder.setText(R.id.content_tv, riLi.getContent());
             }
         };
         riliLv.setAdapter(commonAdapter);
