@@ -1,5 +1,6 @@
 package wai.findwork.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 
@@ -38,6 +39,8 @@ public class RiLiActivity extends BaseActivity {
 
     @Override
     public void initViews() {
+        titleBar.setLeftClick(() -> finish());
+        titleBar.setRightClick(() -> startActivityForResult(new Intent(this, AddRiLiActivity.class), 11));
         list = new ArrayList<>();
         commonAdapter = new CommonAdapter<RiLi>(this, list, R.layout.item_new) {
             @Override
@@ -51,6 +54,10 @@ public class RiLiActivity extends BaseActivity {
 
     @Override
     public void initEvents() {
+        refresh();
+    }
+
+    private void refresh() {
         BmobQuery<RiLi> query = new BmobQuery<>();
         UserInfo buyer = new UserInfo();
         buyer.setObjectId(Utils.getCache(Config.KEY_ID));
@@ -68,5 +75,13 @@ public class RiLiActivity extends BaseActivity {
     @Override
     public int setLayout() {
         return R.layout.ac_ri_li;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 99) {//保存成功，执行刷新操作
+            refresh();
+        }
     }
 }

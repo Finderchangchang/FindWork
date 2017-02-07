@@ -13,43 +13,37 @@
         <attr name="ie_edit_line" format="integer"></attr>
     </declare-styleable>
     <declare-styleable name="AutoScrollTextView">
-        <attr name="textSizes" format="dimension" />
-        <attr name="padding" format="dimension" />
-        <attr name="animDuration" format="integer" />
-        <attr name="scrollDuration" format="integer" />
-        <attr name="textColor" format="color" />
+        <attr name="textSizes" format="dimension"/>
+        <attr name="padding" format="dimension"/>
+        <attr name="animDuration" format="integer"/>
+        <attr name="scrollDuration" format="integer"/>
+        <attr name="textColor" format="color"/>
     </declare-styleable>
     <declare-styleable name="LabelTextView">
-
-        <attr name="backgroundColor" format="color" />
-        <attr name="numColor" format="color" />
-
-        <attr name="text" format="string" />
-        <attr name="num" format="string" />
-
-        <attr name="numSize" format="dimension" />
-        <attr name="textSize" format="dimension" />
-
-        <attr name="labelTopPadding" format="dimension" />
-        <attr name="labelCenterPadding" format="dimension" />
-        <attr name="labelBottomPadding" format="dimension" />
-
-
+        <attr name="backgroundColor" format="color"/>
+        <attr name="numColor" format="color"/>
+        <attr name="text" format="string"/>
+        <attr name="num" format="string"/>
+        <attr name="numSize" format="dimension"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="labelTopPadding" format="dimension"/>
+        <attr name="labelCenterPadding" format="dimension"/>
+        <attr name="labelBottomPadding" format="dimension"/>
         <attr name="numStyle">
-            <enum name="normal" value="0" />
-            <enum name="italic" value="1" />
-            <enum name="bold" value="2" />
+            <enum name="normal" value="0"/>
+            <enum name="italic" value="1"/>
+            <enum name="bold" value="2"/>
         </attr>
 
         <attr name="textStyle">
-            <enum name="normal" value="0" />
-            <enum name="italic" value="1" />
-            <enum name="bold" value="2" />
+            <enum name="normal" value="0"/>
+            <enum name="italic" value="1"/>
+            <enum name="bold" value="2"/>
         </attr>
 
         <attr name="direction">
-            <enum name="leftTop" value="-45" />
-            <enum name="rightTop" value="45" />
+            <enum name="leftTop" value="-45"/>
+            <enum name="rightTop" value="45"/>
         </attr>
 
 
@@ -60,6 +54,7 @@
         <attr name="center_iv" format="reference"></attr>
         <attr name="center_tv" format="string"></attr>
         <attr name="right_iv" format="reference"></attr>
+        <attr name="right_tv" format="string"></attr>
         <attr name="no_bottom_line" format="boolean"></attr>
     </declare-styleable>
 </resources>

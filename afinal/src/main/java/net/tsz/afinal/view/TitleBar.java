@@ -25,11 +25,14 @@ public class TitleBar extends LinearLayout {
     String center_str;//中间字
     String str_center_tv;
     String str_left_tv;
+    String str_right_tv;
     ImageView left_iv;
     TextView left_tv;
     ImageView center_iv;
     ImageView right_iv;
+    TextView right_tv;
     TextView center_tv;
+    RelativeLayout right_rl;
     LeftClick leftClick;
     RightClick rightClick;
     LinearLayout bottom_line_ll;
@@ -44,6 +47,7 @@ public class TitleBar extends LinearLayout {
         str_center_tv = a.getString(R.styleable.TitleBar_center_tv);
         str_left_tv = a.getString(R.styleable.TitleBar_left_tv);
         no_bottom_line = a.getBoolean(R.styleable.TitleBar_no_bottom_line, false);
+        str_right_tv = a.getString(R.styleable.TitleBar_right_tv);
         a.recycle();
         init(context);
     }
@@ -57,12 +61,26 @@ public class TitleBar extends LinearLayout {
         center_tv = (TextView) findViewById(R.id.center_tv);
         left_tv = (TextView) findViewById(R.id.left_tv);
         bottom_line_ll = (LinearLayout) findViewById(R.id.bottom_line_ll);
+        right_tv = (TextView) findViewById(R.id.right_tv);
+        right_rl = (RelativeLayout) findViewById(R.id.right_rl);
+        if (!TextUtils.isEmpty(str_right_tv)) {
+            right_tv.setVisibility(VISIBLE);
+            right_tv.setText(str_right_tv);
+        }
+        right_rl.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (rightClick != null) {
+                    rightClick.onClick();
+                }
+            }
+        });
         if (!TextUtils.isEmpty(str_left_tv)) {
             left_tv.setText(str_left_tv);
             left_tv.setVisibility(VISIBLE);
             left_iv.setVisibility(GONE);
         } else {
-            if(str_left_iv!=0) {
+            if (str_left_iv != 0) {
                 left_iv.setImageResource(str_left_iv);
             }
             left_tv.setVisibility(GONE);
@@ -76,6 +94,7 @@ public class TitleBar extends LinearLayout {
                 }
             }
         });
+
         if (!("").equals(str_center_tv)) {//中间文字显示隐藏
             center_tv.setVisibility(VISIBLE);
             center_tv.setText(str_center_tv);
