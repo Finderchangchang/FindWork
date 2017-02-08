@@ -43,7 +43,7 @@ public class LoginActivity extends BaseActivity {
     public void initViews() {
         mInstail = this;
         db = FinalDb.create(this);
-        regBtn.setOnClickListener(v -> Utils.IntentPost(RegActivity.class));
+        regBtn.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class));
         loginBtn.setOnClickListener(v -> {
             String tel = telEt.getText().toString().trim();
             String pwd = pwdEt.getText().toString().trim();

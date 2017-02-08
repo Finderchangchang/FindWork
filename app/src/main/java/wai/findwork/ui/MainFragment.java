@@ -23,6 +23,8 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import net.tsz.afinal.FinalDb;
 
@@ -37,6 +39,7 @@ import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -105,8 +108,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
     }
 
     LinearLayout no_data_ll;
-    ListView right_lv;
-
+    PullToRefreshListView right_lv;
+    TextView no_data_mes;
 
     ImageView user_iv;
     TextView user_name_tv;
@@ -121,6 +124,9 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
     TextView tq_tv;
     LinearLayout user_center_ll;
     LinearLayout user_bottom_ll;
+    int page = 1;
+    int positionIndex = 0;
+    int totalPage = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -165,7 +171,9 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 recyclerviewCategory = (RecyclerView) view.findViewById(R.id.recyclerview_category);
                 main_ll = (LinearLayout) view.findViewById(R.id.main_ll);
                 no_data_ll = (LinearLayout) view.findViewById(R.id.no_data_ll);
-                right_lv = (ListView) view.findViewById(R.id.right_lv);
+                no_data_mes = (TextView) view.findViewById(R.id.no_data_mes);
+                right_lv = (PullToRefreshListView) view.findViewById(R.id.right_lv);
+                right_lv.setMode(PullToRefreshBase.Mode.BOTH);
                 categoryList = new ArrayList<>();
                 db = FinalDb.create(MainActivity.main);
                 initViews();
@@ -246,7 +254,24 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             userInfo.setTypeName(categoryList.get(old_position).getName());
             Utils.IntentPost(PersonDetailActivity.class, intent -> intent.putExtra("user", list.get(position)));
         });
+        right_lv.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                //刷新
+                page=1;
+                changeSelected(positionIndex);
+            }
 
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                //加载下一页
+                if(page<=totalPage){
+                    page=page+1;
+                }
+
+                changeSelected(positionIndex);
+            }
+        });
         categoryList = db.findAllByWhere(CodeModel.class, "Type='" + mContent + "'");
         categoryAdapter.setCategoryList(categoryList);
         if (categoryList.size() > 0) {
@@ -278,6 +303,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
      * @param position 当前点击位置
      */
     private void changeSelected(int position) {
+        this.positionIndex = position;
         categoryList.get(oldSelectedPosition).setSeleted(false);
         categoryList.get(position).setSeleted(true);
         if (position < 7 || (categoryList.size() - position) < 5) {
@@ -295,21 +321,68 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         CodeModel codeModel = new CodeModel();
         codeModel.setObjectId(categoryList.get(position).getObjectid());
         query.addWhereEqualTo("type", codeModel);
-        query.findObjects(new FindListener<UserInfo>() {
+        query.count(UserInfo.class, new CountListener() {
             @Override
-            public void done(List<UserInfo> lists, BmobException e) {
-                if (dialog != null && dialog.isShowing()) {
-                    dialog.dismiss();
+            public void done(Integer count, BmobException e) {
+                if (e == null) {
+                    totalPage = count;
+                    if (totalPage == 0) {
+                        no_data_ll.setVisibility(View.VISIBLE);
+                        no_data_mes.setText("未查询到相关数据");
+                        right_lv.setVisibility(View.GONE);
+                    } else {
+                        query.setLimit(2);//20
+                        if (page > 1) {
+                            query.setSkip(page * 2);//1*20
+                        }
+                    }if(page<=totalPage) {
+                        query.findObjects(new FindListener<UserInfo>() {
+                            @Override
+                            public void done(List<UserInfo> lists, BmobException e) {
+                                if (dialog != null && dialog.isShowing()) {
+                                    dialog.dismiss();
+                                }
+                                boolean result = true;
+                                if (e == null && lists.size() > 0) {
+                                    result = false;
+                                    if (page == 1) {
+                                        list.removeAll(list);
+                                    }
+                                    list.addAll(lists);
+                                    commonAdapter.refresh(list);
+                                    list = lists;
+                                } else if (e == null && lists.size() == 0) {
+                                    result = true;
+                                    no_data_mes.setText("未查询到相关数据");
+                                } else {
+                                    no_data_mes.setText("网络请求失败");
+                                    result = true;
+                                }
+                                right_lv.onRefreshComplete();
+                                right_lv.setVisibility(result ? View.GONE : View.VISIBLE);
+                                no_data_ll.setVisibility(result ? View.VISIBLE : View.GONE);
+                            }
+                        });
+                    }else{
+                        if (dialog != null && dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
+                        right_lv.onRefreshComplete();
+                    }
+
+                    //toast("count对象个数为："+count);
+                } else {
+                    //Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
+                    no_data_ll.setVisibility(View.VISIBLE);
+                    no_data_mes.setText("网络请求失败");
+                    right_lv.setVisibility(View.GONE);
                 }
-                boolean result = true;
-                if (e == null && lists.size() > 0) {
-                    result = false;
-                    commonAdapter.refresh(lists);
-                    list = lists;
-                }
-                right_lv.setVisibility(result ? View.GONE : View.VISIBLE);
-                no_data_ll.setVisibility(result ? View.VISIBLE : View.GONE);
             }
         });
+
+        //query.setLimit(10); // 限制最多10条数据结果作为一页
+        //query.setSkip(10); // 忽略前10条数据（即第一页数据结果）
+
+
     }
 }

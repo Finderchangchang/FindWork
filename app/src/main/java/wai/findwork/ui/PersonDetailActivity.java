@@ -88,7 +88,6 @@ public class PersonDetailActivity extends BaseActivity {
         userNameTv.setText(info.getRealname());
         idCardTv.setText(info.getCardnum());
         userTypeTv.setText(info.getTypeName());
-
         gzTv.setText("工资：" + info.getGongzi());
         remarkTv.setText("备注：" + info.getRemark());
     }
