@@ -1,8 +1,6 @@
 package wai.findwork.method;
 
-import retrofit2.http.Field;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
 import wai.findwork.model.IPAddress;
