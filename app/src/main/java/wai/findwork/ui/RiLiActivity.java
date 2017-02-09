@@ -2,7 +2,12 @@ package wai.findwork.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import net.tsz.afinal.view.TitleBar;
 
@@ -37,8 +42,8 @@ public class RiLiActivity extends BaseActivity {
     List<UserBuy> right_list;
     @Bind(R.id.title_bar)
     TitleBar titleBar;
-    @Bind(R.id.rili_lv)
-    ListView riliLv;
+    //@Bind(R.id.rili_lv)
+    PullToRefreshListView riliLv;
     String type;
 
     @Override
@@ -46,6 +51,8 @@ public class RiLiActivity extends BaseActivity {
         titleBar.setLeftClick(() -> finish());
         titleBar.setRightClick(() -> startActivityForResult(new Intent(this, AddRiLiActivity.class), 11));
         list = new ArrayList<>();
+        riliLv=(PullToRefreshListView)findViewById(R.id.rili_lv);
+        riliLv.setMode(PullToRefreshBase.Mode.BOTH);
         right_list = new ArrayList<>();
         type = getIntent().getStringExtra("type");
     }
@@ -57,8 +64,13 @@ public class RiLiActivity extends BaseActivity {
                 commonAdapter = new CommonAdapter<RiLi>(this, list, R.layout.item_new) {
                     @Override
                     public void convert(CommonViewHolder holder, RiLi riLi, int position) {
-                        holder.setVisible(R.id.title_tv, false);
-                        holder.setText(R.id.content_tv, riLi.getContent());
+                        holder.setText(R.id.title_tv, riLi.getTitle());
+                        if(riLi.getContent().length()>20){
+                            holder.setText(R.id.content_tv, riLi.getContent().substring(0,20));
+                        }else {
+                            holder.setText(R.id.content_tv, riLi.getContent());
+                        }
+                        holder.setText(R.id.content_create_time,riLi.getUpdatedAt());
                     }
                 };
                 riliLv.setAdapter(commonAdapter);
@@ -70,13 +82,23 @@ public class RiLiActivity extends BaseActivity {
                     public void convert(CommonViewHolder holder, UserBuy riLi, int position) {
                         holder.setText(R.id.title_tv, riLi.getUser().getRealname());
                         holder.setText(R.id.content_tv, riLi.getUser().getUsername());
+                        holder.setText(R.id.content_create_time,riLi.getUser().getCreatedAt());
                     }
                 };
                 riliLv.setAdapter(rightAdapter);
                 loadRight();
                 break;
         }
-
+        riliLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent=new Intent(RiLiActivity.this,AddRiLiActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("RILIMODEL",list.get(position));
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadRight() {

@@ -8,9 +8,18 @@ import cn.bmob.v3.BmobObject;
  */
 
 public class RiLi extends BmobObject {
-    int id;
+    private int id;
     UserInfo user;
-    String content;//日记的内容
+    private String title;
+    private String content;//日记的内容
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public int getId() {
         return id;

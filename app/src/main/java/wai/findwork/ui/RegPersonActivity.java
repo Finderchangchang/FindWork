@@ -9,13 +9,21 @@ import android.widget.RadioGroup;
 
 import net.tsz.afinal.view.TitleBar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import wai.findwork.BaseActivity;
 import wai.findwork.R;
+import wai.findwork.model.CodeModel;
 import wai.findwork.model.UserInfo;
+import wai.findwork.view.SpinnerDialog;
 
 /**
  * Created by Administrator on 2017/1/17.
@@ -49,6 +57,10 @@ public class RegPersonActivity extends BaseActivity {
     @Bind(R.id.person_rb_nv)
     RadioButton person_rb_nv;
     UserInfo info;
+    private List<CodeModel> liststate;
+    private SpinnerDialog spinnerDialog;
+    //private List<CodeModel> listType;
+    private String typeString = "1";
 
     @Override
     public void initViews() {
@@ -69,51 +81,157 @@ public class RegPersonActivity extends BaseActivity {
                 //person_rb_nv.setChecked(false);
                 person_rb_nan.setChecked(true);
             }
+        }else{
+            info=new UserInfo();
+        }
+        loadState();
+    }
+
+    //加载选择列表框
+    private void loadDialog(List<CodeModel> list, boolean isTrue) {
+        if (list.size() > 0) {
+            spinnerDialog=new SpinnerDialog(RegPersonActivity.this);
+            spinnerDialog.setListView(list);
+            spinnerDialog.show();
+            spinnerDialog.setOnItemClick(new SpinnerDialog.OnItemClick() {
+                @Override
+                public void onClick(int position, CodeModel val) {
+                    if (isTrue) {
+                        //状态
+                        person_et_state.setText(list.get(position).getName());
+                        typeString = list.get(position).getType();
+                    } else {
+                        //类型
+                        person_et_type.setText(list.get(position).getName());
+                        info.setType(list.get(position));
+                    }
+                }
+            });
         }
     }
-    //获取页面的值
-private void getViewValue(){
 
-}
+    //加载当前状态
+    private void loadState() {
+        liststate = new ArrayList<>();
+        CodeModel code = new CodeModel();
+        code.setName("找工作");
+        code.setType("1");
+        liststate.add(code);
+        //code=null;
+        CodeModel code1 = new CodeModel();
+         code1.setName("有班组");
+        code1.setType("2");
+        liststate.add(code1);
+        //code1=null;
+        CodeModel code2 = new CodeModel();
+        code2.setName("有项目");
+        code2.setType("3");
+
+        liststate.add(code2);
+        //code2=null;
+    }
+
+    //获取页面的值
+    private void getViewValue() {
+        info.setCardnum(person_cardnum.getText().toString().trim());
+        info.setGongzi(person_et_gongzi.getText().toString().trim());
+        info.setRealname(person_real_name.getText().toString().trim());
+        info.setRemark(person_et_remark.getText().toString().trim());
+        if (person_rb_nan.isChecked()) {
+            info.setSex(false);
+        } else {
+            info.setSex(true);
+        }
+    }
+
     //验证页面的值
-    private boolean YanView(){
+    private boolean YanView() {
+        if (person_real_name.getText().toString().trim().equals("")) {
+            ToastShort("请填写您的真实姓名");
+            return false;
+        } else if (person_cardnum.getText().toString().trim().equals("")) {
+            ToastShort("请填写身份证号码");
+            return false;
+        } else if (person_et_gongzi.getText().toString().trim().equals("")) {
+            ToastShort("请填写您现在的工资/每天");
+            return false;
+        }
+
         return true;
     }
+
     @Override
     public void initEvents() {
+        person_et_state.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadDialog(liststate, true);
+            }
+        });
+        person_et_type.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //需要查询对应类型
+                searchType();
+            }
+        });
         person_btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //读取页面上的值
-                //修改或保存
-                if (info.getObjectId() == null) {
-                    //保存
-                    info.save(new SaveListener() {
-                        @Override
-                        public void done(Object o, BmobException e) {
-                            if (e == null) {
-
-                            } else {
-                                ToastShort("保存失败");
+                if (YanView()) {
+                    //读取页面上的值
+                    getViewValue();
+                    //修改或保存
+                    if (info.getObjectId() == null) {
+                        //保存
+                        info.signUp(new SaveListener<BmobUser>() {
+                            @Override
+                            public void done(BmobUser s, BmobException e) {
+                                if (e == null) {
+                                    finish();
+                                } else {
+                                    ToastShort(getResources().getString(R.string.no_wang));
+                                }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        //修改
+                        info.update(info.getObjectId(), new UpdateListener() {
+                            @Override
+                            public void done(BmobException e) {
+                                if (e == null) {
+                                    ToastShort("保存成功");
+                                    finish();
+                                } else {
+                                    ToastShort("修改失败");
+                                }
+                            }
+                        });
+                    }
+
                 } else {
-                    //修改
-                    info.update(info.getObjectId(), new UpdateListener() {
-                        @Override
-                        public void done(BmobException e) {
-                            if (e == null) {
 
-                            } else {
-                                ToastShort("修改失败");
-                            }
-                        }
-                    });
                 }
-
             }
         });
+    }
+
+    //查询类型
+    private void searchType() {
+        BmobQuery<CodeModel> query = new BmobQuery<CodeModel>();
+        query.addWhereEqualTo("Type", typeString);
+        query.findObjects(new FindListener<CodeModel>() {
+            @Override
+            public void done(List<CodeModel> list, BmobException e) {
+                if (e == null) {
+                    //listType = list;
+                    loadDialog(list,false);
+                } else {
+                    ToastShort("字典类型加载失败");
+                }
+            }
+        });
+
     }
 
     @Override
