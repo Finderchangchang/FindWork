@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "E:\\ad\\svn\\Solution\\Android\\svnling\\ling\\pullToRefreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_ptr_flip.png",
+        "source": "E:\\ad\\svn\\Solution\\Android\\svnling\\ling\\pullToRefreshLibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_ptr_flip.png"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\Desktop\\17.2.7\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_ptr_flip.png",
+        "source": "C:\\Users\\Administrator\\Desktop\\17.2.7\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_ptr_flip.png"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\Desktop\\17.2.7\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\indicator_arrow.png",
+        "source": "C:\\Users\\Administrator\\Desktop\\17.2.7\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\indicator_arrow.png"
+    },
+    {
+        "merged": "E:\\ad\\svn\\Solution\\Android\\svnling\\ling\\pullToRefreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\indicator_arrow.png",
+        "source": "E:\\ad\\svn\\Solution\\Android\\svnling\\ling\\pullToRefreshLibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\indicator_arrow.png"
+    },
+    {
+        "merged": "E:\\ad\\svn\\Solution\\Android\\svnling\\ling\\pullToRefreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_ptr_rotate.png",
+        "source": "E:\\ad\\svn\\Solution\\Android\\svnling\\ling\\pullToRefreshLibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_ptr_rotate.png"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\Desktop\\17.2.7\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_ptr_rotate.png",
+        "source": "C:\\Users\\Administrator\\Desktop\\17.2.7\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_ptr_rotate.png"
+    }
+]
