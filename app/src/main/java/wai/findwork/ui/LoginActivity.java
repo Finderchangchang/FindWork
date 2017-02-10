@@ -70,6 +70,7 @@ public class LoginActivity extends BaseActivity {
                             Map<String,String> map=new HashMap<String, String>();
                             map.put(Config.KEY_User_ID,tel);
                             map.put(Config.KEY_ID,info.getObjectId());
+                            map.put(Config.KEY_PassWord,pwd);
                             Utils.putCache(map);
                             finish();
                         } else {
