@@ -51,7 +51,7 @@ public class RiLiActivity extends BaseActivity {
         titleBar.setLeftClick(() -> finish());
         titleBar.setRightClick(() -> startActivityForResult(new Intent(this, AddRiLiActivity.class), 11));
         list = new ArrayList<>();
-        riliLv=(PullToRefreshListView)findViewById(R.id.rili_lv);
+        riliLv = (PullToRefreshListView) findViewById(R.id.rili_lv);
         riliLv.setMode(PullToRefreshBase.Mode.BOTH);
         right_list = new ArrayList<>();
         type = getIntent().getStringExtra("type");
@@ -65,12 +65,12 @@ public class RiLiActivity extends BaseActivity {
                     @Override
                     public void convert(CommonViewHolder holder, RiLi riLi, int position) {
                         holder.setText(R.id.title_tv, riLi.getTitle());
-                        if(riLi.getContent().length()>20){
-                            holder.setText(R.id.content_tv, riLi.getContent().substring(0,20));
-                        }else {
+                        if (riLi.getContent().length() > 20) {
+                            holder.setText(R.id.content_tv, riLi.getContent().substring(0, 20));
+                        } else {
                             holder.setText(R.id.content_tv, riLi.getContent());
                         }
-                        holder.setText(R.id.content_create_time,riLi.getUpdatedAt());
+                        holder.setText(R.id.content_create_time, riLi.getUpdatedAt());
                     }
                 };
                 riliLv.setAdapter(commonAdapter);
@@ -82,7 +82,7 @@ public class RiLiActivity extends BaseActivity {
                     public void convert(CommonViewHolder holder, UserBuy riLi, int position) {
                         holder.setText(R.id.title_tv, riLi.getUser().getRealname());
                         holder.setText(R.id.content_tv, riLi.getUser().getUsername());
-                        holder.setText(R.id.content_create_time,riLi.getUser().getCreatedAt());
+                        holder.setText(R.id.content_create_time, riLi.getUser().getCreatedAt());
                     }
                 };
                 riliLv.setAdapter(rightAdapter);
@@ -92,9 +92,9 @@ public class RiLiActivity extends BaseActivity {
         riliLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent=new Intent(RiLiActivity.this,AddRiLiActivity.class);
-                Bundle bundle=new Bundle();
-                bundle.putSerializable("RILIMODEL",list.get(position));
+                Intent intent = new Intent(RiLiActivity.this, AddRiLiActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("RILIMODEL", list.get(position));
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -109,9 +109,10 @@ public class RiLiActivity extends BaseActivity {
         query.include("user");
         query.findObjects(new FindListener<UserBuy>() {
             @Override
-            public void done(List<UserBuy> list, BmobException e) {
-                if (e == null && list.size() > 0) {
-                    rightAdapter.refresh(list);
+            public void done(List<UserBuy> lists, BmobException e) {
+                if (e == null && lists.size() > 0) {
+                    rightAdapter.refresh(lists);
+                    right_list = lists;
                 }
             }
         });
@@ -124,10 +125,11 @@ public class RiLiActivity extends BaseActivity {
         query.addWhereEqualTo("user", buyer);
         query.findObjects(new FindListener<RiLi>() {
             @Override
-            public void done(List<RiLi> list, BmobException e) {
-                if (e == null && list.size() > 0) {
-                    commonAdapter.refresh(list);
+            public void done(List<RiLi> lists, BmobException e) {
+                if (e == null && lists.size() > 0) {
+                    commonAdapter.refresh(lists);
                 }
+                list = lists;
             }
         });
     }

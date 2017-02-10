@@ -250,23 +250,23 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("请求网络中...");
         right_lv.setOnItemClickListener((parent, view, position, id) -> {
-            UserInfo userInfo = list.get(position);
+            UserInfo userInfo = list.get(position - 1);
             userInfo.setTypeName(categoryList.get(old_position).getName());
-            Utils.IntentPost(PersonDetailActivity.class, intent -> intent.putExtra("user", list.get(position)));
+            Utils.IntentPost(PersonDetailActivity.class, intent -> intent.putExtra("user", list.get(position - 1)));
         });
         right_lv.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 //刷新
-                page=1;
+                page = 1;
                 changeSelected(positionIndex);
             }
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
                 //加载下一页
-                if(page<=totalPage){
-                    page=page+1;
+                if (page <= totalPage) {
+                    page = page + 1;
                 }
 
                 changeSelected(positionIndex);
@@ -335,7 +335,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                         if (page > 1) {
                             query.setSkip(page * 2);//1*20
                         }
-                    }if(page<=totalPage) {
+                    }
+                    if (page <= totalPage) {
                         query.findObjects(new FindListener<UserInfo>() {
                             @Override
                             public void done(List<UserInfo> lists, BmobException e) {
@@ -363,7 +364,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                                 no_data_ll.setVisibility(result ? View.VISIBLE : View.GONE);
                             }
                         });
-                    }else{
+                    } else {
                         if (dialog != null && dialog.isShowing()) {
                             dialog.dismiss();
                         }

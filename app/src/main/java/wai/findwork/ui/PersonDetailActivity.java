@@ -1,6 +1,10 @@
 package wai.findwork.ui;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,6 +21,7 @@ import butterknife.ButterKnife;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
 import wai.findwork.BaseActivity;
 import wai.findwork.R;
 import wai.findwork.method.Utils;
@@ -59,6 +64,9 @@ public class PersonDetailActivity extends BaseActivity {
         toolbar.setLeftClick(() -> finish());
     }
 
+    UserInfo userInfo;
+    UserInfo buyer;
+
     @Override
     public void initEvents() {
         if (Utils.getCache(Config.KEY_ID).equals(info.getObjectId())) {
@@ -66,10 +74,10 @@ public class PersonDetailActivity extends BaseActivity {
             getTelBtn.setVisibility(View.GONE);
         } else {
             BmobQuery<UserBuy> query = new BmobQuery<>();
-            UserInfo userInfo = new UserInfo();
+            userInfo = new UserInfo();
             userInfo.setObjectId(info.getObjectId());
             query.addWhereEqualTo("user", userInfo);
-            UserInfo buyer = new UserInfo();
+            buyer = new UserInfo();
             buyer.setObjectId(Utils.getCache(Config.KEY_ID));
             query.addWhereEqualTo("buyer", buyer);
             query.findObjects(new FindListener<UserBuy>() {
@@ -90,6 +98,36 @@ public class PersonDetailActivity extends BaseActivity {
         userTypeTv.setText(info.getTypeName());
         gzTv.setText("工资：" + info.getGongzi());
         remarkTv.setText("备注：" + info.getRemark());
+        getTelBtn.setOnClickListener(view -> {
+            if (("拨打电话").equals(getTelBtn.getText().toString())) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                Uri data = Uri.parse("tel:" + Utils.getCache(Config.KEY_User_ID));
+                intent.setData(data);
+                startActivity(intent);
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("提示");
+                builder.setMessage("确定要购买该人员信息吗？");
+                builder.setNegativeButton("确定", (dialogInterface, i) -> {
+                    UserBuy buy = new UserBuy();
+                    buy.setUser(userInfo);
+                    buy.setBuyer(buyer);
+                    buy.save(new SaveListener<String>() {
+                        @Override
+                        public void done(String s, BmobException e) {
+                            if (e == null) {
+                                ToastShort("购买成功");
+                                finish();
+                            } else {
+                                ToastShort("购买失败，请稍后重试");
+                            }
+                        }
+                    });
+                });
+                builder.setPositiveButton("取消", null);
+                builder.show();
+            }
+        });
     }
 
     @Override

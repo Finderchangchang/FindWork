@@ -20,6 +20,7 @@ import android.content.Context;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.renderscript.Float2;
 import android.util.AttributeSet;
 import android.util.FloatMath;
 import android.webkit.WebChromeClient;
