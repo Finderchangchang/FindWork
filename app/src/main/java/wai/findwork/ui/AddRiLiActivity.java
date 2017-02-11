@@ -66,7 +66,6 @@ public class AddRiLiActivity extends BaseActivity {
                     @Override
                     public void done(String s, BmobException e) {
                         if (e == null) {
-                            ToastShort(s);
                             setResult(99);
                             finish();
                         } else {

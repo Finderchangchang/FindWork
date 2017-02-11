@@ -58,12 +58,16 @@ public class LoginActivity extends BaseActivity {
                 query.addWhereEqualTo("username", tel);
                 query.addWhereEqualTo("password", pwd);
                 query.include("type");
-                query.findObjects(new FindListener<UserInfo>() {
+                UserInfo userInfo=new UserInfo();
+                userInfo.setPassword(pwd);
+                userInfo.setUsername(tel);
+
+                userInfo.login(new SaveListener<UserInfo>() {
                     @Override
-                    public void done(List<UserInfo> list, BmobException e) {
+                    public void done(UserInfo o, BmobException e) {
                         if (e == null) {
                             db.deleteAll(UserInfo.class);
-                            UserInfo info=list.get(0);
+                            UserInfo info=o;
                             info.setTypeName(info.getType().getName());
                             db.save(info);
                             Utils.IntentPost(MainActivity.class);
@@ -78,6 +82,7 @@ public class LoginActivity extends BaseActivity {
                         }
                     }
                 });
+
             }
         });
     }

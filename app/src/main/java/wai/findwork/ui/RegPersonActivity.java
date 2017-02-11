@@ -11,7 +11,9 @@ import android.widget.TextView;
 import net.tsz.afinal.view.TitleBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import cn.bmob.v3.BmobQuery;
@@ -74,13 +76,15 @@ public class RegPersonActivity extends BaseActivity {
         titleBar.setLeftClick(() -> finish());
         //接收传过来的model
         info = (UserInfo) getIntent().getSerializableExtra("UserInfo");
+        //
         if (info != null) {
             //给界面赋值
             person_cardnum.setText(info.getCardnum());
             person_et_gongzi.setText(info.getGongzi());
             person_et_remark.setText(info.getRemark());
             person_real_name.setText(info.getRealname());
-            person_et_phone.setText(info.getUsername());
+            person_et_phone.setText(Utils.getCache(Config.KEY_User_ID));
+            person_et_type.setText(info.getTypeName());
             String psw=Utils.getCache(Config.KEY_PassWord);
             person_et_psw2.setText(psw);
             person_et_psw1.setText(psw);
@@ -215,7 +219,7 @@ public class RegPersonActivity extends BaseActivity {
                     //读取页面上的值
                     getViewValue();
                     //修改或保存
-                    if (info.getObjectId() == null) {
+                    if (Utils.getCache(Config.KEY_ID)==null) {
                         //保存
                         info.signUp(new SaveListener<BmobUser>() {
                             @Override
@@ -228,8 +232,13 @@ public class RegPersonActivity extends BaseActivity {
                             }
                         });
                     } else {
+
+
+
+
+
                         //修改
-                        info.update(info.getObjectId(), new UpdateListener() {
+                        info.update(Utils.getCache(Config.KEY_ID), new UpdateListener() {
                             @Override
                             public void done(BmobException e) {
                                 if (e == null) {

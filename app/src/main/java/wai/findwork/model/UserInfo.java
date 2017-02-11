@@ -17,7 +17,6 @@ public class UserInfo extends BmobUser implements Serializable{
     private String cardnum;
     private String gongzi;
     private boolean sex;
-
     CodeModel type;
     String typeName;
 
