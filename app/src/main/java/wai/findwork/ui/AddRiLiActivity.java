@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import net.tsz.afinal.view.TitleBar;
 
@@ -30,7 +31,7 @@ public class AddRiLiActivity extends BaseActivity {
     @Bind(R.id.riji_et_title)
     EditText riji_et_title;
     @Bind(R.id.riji_create_tiem)
-    EditText riji_create_tiem;
+    TextView riji_create_tiem;
     RiLi riLi;
     @Bind(R.id.riji_btn_delete)
     Button riji_btn_delete;
@@ -66,7 +67,6 @@ public class AddRiLiActivity extends BaseActivity {
                     @Override
                     public void done(String s, BmobException e) {
                         if (e == null) {
-                            ToastShort(s);
                             setResult(99);
                             finish();
                         } else {
@@ -89,11 +89,11 @@ public class AddRiLiActivity extends BaseActivity {
 
                     @Override
                     public void done(BmobException e) {
-                        if(e==null){
+                        if (e == null) {
                             setResult(99);
                             ToastShort("删除成功");
                             finish();
-                        }else{
+                        } else {
                             ToastShort("删除失败" + e.getMessage());
                         }
                     }
