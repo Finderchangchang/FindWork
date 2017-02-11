@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import net.tsz.afinal.view.TitleBar;
 
@@ -21,7 +22,10 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import wai.findwork.BaseActivity;
 import wai.findwork.R;
+import wai.findwork.method.IDCardUtils;
+import wai.findwork.method.Utils;
 import wai.findwork.model.CodeModel;
+import wai.findwork.model.Config;
 import wai.findwork.model.UserInfo;
 import wai.findwork.view.SpinnerDialog;
 
@@ -41,9 +45,9 @@ public class RegPersonActivity extends BaseActivity {
     @Bind(R.id.person_cardnum)
     EditText person_cardnum;
     @Bind(R.id.person_et_state)
-    EditText person_et_state;
+    TextView person_et_state;
     @Bind(R.id.person_et_type)
-    EditText person_et_type;
+    TextView person_et_type;
     @Bind(R.id.person_et_gongzi)
     EditText person_et_gongzi;
     @Bind(R.id.person_et_remark)
@@ -56,6 +60,9 @@ public class RegPersonActivity extends BaseActivity {
     RadioButton person_rb_nan;
     @Bind(R.id.person_rb_nv)
     RadioButton person_rb_nv;
+    @Bind(R.id.person_et_psw2)EditText person_et_psw2;
+    @Bind(R.id.person_et_psw1)EditText person_et_psw1;
+    @Bind(R.id.person_et_phone)EditText person_et_phone;
     UserInfo info;
     private List<CodeModel> liststate;
     private SpinnerDialog spinnerDialog;
@@ -66,13 +73,17 @@ public class RegPersonActivity extends BaseActivity {
     public void initViews() {
         titleBar.setLeftClick(() -> finish());
         //接收传过来的model
-        info = (UserInfo) getIntent().getSerializableExtra("user");
+        info = (UserInfo) getIntent().getSerializableExtra("UserInfo");
         if (info != null) {
             //给界面赋值
             person_cardnum.setText(info.getCardnum());
             person_et_gongzi.setText(info.getGongzi());
             person_et_remark.setText(info.getRemark());
             person_real_name.setText(info.getRealname());
+            person_et_phone.setText(info.getUsername());
+            String psw=Utils.getCache(Config.KEY_PassWord);
+            person_et_psw2.setText(psw);
+            person_et_psw1.setText(psw);
             person_btn_save.setText("保存");
             if (info.isSex()) {
                 person_rb_nv.setChecked(true);
@@ -128,6 +139,8 @@ public class RegPersonActivity extends BaseActivity {
         code2.setType("3");
 
         liststate.add(code2);
+        person_et_state.setText(liststate.get(0).getName());
+
         //code2=null;
     }
 
@@ -137,6 +150,9 @@ public class RegPersonActivity extends BaseActivity {
         info.setGongzi(person_et_gongzi.getText().toString().trim());
         info.setRealname(person_real_name.getText().toString().trim());
         info.setRemark(person_et_remark.getText().toString().trim());
+        info.setUsername(person_et_phone.getText().toString().trim());
+        info.setPassword(person_et_psw1.getText().toString().trim());
+
         if (person_rb_nan.isChecked()) {
             info.setSex(false);
         } else {
@@ -152,11 +168,28 @@ public class RegPersonActivity extends BaseActivity {
         } else if (person_cardnum.getText().toString().trim().equals("")) {
             ToastShort("请填写身份证号码");
             return false;
-        } else if (person_et_gongzi.getText().toString().trim().equals("")) {
+        }else if(!IDCardUtils.IDCardValidate(person_cardnum.getText().toString().trim())){
+            ToastShort("请检查身份证号");
+            return false;
+        } else if(person_et_type.getText().toString().trim().equals("")){
+            ToastShort("请选择工种类型");
+            return false;
+        }else if (person_et_gongzi.getText().toString().trim().equals("")) {
             ToastShort("请填写您现在的工资/每天");
             return false;
+        }else if(person_et_phone.getText().toString().trim().equals("")){
+            ToastShort("请输入您的联系方式");
+            return false;
+        }else if(person_et_psw1.getText().toString().trim().equals("")){
+            ToastShort("请输入登录密码");
+            return false;
+        }else if(person_et_psw2.getText().toString().trim().equals("")){
+            ToastShort("请输入确认登录密码");
+            return false;
+        }else if(!(person_et_psw1.getText().toString().trim().equals(person_et_psw2.getText().toString().trim()))){
+            ToastShort("输入密码不一致");
+            return false;
         }
-
         return true;
     }
 
@@ -208,7 +241,6 @@ public class RegPersonActivity extends BaseActivity {
                             }
                         });
                     }
-
                 } else {
 
                 }
@@ -231,7 +263,6 @@ public class RegPersonActivity extends BaseActivity {
                 }
             }
         });
-
     }
 
     @Override

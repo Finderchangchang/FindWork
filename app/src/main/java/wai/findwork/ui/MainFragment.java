@@ -183,7 +183,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
 
         return view;
     }
-
+    UserInfo info;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -191,7 +191,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             case 0:
                 List<UserInfo> list = db.findAll(UserInfo.class);
                 if (list.size() > 0) {
-                    UserInfo info = list.get(0);
+                    info = list.get(0);
                     Glide.with(MainActivity.main)
                             .load(info.getIconurl()).transform(new GlideCircleTransform(MainActivity.main))
                             .into(user_iv);
@@ -212,8 +212,10 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 user_right_ll.setOnClickListener(v ->
                         Utils.IntentPost(RiLiActivity.class, intent -> intent.putExtra("type", "right"))
                 );
-                user_center_ll.setOnClickListener(v -> Utils.IntentPost(EditUserActivity.class));
-                user_bottom_ll.setOnClickListener(v -> Utils.IntentPost(EditUserActivity.class));
+                user_center_ll.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class,intent -> {
+                    intent.putExtra("UserInfo",info);
+                }));
+                user_bottom_ll.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class));
                 HttpUtil.load(URL.ip_address)
                         .getIpAddress()
                         .subscribeOn(Schedulers.io())
