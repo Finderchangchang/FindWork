@@ -89,15 +89,12 @@ public class RiLiActivity extends BaseActivity {
                 loadRight();
                 break;
         }
-        riliLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(RiLiActivity.this, AddRiLiActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("RILIMODEL", list.get(position));
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
+        riliLv.setOnItemClickListener((parent, view, position, id) -> {
+            Intent intent = new Intent(RiLiActivity.this, AddRiLiActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("RILIMODEL", list.get(position - 1));
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
     }
 
