@@ -88,7 +88,6 @@ public class LoginActivity extends BaseActivity {
                                         Utils.putCache(map);
 
                                         db.save(info);
-
                                         Utils.IntentPost(MainActivity.class);
                                         finish();
                                     }else{

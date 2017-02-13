@@ -8,6 +8,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import net.tsz.afinal.FinalDb;
 import net.tsz.afinal.view.TitleBar;
 
 import java.util.ArrayList;
@@ -70,10 +71,11 @@ public class RegPersonActivity extends BaseActivity {
     private SpinnerDialog spinnerDialog;
     //private List<CodeModel> listType;
     private String typeString = "1";
-
+    FinalDb db;
     @Override
     public void initViews() {
         titleBar.setLeftClick(() -> finish());
+        db = FinalDb.create(this);
         //接收传过来的model
         info = (UserInfo) getIntent().getSerializableExtra("UserInfo");
         //
@@ -223,7 +225,7 @@ public class RegPersonActivity extends BaseActivity {
                     //读取页面上的值
                     getViewValue();
                     //修改或保存
-                    if (Utils.getCache(Config.KEY_ID)==null) {
+                    if (Utils.getCache(Config.KEY_ID).equals("")) {
                         //保存
                         info.signUp(new SaveListener<BmobUser>() {
                             @Override
@@ -236,17 +238,12 @@ public class RegPersonActivity extends BaseActivity {
                             }
                         });
                     } else {
-
-
-
-
-
                         //修改
                         info.update(Utils.getCache(Config.KEY_ID), new UpdateListener() {
                             @Override
                             public void done(BmobException e) {
                                 if (e == null) {
-
+                                    db.deleteAll(UserInfo.class);
                                     Map<String,String> map=new HashMap<String, String>();
                                     map.put(Config.KEY_User_ID,info.getUsername());
                                     map.put(Config.KEY_PassWord,person_et_psw1.getText().toString().trim());
