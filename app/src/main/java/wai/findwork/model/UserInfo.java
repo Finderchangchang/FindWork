@@ -9,23 +9,23 @@ import cn.bmob.v3.BmobUser;
  * QQ群481606175
  */
 
-public class UserInfo extends BmobUser implements Serializable{
+public class UserInfo extends BmobUser implements Serializable {
     int id;
     private String realname;
     private String remark;
     private String iconurl;
     private String cardnum;
     private String gongzi;
-    private boolean sex;
+    private Boolean sex;
     CodeModel type;
     String typeName;
 
 
-    public boolean isSex() {
+    public Boolean isSex() {
         return sex;
     }
 
-    public void setSex(boolean sex) {
+    public void setSex(Boolean sex) {
         this.sex = sex;
     }
 

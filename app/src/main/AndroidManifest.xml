@@ -35,5 +35,6 @@
         <activity android:name=".ui.NewDetailActivity" />
         <activity android:name=".ui.AddRiLiActivity" />
         <activity android:name=".ui.EditUserActivity" />
+        <activity android:name=".ui.WebActivity" />
     </application>
 </manifest>

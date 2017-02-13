@@ -75,6 +75,13 @@ public class RiLiActivity extends BaseActivity {
                 };
                 riliLv.setAdapter(commonAdapter);
                 refresh();
+                riliLv.setOnItemClickListener((parent, view, position, id) -> {
+                    Intent intent = new Intent(RiLiActivity.this, AddRiLiActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("RILIMODEL", list.get(position - 1));
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                });
                 break;
             default:
                 rightAdapter = new CommonAdapter<UserBuy>(this, right_list, R.layout.item_new) {
@@ -86,16 +93,15 @@ public class RiLiActivity extends BaseActivity {
                     }
                 };
                 riliLv.setAdapter(rightAdapter);
+                riliLv.setOnItemClickListener((parent, view, position, id) -> {
+                    Intent intent = new Intent(RiLiActivity.this, PersonDetailActivity.class);
+                    intent.putExtra("user", right_list.get(position - 1).getUser());
+                    startActivity(intent);
+                });
                 loadRight();
                 break;
         }
-        riliLv.setOnItemClickListener((parent, view, position, id) -> {
-            Intent intent = new Intent(RiLiActivity.this, AddRiLiActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("RILIMODEL", list.get(position - 1));
-            intent.putExtras(bundle);
-            startActivity(intent);
-        });
+
     }
 
     private void loadRight() {
@@ -103,7 +109,7 @@ public class RiLiActivity extends BaseActivity {
         UserInfo buyer = new UserInfo();
         buyer.setObjectId(Utils.getCache(Config.KEY_ID));
         query.addWhereEqualTo("buyer", buyer);
-        query.include("user");
+        query.include("user.type");
         query.findObjects(new FindListener<UserBuy>() {
             @Override
             public void done(List<UserBuy> lists, BmobException e) {

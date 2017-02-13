@@ -1,9 +1,11 @@
 package wai.findwork.ui;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -123,6 +125,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
     TextView tq_tv;
     LinearLayout user_center_ll;
     LinearLayout user_bottom_ll;
+    TextView exit_tv;
+    TextView about_us_tv;
     int page = 1;
     int positionIndex = 0;
     int totalPage = 0;
@@ -133,6 +137,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         switch (mContent) {
             case 0:
                 view = inflater.inflate(R.layout.frag_user, container, false);
+                about_us_tv = (TextView) view.findViewById(R.id.about_us_tv);
+                exit_tv = (TextView) view.findViewById(R.id.exit_tv);
                 user_iv = (ImageView) view.findViewById(R.id.user_iv);
                 user_name_tv = (TextView) view.findViewById(R.id.user_name_tv);
                 user_type_tv = (TextView) view.findViewById(R.id.user_type_tv);
@@ -176,13 +182,16 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 categoryList = new ArrayList<>();
                 db = FinalDb.create(MainActivity.main);
                 initViews();
+
                 break;
         }
 
 
         return view;
     }
+
     UserInfo info;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -211,9 +220,23 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 user_right_ll.setOnClickListener(v ->
                         Utils.IntentPost(RiLiActivity.class, intent -> intent.putExtra("type", "right"))
                 );
-                user_center_ll.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class,intent -> {
-                    intent.putExtra("UserInfo",info);
+                user_center_ll.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class, intent -> {
+                    intent.putExtra("UserInfo", info);
                 }));
+                about_us_tv.setOnClickListener(v -> Utils.IntentPost(WebActivity.class, intent -> intent.putExtra("url", "about_us")));
+                exit_tv.setOnClickListener(v -> {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.main);
+                    builder.setTitle("提示");
+                    builder.setMessage("确定要退出当前账号吗？");
+                    builder.setPositiveButton("取消", (dialog1, which) -> {
+
+                    });
+                    builder.setNegativeButton("确定", (dialogInterface, i) -> {
+                        Utils.putCache(Config.KEY_User_ID, "");
+                        MainActivity.main.finish();
+                    });
+                    builder.show();
+                });
                 user_bottom_ll.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class));
                 HttpUtil.load(URL.ip_address)
                         .getIpAddress()
@@ -238,7 +261,6 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
 
     FinalDb db;
 
-
     private void initViews() {
         recyclerviewCategory.setLayoutManager(new LinearLayoutManager(getActivity()));
         categoryAdapter = new CategoryAdapter(MainActivity.main, categoryList);
@@ -253,7 +275,10 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         right_lv.setOnItemClickListener((parent, view, position, id) -> {
             UserInfo userInfo = list.get(position - 1);
             userInfo.setTypeName(categoryList.get(old_position).getName());
-            Utils.IntentPost(PersonDetailActivity.class, intent -> intent.putExtra("user", list.get(position - 1)));
+            Utils.IntentPost(PersonDetailActivity.class, intent -> {
+                intent.putExtra("user", list.get(position - 1));
+                intent.putExtra("index", mContent + "");
+            });
         });
         right_lv.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
@@ -380,10 +405,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 }
             }
         });
-
         //query.setLimit(10); // 限制最多10条数据结果作为一页
         //query.setSkip(10); // 忽略前10条数据（即第一页数据结果）
-
-
     }
 }
