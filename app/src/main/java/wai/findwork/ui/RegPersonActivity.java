@@ -89,6 +89,12 @@ public class RegPersonActivity extends BaseActivity {
             person_et_psw2.setText(psw);
             person_et_psw1.setText(psw);
             person_btn_save.setText("保存");
+            CodeModel codeModel=new CodeModel();
+            codeModel.setType(Utils.getCache(Config.KEY_TYPE_STATE));
+            codeModel.setObjectid(Utils.getCache(Config.KEY_Type_ID));
+            codeModel.setName(info.getTypeName());
+            info.setType(codeModel);
+            info.setObjectId(Utils.getCache(Config.KEY_ID));
             if (info.isSex()) {
                 person_rb_nv.setChecked(true);
                 //person_rb_nan.setChecked(false);
@@ -132,20 +138,18 @@ public class RegPersonActivity extends BaseActivity {
         code.setName("找工作");
         code.setType("1");
         liststate.add(code);
-        //code=null;
+        code=null;
         CodeModel code1 = new CodeModel();
          code1.setName("有班组");
         code1.setType("2");
         liststate.add(code1);
-        //code1=null;
+        code1=null;
         CodeModel code2 = new CodeModel();
         code2.setName("有项目");
         code2.setType("3");
-
         liststate.add(code2);
         person_et_state.setText(liststate.get(0).getName());
-
-        //code2=null;
+        code2=null;
     }
 
     //获取页面的值
@@ -242,6 +246,14 @@ public class RegPersonActivity extends BaseActivity {
                             @Override
                             public void done(BmobException e) {
                                 if (e == null) {
+
+                                    Map<String,String> map=new HashMap<String, String>();
+                                    map.put(Config.KEY_User_ID,info.getUsername());
+                                    map.put(Config.KEY_PassWord,person_et_psw1.getText().toString().trim());
+                                    map.put(Config.KEY_Type_ID,info.getType().getObjectId());
+                                    map.put(Config.KEY_TYPE_STATE,info.getType().getType());
+                                    map.put(Config.KEY_ID, info.getObjectId());
+                                    Utils.putCache(map);
                                     ToastShort("保存成功");
                                     finish();
                                 } else {

@@ -110,7 +110,6 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
     LinearLayout no_data_ll;
     PullToRefreshListView right_lv;
     TextView no_data_mes;
-
     ImageView user_iv;
     TextView user_name_tv;
     TextView user_type_tv;
@@ -270,7 +269,6 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 if (page <= totalPage) {
                     page = page + 1;
                 }
-
                 changeSelected(positionIndex);
             }
         });

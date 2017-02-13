@@ -6,8 +6,10 @@ package wai.findwork.model;
  */
 
 public class Config {
-    public static final String KEY_User_ID = "User_ID";
-    public static final String KEY_ID="KEY_ID";
+    public static final String KEY_User_ID = "User_ID";//登录名
+    public static final String KEY_ID="KEY_ID";//用户OBJECTID
     public static final String KEY_NEW_ID = "NEW_ID";
-    public static final String KEY_PassWord="Password";
+    public static final String KEY_PassWord="Password";//密码
+    public static final String KEY_Type_ID="KEY_TYPE_ID";//类型OBJECTID
+    public static final String KEY_TYPE_STATE="KEY_TYPE_STATE";//类型的状态
 }

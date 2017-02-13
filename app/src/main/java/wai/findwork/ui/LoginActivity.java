@@ -54,10 +54,7 @@ public class LoginActivity extends BaseActivity {
             } else if (TextUtils.isEmpty(pwd)) {
                 ToastShort("请输入密码");
             } else {
-                BmobQuery<UserInfo> query = new BmobQuery<UserInfo>();
-                query.addWhereEqualTo("username", tel);
-                query.addWhereEqualTo("password", pwd);
-                query.include("type");
+
                 UserInfo userInfo=new UserInfo();
                 userInfo.setPassword(pwd);
                 userInfo.setUsername(tel);
@@ -67,16 +64,39 @@ public class LoginActivity extends BaseActivity {
                     public void done(UserInfo o, BmobException e) {
                         if (e == null) {
                             db.deleteAll(UserInfo.class);
-                            UserInfo info=o;
-                            info.setTypeName(info.getType().getName());
-                            db.save(info);
-                            Utils.IntentPost(MainActivity.class);
+
                             Map<String,String> map=new HashMap<String, String>();
                             map.put(Config.KEY_User_ID,tel);
-                            map.put(Config.KEY_ID,info.getObjectId());
+
                             map.put(Config.KEY_PassWord,pwd);
                             Utils.putCache(map);
-                            finish();
+
+                            BmobQuery<UserInfo> query = new BmobQuery<UserInfo>();
+                            query.addWhereEqualTo("username", tel);
+                            query.addWhereEqualTo("password", pwd);
+                            query.include("type");
+                            query.findObjects(new FindListener<UserInfo>() {
+                                @Override
+                                public void done(List<UserInfo> list, BmobException e) {
+                                    if(e==null) {
+                                        UserInfo info = list.get(0);
+                                        info.setTypeName(info.getType().getName());
+                                        Map<String,String> map=new HashMap<String, String>();
+                                        map.put(Config.KEY_Type_ID,info.getType().getObjectId());
+                                        map.put(Config.KEY_TYPE_STATE,info.getType().getType());
+                                        map.put(Config.KEY_ID, info.getObjectId());
+                                        Utils.putCache(map);
+
+                                        db.save(info);
+
+                                        Utils.IntentPost(MainActivity.class);
+                                        finish();
+                                    }else{
+                                        ToastShort("用户信息加载失败");
+                                    }
+                                }
+                            });
+
                         } else {
                             ToastShort("用户名或密码错误请重新输入");
                         }
