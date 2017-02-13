@@ -122,6 +122,19 @@ public class TitleBar extends LinearLayout {
         }
     }
 
+    public void setCentertv(String name) {
+        center_tv.setText(name);
+    }
+
+    /**
+     * 设置右侧文字显示隐藏
+     *
+     * @param result
+     */
+    public void setRightClose(boolean result) {
+        right_rl.setVisibility(result ? VISIBLE : GONE);
+    }
+
     public TitleBar(Context context) {
         this(context, null);
         init(context);

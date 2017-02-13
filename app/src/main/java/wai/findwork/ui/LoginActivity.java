@@ -54,23 +54,18 @@ public class LoginActivity extends BaseActivity {
             } else if (TextUtils.isEmpty(pwd)) {
                 ToastShort("请输入密码");
             } else {
-
                 UserInfo userInfo=new UserInfo();
                 userInfo.setPassword(pwd);
                 userInfo.setUsername(tel);
-
                 userInfo.login(new SaveListener<UserInfo>() {
                     @Override
                     public void done(UserInfo o, BmobException e) {
                         if (e == null) {
                             db.deleteAll(UserInfo.class);
-
                             Map<String,String> map=new HashMap<String, String>();
                             map.put(Config.KEY_User_ID,tel);
-
                             map.put(Config.KEY_PassWord,pwd);
                             Utils.putCache(map);
-
                             BmobQuery<UserInfo> query = new BmobQuery<UserInfo>();
                             query.addWhereEqualTo("username", tel);
                             query.addWhereEqualTo("password", pwd);

@@ -11,12 +11,14 @@
         android:id="@+id/reg_person_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         app:center_tv="用户注册"
         app:left_iv="@drawable/toolbar_back" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,7 +123,8 @@
                     android:id="@+id/person_rg_sex"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="18dp">
 
                     <RadioButton
                         android:id="@+id/person_rb_nan"
@@ -255,7 +258,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="手   机  号：" />
+                    android:text="手  机  号：" />
 
                 <EditText
                     android:id="@+id/person_et_phone"
@@ -275,6 +278,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@color/black_overlay" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -299,7 +303,6 @@
                     android:textSize="14dp" />
 
             </LinearLayout>
-
 
 
             <TextView
@@ -373,19 +376,20 @@
                 android:layout_marginRight="10dp"
                 android:background="@color/black_overlay" />
 
-            <Button
-                android:id="@+id/person_btn_save"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/login_btn_bg"
-                android:text="注册"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:layout_marginBottom="20dp"/>
+
         </LinearLayout>
     </ScrollView>
 
+    <Button
+        android:id="@+id/person_btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/login_btn_bg"
+        android:text="注册"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
 </LinearLayout>

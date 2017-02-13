@@ -61,6 +61,8 @@ public class RiLiActivity extends BaseActivity {
     public void initEvents() {
         switch (type) {
             case "left":
+                titleBar.setCentertv("工作日志");
+                titleBar.setRightClose(false);
                 commonAdapter = new CommonAdapter<RiLi>(this, list, R.layout.item_new) {
                     @Override
                     public void convert(CommonViewHolder holder, RiLi riLi, int position) {
@@ -75,8 +77,17 @@ public class RiLiActivity extends BaseActivity {
                 };
                 riliLv.setAdapter(commonAdapter);
                 refresh();
+                riliLv.setOnItemClickListener((parent, view, position, id) -> {
+                    Intent intent = new Intent(RiLiActivity.this, AddRiLiActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("RILIMODEL", list.get(position - 1));
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                });
                 break;
             default:
+                titleBar.setCentertv("购买记录");
+                titleBar.setRightClose(true);
                 rightAdapter = new CommonAdapter<UserBuy>(this, right_list, R.layout.item_new) {
                     @Override
                     public void convert(CommonViewHolder holder, UserBuy riLi, int position) {
@@ -87,15 +98,16 @@ public class RiLiActivity extends BaseActivity {
                 };
                 riliLv.setAdapter(rightAdapter);
                 loadRight();
+                riliLv.setOnItemClickListener((parent, view, position, id) -> {
+                    Intent intent = new Intent(RiLiActivity.this, AddRiLiActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("RILIMODEL", right_list.get(position - 1));
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                });
                 break;
         }
-        riliLv.setOnItemClickListener((parent, view, position, id) -> {
-            Intent intent = new Intent(RiLiActivity.this, AddRiLiActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("RILIMODEL", list.get(position - 1));
-            intent.putExtras(bundle);
-            startActivity(intent);
-        });
+
     }
 
     private void loadRight() {
@@ -125,6 +137,7 @@ public class RiLiActivity extends BaseActivity {
             public void done(List<RiLi> lists, BmobException e) {
                 if (e == null && lists.size() > 0) {
                     commonAdapter.refresh(lists);
+                    list = lists;
                 }
                 list = lists;
             }

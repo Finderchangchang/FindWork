@@ -182,7 +182,9 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
 
         return view;
     }
+
     UserInfo info;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -211,10 +213,12 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 user_right_ll.setOnClickListener(v ->
                         Utils.IntentPost(RiLiActivity.class, intent -> intent.putExtra("type", "right"))
                 );
-                user_center_ll.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class,intent -> {
-                    intent.putExtra("UserInfo",info);
+                user_center_ll.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class, intent -> {
+                    intent.putExtra("UserInfo", info);
                 }));
-                user_bottom_ll.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class));
+                user_bottom_ll.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class, intent -> {
+                    intent.putExtra("UserInfo", info);
+                }));
                 HttpUtil.load(URL.ip_address)
                         .getIpAddress()
                         .subscribeOn(Schedulers.io())

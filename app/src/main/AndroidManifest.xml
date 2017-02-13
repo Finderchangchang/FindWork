@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".App"
@@ -35,5 +37,8 @@
         <activity android:name=".ui.NewDetailActivity" />
         <activity android:name=".ui.AddRiLiActivity" />
         <activity android:name=".ui.EditUserActivity" />
+        <activity android:name="me.iwf.photopicker.PhotoPickerActivity" />
+
+        <activity android:name="me.iwf.photopicker.PhotoPagerActivity" />
     </application>
 </manifest>
