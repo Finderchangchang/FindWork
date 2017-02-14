@@ -57,10 +57,12 @@ public class PersonDetailActivity extends BaseActivity {
     @Bind(R.id.get_tel_btn)
     Button getTelBtn;
     UserInfo info;
+    String index;
 
     @Override
     public void initViews() {
         info = (UserInfo) getIntent().getSerializableExtra("user");
+        index = getIntent().getStringExtra("index");
         toolbar.setLeftClick(() -> finish());
     }
 
@@ -90,14 +92,33 @@ public class PersonDetailActivity extends BaseActivity {
                 }
             });
         }
-        Glide.with(MainActivity.main)
+        Glide.with(this)
                 .load(info.getIconurl()).transform(new GlideCircleTransform(this))
                 .into(userIv);
         userNameTv.setText(info.getRealname());
         idCardTv.setText(info.getCardnum());
-        userTypeTv.setText(info.getTypeName());
-        gzTv.setText("工资：" + info.getGongzi());
-        remarkTv.setText("备注：" + info.getRemark());
+        if (("").equals(info.getTypeName()) || info.getTypeName() == null) {
+            userTypeTv.setText(info.getType().getName());
+        } else {
+            userTypeTv.setText(info.getTypeName());
+        }
+        switch (index) {
+            case "2":
+                toolbar.setCenter_str("班组详情");
+                gzTv.setText("日工资：" + info.getGongzi());
+                remarkTv.setText("人员构成：" + info.getRemark());
+                break;
+            case "3":
+                toolbar.setCenter_str("工程详情");
+                gzTv.setText("所需班组：" + info.getGongzi());
+                remarkTv.setText("工程概况：" + info.getRemark());
+                break;
+            default:
+                gzTv.setText("工资：" + info.getGongzi());
+                remarkTv.setText("备注：" + info.getRemark());
+                break;
+        }
+
         getTelBtn.setOnClickListener(view -> {
             if (("拨打电话").equals(getTelBtn.getText().toString())) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
