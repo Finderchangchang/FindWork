@@ -84,6 +84,8 @@ public class RegPersonActivity extends BaseActivity {
     private String typeString = "1";
     FinalDb db;
 
+    private String path = "";
+
     @Override
     public void initViews() {
         titleBar.setLeftClick(() -> finish());
@@ -102,6 +104,7 @@ public class RegPersonActivity extends BaseActivity {
                     .load(info.getIconurl()).transform(new GlideCircleTransform(this))
                     .into(ivHeader);
             String psw = Utils.getCache(Config.KEY_PassWord);
+            path = info.getIconurl();
             person_et_psw2.setText(psw);
             person_et_psw1.setText(psw);
             person_btn_save.setText("保存");
@@ -138,23 +141,29 @@ public class RegPersonActivity extends BaseActivity {
             if (data != null) {
                 ArrayList<String> photos =
                         data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-                BmobFile bmobFile = new BmobFile(new File(photos.get(0)));
-                bmobFile.uploadblock(new UploadFileListener() {
-
-                    @Override
-                    public void done(BmobException e) {
-                        if (e == null) {
-                            String s = bmobFile.getFileUrl();
-                        } else {
-                            ToastShort(e.getMessage());
-                        }
-                    }
-
-                    @Override
-                    public void onProgress(Integer value) {
-                        // 返回的上传进度（百分比）
-                    }
-                });
+                // BmobFile bmobFile = new BmobFile(new File(photos.get(0)));
+                path = photos.get(0);
+                ivHeader.setImageBitmap(Utils.getBitmapByFile(photos.get(0)));
+//                bmobFile.uploadblock(new UploadFileListener() {
+//
+//                    @Override
+//                    public void done(BmobException e) {
+//                        if (e == null) {
+//                            String s = bmobFile.getFileUrl();
+//
+//                            Glide.with(RegPersonActivity.this)
+//                                    .load(s).transform(new GlideCircleTransform(RegPersonActivity.this))
+//                                    .into(ivHeader);
+//                        } else {
+//                            ToastShort(e.getMessage());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onProgress(Integer value) {
+//                        // 返回的上传进度（百分比）
+//                    }
+//                });
             }
         }
     }
@@ -200,18 +209,19 @@ public class RegPersonActivity extends BaseActivity {
         code2 = null;
     }
 
+    //保存头像
     private void sc() {
-        String picPath = "sdcard/temp.jpg";
-        BmobFile bmobFile = new BmobFile(new File(picPath));
+        BmobFile bmobFile = new BmobFile(new File(path));
         bmobFile.uploadblock(new UploadFileListener() {
 
             @Override
             public void done(BmobException e) {
                 if (e == null) {
-                    //bmobFile.getFileUrl()--返回的上传文件的完整地址
-//                    toast("上传文件成功:" + bmobFile.getFileUrl());
+                    path = bmobFile.getFileUrl();
+                    //头像上传成功以后保存用户信息
+                    SaveInfo();
                 } else {
-//                    toast("上传文件失败：" + e.getMessage());
+                    ToastShort("上传文件失败：" + e.getMessage());
                 }
 
             }
@@ -241,7 +251,10 @@ public class RegPersonActivity extends BaseActivity {
 
     //验证页面的值
     private boolean YanView() {
-        if (person_real_name.getText().toString().trim().equals("")) {
+        if (path.equals("")) {
+            ToastShort("请选择头像");
+            return false;
+        } else if (person_real_name.getText().toString().trim().equals("")) {
             ToastShort("请填写您的真实姓名");
             return false;
         } else if (person_cardnum.getText().toString().trim().equals("")) {
@@ -274,51 +287,108 @@ public class RegPersonActivity extends BaseActivity {
 
     @Override
     public void initEvents() {
-        person_et_state.setOnClickListener(v -> loadDialog(liststate, true));
+        person_et_state.setOnClickListener(v -> {
+            loadDialog(liststate, true);
+            person_et_type.setText("");
+            info.setType(null);
+        });
         person_et_type.setOnClickListener(v -> searchType());
         person_btn_save.setOnClickListener(v -> {
             if (YanView()) {
                 //读取页面上的值
-                getViewValue();
-                //修改或保存
-                if (Utils.getCache(Config.KEY_ID) == null) {
-                    //保存
-                    info.signUp(new SaveListener<BmobUser>() {
-                        @Override
-                        public void done(BmobUser s, BmobException e) {
-                            if (e == null) {
-                                finish();
-                            } else {
-                                ToastShort(getResources().getString(R.string.no_wang));
-                            }
-                        }
-                    });
+                if (!path.equals(info.getIconurl())) {
+                    sc();
                 } else {
-                    //修改
-                    info.update(Utils.getCache(Config.KEY_ID), new UpdateListener() {
-                        @Override
-                        public void done(BmobException e) {
-                            if (e == null) {
-                                Map<String, String> map = new HashMap<String, String>();
-                                map.put(Config.KEY_User_ID, info.getUsername());
-                                map.put(Config.KEY_PassWord, person_et_psw1.getText().toString().trim());
-                                map.put(Config.KEY_Type_ID, info.getType().getObjectId());
-                                map.put(Config.KEY_TYPE_STATE, info.getType().getType());
-                                db.deleteAll(UserInfo.class);
-                                map.put(Config.KEY_ID, info.getObjectId());
-                                Utils.putCache(map);
-                                ToastShort("保存成功");
-                                finish();
-                            } else {
-                                ToastShort("修改失败");
-                            }
-                        }
-                    });
+                    SaveInfo();
                 }
-            } else {
-
             }
         });
+    }
+
+    private void SaveInfo() {
+        getViewValue();
+        //修改或保存
+        if (Utils.getCache(Config.KEY_ID).equals("")) {
+            info.setIconurl(path);
+            //保存
+            info.signUp(new SaveListener<BmobUser>() {
+                @Override
+                public void done(BmobUser s, BmobException e) {
+                    if (e == null) {
+                        finish();
+                    } else {
+                        ToastShort(getResources().getString(R.string.no_wang));
+                    }
+                }
+            });
+        } else {
+            if ((!path.equals(info.getIconurl())&&(!path.equals("")))) {
+                //删除以前的头像
+                BmobFile file = new BmobFile();
+                file.setUrl(info.getIconurl());//此url是上传文件成功之后通过bmobFile.getUrl()方法获取的。
+                file.delete(new UpdateListener() {
+                    @Override
+                    public void done(BmobException e) {
+                        if (e == null) {
+                            //修改
+                            info.setIconurl(path);
+                            info.update(Utils.getCache(Config.KEY_ID), new UpdateListener() {
+                                @Override
+                                public void done(BmobException e) {
+                                    if (e == null) {
+                                        Map<String, String> map = new HashMap<String, String>();
+                                        map.put(Config.KEY_User_ID, info.getUsername());
+                                        map.put(Config.KEY_PassWord, person_et_psw1.getText().toString().trim());
+                                        map.put(Config.KEY_Type_ID, info.getType().getObjectId());
+                                        map.put(Config.KEY_TYPE_STATE, info.getType().getType());
+                                        db.deleteAll(UserInfo.class);
+                                        map.put(Config.KEY_ID, info.getObjectId());
+                                        Utils.putCache(map);
+                                        ToastShort("保存成功");
+                                        info.setTypeName(info.getType().getName());
+                                        db.save(info);
+                                        setResult(101);
+
+                                        finish();
+                                    } else {
+                                        ToastShort("修改失败");
+                                    }
+                                }
+                            });
+                        } else {
+                            ToastShort("保存失败");
+                        }
+                    }
+                });
+            } else {
+                //修改
+                info.setIconurl(path);
+                info.update(Utils.getCache(Config.KEY_ID), new UpdateListener() {
+                    @Override
+                    public void done(BmobException e) {
+                        if (e == null) {
+                            Map<String, String> map = new HashMap<String, String>();
+                            map.put(Config.KEY_User_ID, info.getUsername());
+                            map.put(Config.KEY_PassWord, person_et_psw1.getText().toString().trim());
+                            map.put(Config.KEY_Type_ID, info.getType().getObjectId());
+                            map.put(Config.KEY_TYPE_STATE, info.getType().getType());
+                            db.deleteAll(UserInfo.class);
+                            map.put(Config.KEY_ID, info.getObjectId());
+                            Utils.putCache(map);
+                            info.setTypeName(info.getType().getName());
+                            db.save(info);
+                            ToastShort("保存成功");
+                            setResult(101);
+                            finish();
+                        } else {
+                            ToastShort("修改失败");
+                        }
+                    }
+                });
+            }
+
+
+        }
     }
 
     //查询类型

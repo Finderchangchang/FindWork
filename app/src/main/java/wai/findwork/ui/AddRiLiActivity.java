@@ -67,6 +67,7 @@ public class AddRiLiActivity extends BaseActivity {
                     @Override
                     public void done(String s, BmobException e) {
                         if (e == null) {
+                            ToastShort("保存成功");
                             setResult(99);
                             finish();
                         } else {

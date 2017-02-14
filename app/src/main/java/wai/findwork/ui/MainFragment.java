@@ -2,6 +2,7 @@ package wai.findwork.ui;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -197,32 +198,21 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         super.onActivityCreated(savedInstanceState);
         switch (mContent) {
             case 0:
-                List<UserInfo> list = db.findAll(UserInfo.class);
-                if (list.size() > 0) {
-                    info = list.get(0);
-                    Glide.with(MainActivity.main)
-                            .load(info.getIconurl()).transform(new GlideCircleTransform(MainActivity.main))
-                            .into(user_iv);
-                    user_name_tv.setText(info.getRealname());
-                    id_card_tv.setText(info.getCardnum());
-                    user_type_tv.setText(info.getTypeName());
-                    user_left_ll.setOnClickListener(v -> {
-                    });
-                    user_right_ll.setOnClickListener(v -> {
-                    });
-                    tel_tv.setText("电话：" + Utils.getCache(Config.KEY_User_ID));
-                    gz_tv.setText("工资：" + info.getGongzi());
-                    remark_tv.setText("备注：" + info.getRemark());
-                }
+                refrush();
                 user_left_ll.setOnClickListener(v ->
                         Utils.IntentPost(RiLiActivity.class, intent -> intent.putExtra("type", "left"))
                 );
                 user_right_ll.setOnClickListener(v ->
                         Utils.IntentPost(RiLiActivity.class, intent -> intent.putExtra("type", "right"))
                 );
-                user_center_ll.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class, intent -> {
+                user_center_ll.setOnClickListener(v -> {
+                    Intent intent=new Intent(MainActivity.main,RegPersonActivity.class);
                     intent.putExtra("UserInfo", info);
-                }));
+                    startActivityForResult(intent,102);
+                });
+//                user_center_ll.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class, intent -> {
+//                    intent.putExtra("UserInfo", info);
+//                }));
                 about_us_tv.setOnClickListener(v -> Utils.IntentPost(WebActivity.class, intent -> intent.putExtra("url", "about_us")));
                 exit_tv.setOnClickListener(v -> {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.main);
@@ -233,6 +223,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                     });
                     builder.setNegativeButton("确定", (dialogInterface, i) -> {
                         Utils.putCache(Config.KEY_User_ID, "");
+                        Utils.putCache(Config.KEY_ID,"");
+                        Utils.putCache(Config.KEY_NEW_ID,"");
                         MainActivity.main.finish();
                     });
                     builder.show();
@@ -261,6 +253,26 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
 
     FinalDb db;
 
+    //刷新个人信息
+    private void refrush() {
+        List<UserInfo> list = db.findAll(UserInfo.class);
+        if (list.size() > 0) {
+            info = list.get(0);
+            Glide.with(MainActivity.main)
+                    .load(info.getIconurl()).transform(new GlideCircleTransform(MainActivity.main))
+                    .into(user_iv);
+            user_name_tv.setText(info.getRealname());
+            id_card_tv.setText(info.getCardnum());
+            user_type_tv.setText(info.getTypeName());
+            user_left_ll.setOnClickListener(v -> {
+            });
+            user_right_ll.setOnClickListener(v -> {
+            });
+            tel_tv.setText("电话：" + Utils.getCache(Config.KEY_User_ID));
+            gz_tv.setText("工资：" + info.getGongzi());
+            remark_tv.setText("备注：" + info.getRemark());
+        }
+    }
 
     private void initViews() {
         recyclerviewCategory.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -379,8 +391,9 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                                     commonAdapter.refresh(list);
                                     list = lists;
                                 } else if (e == null && lists.size() == 0) {
-                                    result = true;
-                                    no_data_mes.setText("未查询到相关数据");
+                                    page=page-1;
+                                    result = false;
+                                    //no_data_mes.setText("未查询到相关数据");
                                 } else {
                                     no_data_mes.setText("网络请求失败");
                                     result = true;
@@ -406,10 +419,15 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 }
             }
         });
-
         //query.setLimit(10); // 限制最多10条数据结果作为一页
         //query.setSkip(10); // 忽略前10条数据（即第一页数据结果）
+    }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==101&&requestCode==102){
+            refrush();
+        }
     }
 }

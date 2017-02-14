@@ -25,6 +25,10 @@ public class UserInfo extends BmobUser implements Serializable {
         return sex;
     }
 
+    public Boolean getSex() {
+        return sex;
+    }
+
     public void setSex(Boolean sex) {
         this.sex = sex;
     }

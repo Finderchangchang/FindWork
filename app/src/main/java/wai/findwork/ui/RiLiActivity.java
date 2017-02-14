@@ -62,7 +62,7 @@ public class RiLiActivity extends BaseActivity {
         switch (type) {
             case "left":
                 titleBar.setCentertv("工作日志");
-                titleBar.setRightClose(false);
+                titleBar.setRightClose(true);
                 commonAdapter = new CommonAdapter<RiLi>(this, list, R.layout.item_new) {
                     @Override
                     public void convert(CommonViewHolder holder, RiLi riLi, int position) {
@@ -82,12 +82,12 @@ public class RiLiActivity extends BaseActivity {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("RILIMODEL", list.get(position - 1));
                     intent.putExtras(bundle);
-                    startActivity(intent);
+                    startActivityForResult(intent,11);
                 });
                 break;
             default:
                 titleBar.setCentertv("购买记录");
-                titleBar.setRightClose(true);
+                titleBar.setRightClose(false);
                 rightAdapter = new CommonAdapter<UserBuy>(this, right_list, R.layout.item_new) {
                     @Override
                     public void convert(CommonViewHolder holder, UserBuy riLi, int position) {
