@@ -247,6 +247,7 @@ public class RegPersonActivity extends BaseActivity {
         } else {
             info.setSex(true);
         }
+        info.setNowcity(Utils.getCache(Config.KEY_CITY));
     }
 
     //验证页面的值

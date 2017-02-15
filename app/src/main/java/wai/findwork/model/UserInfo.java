@@ -17,9 +17,18 @@ public class UserInfo extends BmobUser implements Serializable {
     private String cardnum;
     private String gongzi;
     private Boolean sex;
+    private String nowcity;
     CodeModel type;
     String typeName;
 
+
+    public String getNowcity() {
+        return nowcity;
+    }
+
+    public void setNowcity(String nowcity) {
+        this.nowcity = nowcity;
+    }
 
     public Boolean isSex() {
         return sex;
