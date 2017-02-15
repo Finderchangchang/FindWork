@@ -112,7 +112,6 @@ public class RiLiActivity extends BaseActivity {
                 });
                 break;
         }
-
     }
 
     private void loadRight() {

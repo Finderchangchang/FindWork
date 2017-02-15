@@ -36,7 +36,6 @@
         <activity android:name=".ui.RiLiActivity" />
         <activity android:name=".ui.NewDetailActivity" />
         <activity android:name=".ui.AddRiLiActivity" />
-        <activity android:name=".ui.EditUserActivity" />
         <activity android:name="me.iwf.photopicker.PhotoPickerActivity" />
 
         <activity android:name="me.iwf.photopicker.PhotoPagerActivity" />

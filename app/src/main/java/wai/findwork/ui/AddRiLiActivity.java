@@ -87,7 +87,6 @@ public class AddRiLiActivity extends BaseActivity {
                 //删除
                 riLi.setObjectId(riLi.getObjectId());
                 riLi.delete(new UpdateListener() {
-
                     @Override
                     public void done(BmobException e) {
                         if (e == null) {
@@ -98,7 +97,6 @@ public class AddRiLiActivity extends BaseActivity {
                             ToastShort("删除失败" + e.getMessage());
                         }
                     }
-
                 });
             }
         });

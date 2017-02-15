@@ -235,6 +235,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(ipAddress -> {
+                            Utils.putCache(Config.KEY_CITY, ipAddress.getCity());
                             HttpUtil.load(URL.city_weather)
                                     .getWeather(ipAddress.getCity())
                                     .subscribeOn(Schedulers.io())
@@ -242,7 +243,6 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                                     .subscribe(model -> {
                                         tq_tv.setText(model.getData().getForecast().get(0).getType() + "\n" + model.getData().getWendu() + "℃");
                                         ts_tv.setText("温馨提示：" + model.getData().getGanmao());
-
                                     }, throwable -> {
                                     });
                         }, throwable -> {

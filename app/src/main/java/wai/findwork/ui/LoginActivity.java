@@ -81,7 +81,6 @@ public class LoginActivity extends BaseActivity {
                                         map.put(Config.KEY_TYPE_STATE,info.getType().getType());
                                         map.put(Config.KEY_ID, info.getObjectId());
                                         Utils.putCache(map);
-
                                         db.save(info);
                                         Utils.IntentPost(MainActivity.class);
                                         finish();
@@ -90,13 +89,11 @@ public class LoginActivity extends BaseActivity {
                                     }
                                 }
                             });
-
                         } else {
                             ToastShort("用户名或密码错误请重新输入");
                         }
                     }
                 });
-
             }
         });
     }
