@@ -1,7 +1,9 @@
 package wai.findwork.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,12 +32,16 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import me.iwf.photopicker.PhotoPicker;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import wai.findwork.BaseActivity;
 import wai.findwork.R;
+import wai.findwork.method.HttpUtil;
 import wai.findwork.method.IDCardUtils;
 import wai.findwork.method.Utils;
 import wai.findwork.model.CodeModel;
 import wai.findwork.model.Config;
+import wai.findwork.model.URL;
 import wai.findwork.model.UserInfo;
 import wai.findwork.view.GlideCircleTransform;
 import wai.findwork.view.SpinnerDialog;
@@ -83,7 +89,7 @@ public class RegPersonActivity extends BaseActivity {
     //private List<CodeModel> listType;
     private String typeString = "1";
     FinalDb db;
-
+    ProgressDialog progressDialog;
     private String path = "";
 
     @Override
@@ -103,6 +109,7 @@ public class RegPersonActivity extends BaseActivity {
             Glide.with(this)
                     .load(info.getIconurl()).transform(new GlideCircleTransform(this))
                     .into(ivHeader);
+
             String psw = Utils.getCache(Config.KEY_PassWord);
             path = info.getIconurl();
             person_et_psw2.setText(psw);
@@ -171,20 +178,23 @@ public class RegPersonActivity extends BaseActivity {
     //加载选择列表框
     private void loadDialog(List<CodeModel> list, boolean isTrue) {
         if (list.size() > 0) {
-            spinnerDialog = new SpinnerDialog(RegPersonActivity.this);
-            spinnerDialog.setListView(list);
-            spinnerDialog.show();
-            spinnerDialog.setOnItemClick((position, val) -> {
-                if (isTrue) {
-                    //状态
-                    person_et_state.setText(list.get(position).getName());
-                    typeString = list.get(position).getType();
-                } else {
-                    //类型
-                    person_et_type.setText(list.get(position).getName());
-                    info.setType(list.get(position));
-                }
-            });
+            if (spinnerDialog == null) {
+                spinnerDialog = new SpinnerDialog(RegPersonActivity.this);
+                spinnerDialog.setListView(list);
+                spinnerDialog.show();
+                spinnerDialog.setOnItemClick((position, val) -> {
+                    if (isTrue) {
+                        //状态
+                        person_et_state.setText(list.get(position).getName());
+                        typeString = list.get(position).getType();
+                    } else {
+                        //类型
+                        person_et_type.setText(list.get(position).getName());
+                        info.setType(list.get(position));
+                    }
+                    spinnerDialog = null;
+                });
+            }
         }
     }
 
@@ -213,7 +223,6 @@ public class RegPersonActivity extends BaseActivity {
     private void sc() {
         BmobFile bmobFile = new BmobFile(new File(path));
         bmobFile.uploadblock(new UploadFileListener() {
-
             @Override
             public void done(BmobException e) {
                 if (e == null) {
@@ -221,9 +230,13 @@ public class RegPersonActivity extends BaseActivity {
                     //头像上传成功以后保存用户信息
                     SaveInfo();
                 } else {
+                    if (progressDialog != null) {
+
+                        progressDialog.dismiss();
+                        progressDialog = null;
+                    }
                     ToastShort("上传文件失败：" + e.getMessage());
                 }
-
             }
 
             @Override
@@ -241,7 +254,7 @@ public class RegPersonActivity extends BaseActivity {
         info.setRemark(person_et_remark.getText().toString().trim());
         info.setUsername(person_et_phone.getText().toString().trim());
         info.setPassword(person_et_psw1.getText().toString().trim());
-
+        info.setNowcity(Utils.getCache(Config.KEY_CITY));
         if (person_rb_nan.isChecked()) {
             info.setSex(false);
         } else {
@@ -295,6 +308,12 @@ public class RegPersonActivity extends BaseActivity {
         });
         person_et_type.setOnClickListener(v -> searchType());
         person_btn_save.setOnClickListener(v -> {
+            progressDialog = new ProgressDialog(RegPersonActivity.this);
+            progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setMessage("注册中...");
+            progressDialog.show();
             if (YanView()) {
                 //读取页面上的值
                 if (!path.equals(info.getIconurl())) {
@@ -304,6 +323,14 @@ public class RegPersonActivity extends BaseActivity {
                 }
             }
         });
+        HttpUtil.load(URL.ip_address)
+                .getIpAddress()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(ipAddress -> {
+                    Utils.putCache(Config.KEY_CITY, ipAddress.getCity());
+                }, throwable -> {
+                });
     }
 
     private void SaveInfo() {
@@ -315,6 +342,10 @@ public class RegPersonActivity extends BaseActivity {
             info.signUp(new SaveListener<BmobUser>() {
                 @Override
                 public void done(BmobUser s, BmobException e) {
+                    if (progressDialog != null) {
+                        progressDialog.dismiss();
+                        progressDialog = null;
+                    }
                     if (e == null) {
                         finish();
                     } else {
@@ -323,7 +354,7 @@ public class RegPersonActivity extends BaseActivity {
                 }
             });
         } else {
-            if ((!path.equals(info.getIconurl())&&(!path.equals("")))) {
+            if ((!path.equals(info.getIconurl()) && (!path.equals("")))) {
                 //删除以前的头像
                 BmobFile file = new BmobFile();
                 file.setUrl(info.getIconurl());//此url是上传文件成功之后通过bmobFile.getUrl()方法获取的。
@@ -336,6 +367,10 @@ public class RegPersonActivity extends BaseActivity {
                             info.update(Utils.getCache(Config.KEY_ID), new UpdateListener() {
                                 @Override
                                 public void done(BmobException e) {
+                                    if (progressDialog != null) {
+                                        progressDialog.dismiss();
+                                        progressDialog = null;
+                                    }
                                     if (e == null) {
                                         Map<String, String> map = new HashMap<String, String>();
                                         map.put(Config.KEY_User_ID, info.getUsername());
@@ -357,6 +392,11 @@ public class RegPersonActivity extends BaseActivity {
                                 }
                             });
                         } else {
+                            if (progressDialog != null) {
+
+                                progressDialog.dismiss();
+                                progressDialog = null;
+                            }
                             ToastShort("保存失败");
                         }
                     }
@@ -367,6 +407,11 @@ public class RegPersonActivity extends BaseActivity {
                 info.update(Utils.getCache(Config.KEY_ID), new UpdateListener() {
                     @Override
                     public void done(BmobException e) {
+                        if (progressDialog != null) {
+
+                            progressDialog.dismiss();
+                            progressDialog = null;
+                        }
                         if (e == null) {
                             Map<String, String> map = new HashMap<String, String>();
                             map.put(Config.KEY_User_ID, info.getUsername());
@@ -387,8 +432,6 @@ public class RegPersonActivity extends BaseActivity {
                     }
                 });
             }
-
-
         }
     }
 

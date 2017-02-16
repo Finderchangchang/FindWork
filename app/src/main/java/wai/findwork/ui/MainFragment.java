@@ -359,6 +359,10 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         CodeModel codeModel = new CodeModel();
         codeModel.setObjectId(categoryList.get(position).getObjectid());
         query.addWhereEqualTo("type", codeModel);
+        if(!Utils.getCache(Config.KEY_CITY).equals(""))
+        {
+            query.addWhereEqualTo("nowcity",Utils.getCache(Config.KEY_CITY));
+        }
         query.count(UserInfo.class, new CountListener() {
             @Override
             public void done(Integer count, BmobException e) {

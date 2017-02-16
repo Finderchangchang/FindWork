@@ -1,6 +1,8 @@
 package wai.findwork.ui;
 
+import android.app.ProgressDialog;
 import android.text.TextUtils;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -38,7 +40,7 @@ public class LoginActivity extends BaseActivity {
     @Bind(R.id.reg_btn)
     Button regBtn;
     FinalDb db;
-
+ProgressDialog progressDialog;
     @Override
     public void initViews() {
         mInstail = this;
@@ -54,12 +56,21 @@ public class LoginActivity extends BaseActivity {
             } else if (TextUtils.isEmpty(pwd)) {
                 ToastShort("请输入密码");
             } else {
+                progressDialog = new ProgressDialog(LoginActivity.this);
+                progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setMessage("登录中...");
+                progressDialog.show();
                 UserInfo userInfo=new UserInfo();
                 userInfo.setPassword(pwd);
                 userInfo.setUsername(tel);
                 userInfo.login(new SaveListener<UserInfo>() {
                     @Override
                     public void done(UserInfo o, BmobException e) {
+                        if(progressDialog!=null){
+                            progressDialog.dismiss();
+                        }
                         if (e == null) {
                             db.deleteAll(UserInfo.class);
                             Map<String,String> map=new HashMap<String, String>();
