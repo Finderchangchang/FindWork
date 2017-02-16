@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />//bmob支付
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -40,5 +40,6 @@
 
         <activity android:name="me.iwf.photopicker.PhotoPagerActivity" />
         <activity android:name=".ui.WebActivity"/>
+        <activity android:name="cn.bmob.pay.v3.act.PayAct" /><!--bmob支付-->
     </application>
 </manifest>

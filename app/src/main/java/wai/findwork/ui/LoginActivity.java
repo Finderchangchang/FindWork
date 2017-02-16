@@ -40,7 +40,8 @@ public class LoginActivity extends BaseActivity {
     @Bind(R.id.reg_btn)
     Button regBtn;
     FinalDb db;
-ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
+
     @Override
     public void initViews() {
         mInstail = this;
@@ -62,20 +63,20 @@ ProgressDialog progressDialog;
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.setMessage("登录中...");
                 progressDialog.show();
-                UserInfo userInfo=new UserInfo();
+                UserInfo userInfo = new UserInfo();
                 userInfo.setPassword(pwd);
                 userInfo.setUsername(tel);
                 userInfo.login(new SaveListener<UserInfo>() {
                     @Override
                     public void done(UserInfo o, BmobException e) {
-                        if(progressDialog!=null){
+                        if (progressDialog != null) {
                             progressDialog.dismiss();
                         }
                         if (e == null) {
                             db.deleteAll(UserInfo.class);
-                            Map<String,String> map=new HashMap<String, String>();
-                            map.put(Config.KEY_User_ID,tel);
-                            map.put(Config.KEY_PassWord,pwd);
+                            Map<String, String> map = new HashMap<String, String>();
+                            map.put(Config.KEY_User_ID, tel);
+                            map.put(Config.KEY_PassWord, pwd);
                             Utils.putCache(map);
                             BmobQuery<UserInfo> query = new BmobQuery<UserInfo>();
                             query.addWhereEqualTo("username", tel);
@@ -84,18 +85,18 @@ ProgressDialog progressDialog;
                             query.findObjects(new FindListener<UserInfo>() {
                                 @Override
                                 public void done(List<UserInfo> list, BmobException e) {
-                                    if(e==null) {
+                                    if (e == null) {
                                         UserInfo info = list.get(0);
                                         info.setTypeName(info.getType().getName());
-                                        Map<String,String> map=new HashMap<String, String>();
-                                        map.put(Config.KEY_Type_ID,info.getType().getObjectId());
-                                        map.put(Config.KEY_TYPE_STATE,info.getType().getType());
+                                        Map<String, String> map = new HashMap<String, String>();
+                                        map.put(Config.KEY_Type_ID, info.getType().getObjectId());
+                                        map.put(Config.KEY_TYPE_STATE, info.getType().getType());
                                         map.put(Config.KEY_ID, info.getObjectId());
                                         Utils.putCache(map);
                                         db.save(info);
                                         Utils.IntentPost(MainActivity.class);
                                         finish();
-                                    }else{
+                                    } else {
                                         ToastShort("用户信息加载失败");
                                     }
                                 }

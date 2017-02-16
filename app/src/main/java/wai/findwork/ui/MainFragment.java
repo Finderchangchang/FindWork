@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
@@ -225,6 +226,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                         Utils.putCache(Config.KEY_User_ID, "");
                         Utils.putCache(Config.KEY_ID,"");
                         Utils.putCache(Config.KEY_NEW_ID,"");
+                        BmobUser.logOut();
                         MainActivity.main.finish();
                     });
                     builder.show();
