@@ -16,10 +16,12 @@ import java.util.List;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
 import wai.findwork.R;
 import wai.findwork.method.Utils;
 import wai.findwork.model.CodeModel;
 import wai.findwork.model.Config;
+import wai.findwork.model.UserInfo;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -37,7 +39,19 @@ public class StartActivity extends AppCompatActivity {
             if (TextUtils.isEmpty(Utils.getCache(Config.KEY_User_ID))) {
                 Utils.IntentPost(LoginActivity.class);
             } else {
-                Utils.IntentPost(MainActivity.class);
+                UserInfo userInfo = new UserInfo();
+                userInfo.setPassword(Utils.getCache(Config.KEY_PassWord));
+                userInfo.setUsername(Utils.getCache(Config.KEY_User_ID));
+                userInfo.login(new SaveListener<UserInfo>() {
+                    @Override
+                    public void done(UserInfo o, BmobException e) {
+                        if (e == null) {
+                            Utils.IntentPost(MainActivity.class);
+                        } else {
+                            Utils.IntentPost(LoginActivity.class);
+                        }
+                    }
+                });
             }
             finish();
         }, 0);
@@ -49,7 +63,7 @@ public class StartActivity extends AppCompatActivity {
         super.onStart();
         if (db.findAll(CodeModel.class).size() > 0) {
 //            db.deleteAll(CodeModel.class);
-        }else{
+        } else {
             BmobQuery<CodeModel> query = new BmobQuery<>();
             query.findObjects(new FindListener<CodeModel>() {
                 @Override

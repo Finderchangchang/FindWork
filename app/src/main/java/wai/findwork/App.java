@@ -3,6 +3,7 @@ package wai.findwork;
 import android.app.Application;
 import android.content.Context;
 
+import c.b.BP;
 import cn.bmob.v3.Bmob;
 
 /**
@@ -12,12 +13,14 @@ import cn.bmob.v3.Bmob;
 
 public class App extends Application {
     private static Context context;
+    String key = "15e70d22f52e3af14f325cbb8e66989e";
 
     @Override
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
-        Bmob.initialize(this,"15e70d22f52e3af14f325cbb8e66989e");
+        Bmob.initialize(this, key);
+        BP.init(key);
     }
 
 

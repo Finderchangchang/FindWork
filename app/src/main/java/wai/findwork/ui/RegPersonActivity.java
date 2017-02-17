@@ -121,7 +121,7 @@ public class RegPersonActivity extends BaseActivity {
             codeModel.setName(info.getTypeName());
             info.setType(codeModel);
             info.setObjectId(Utils.getCache(Config.KEY_ID));
-            if (info.isSex()) {
+            if (info.getSex() != null && info.getSex()) {
                 person_rb_nv.setChecked(true);
                 //person_rb_nan.setChecked(false);
             } else {

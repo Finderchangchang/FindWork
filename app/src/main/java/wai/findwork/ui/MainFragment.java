@@ -204,13 +204,15 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                         Utils.IntentPost(RiLiActivity.class, intent -> intent.putExtra("type", "right"))
                 );
                 user_center_ll.setOnClickListener(v -> {
-                    Intent intent=new Intent(MainActivity.main,RegPersonActivity.class);
+                    Intent intent = new Intent(MainActivity.main, RegPersonActivity.class);
                     intent.putExtra("UserInfo", info);
-                    startActivityForResult(intent,102);
+                    startActivityForResult(intent, 102);
                 });
-//                user_center_ll.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class, intent -> {
-//                    intent.putExtra("UserInfo", info);
-//                }));
+                user_bottom_ll.setOnClickListener(v -> {
+                    Intent intent = new Intent(MainActivity.main, RegPersonActivity.class);
+                    intent.putExtra("UserInfo", info);
+                    startActivityForResult(intent, 102);
+                });
                 about_us_tv.setOnClickListener(v -> Utils.IntentPost(WebActivity.class, intent -> intent.putExtra("url", "about_us")));
                 exit_tv.setOnClickListener(v -> {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.main);
@@ -221,8 +223,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                     });
                     builder.setNegativeButton("确定", (dialogInterface, i) -> {
                         Utils.putCache(Config.KEY_User_ID, "");
-                        Utils.putCache(Config.KEY_ID,"");
-                        Utils.putCache(Config.KEY_NEW_ID,"");
+                        Utils.putCache(Config.KEY_ID, "");
+                        Utils.putCache(Config.KEY_NEW_ID, "");
                         BmobUser.logOut();
                         MainActivity.main.finish();
                     });
@@ -263,13 +265,21 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             user_name_tv.setText(info.getRealname());
             id_card_tv.setText(info.getCardnum());
             user_type_tv.setText(info.getTypeName());
-            user_left_ll.setOnClickListener(v -> {
-            });
-            user_right_ll.setOnClickListener(v -> {
-            });
             tel_tv.setText("电话：" + Utils.getCache(Config.KEY_User_ID));
-            gz_tv.setText("工资：" + info.getGongzi());
-            remark_tv.setText("备注：" + info.getRemark());
+            switch (Utils.getCache(Config.KEY_TYPE_STATE)) {
+                case "1":
+                    gz_tv.setText("工资：" + info.getGongzi());
+                    remark_tv.setText("简历：" + info.getRemark());
+                    break;
+                case "2":
+                    gz_tv.setText("日工资：" + info.getGongzi());
+                    remark_tv.setText("班组简介：" + info.getRemark());
+                    break;
+                default:
+                    gz_tv.setText("所需班组：" + info.getGongzi());
+                    remark_tv.setText("工程概况：" + info.getRemark());
+                    break;
+            }
         }
     }
 
@@ -358,9 +368,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         CodeModel codeModel = new CodeModel();
         codeModel.setObjectId(categoryList.get(position).getObjectid());
         query.addWhereEqualTo("type", codeModel);
-        if(!Utils.getCache(Config.KEY_CITY).equals(""))
-        {
-            query.addWhereEqualTo("nowcity",Utils.getCache(Config.KEY_CITY));
+        if (!Utils.getCache(Config.KEY_CITY).equals("")) {
+            query.addWhereEqualTo("nowcity", Utils.getCache(Config.KEY_CITY));
         }
         query.count(UserInfo.class, new CountListener() {
             @Override
@@ -394,7 +403,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                                     commonAdapter.refresh(list);
                                     list = lists;
                                 } else if (e == null && lists.size() == 0) {
-                                    page=page-1;
+                                    page = page - 1;
                                     result = false;
                                     //no_data_mes.setText("未查询到相关数据");
                                 } else {
@@ -429,7 +438,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==101&&requestCode==102){
+        if (resultCode == 101 && requestCode == 102) {
             refrush();
         }
     }
