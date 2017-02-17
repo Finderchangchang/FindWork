@@ -184,11 +184,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 categoryList = new ArrayList<>();
                 db = FinalDb.create(MainActivity.main);
                 initViews();
-
                 break;
         }
-
-
         return view;
     }
 

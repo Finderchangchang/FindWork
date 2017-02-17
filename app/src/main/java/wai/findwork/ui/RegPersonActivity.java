@@ -231,7 +231,6 @@ public class RegPersonActivity extends BaseActivity {
                     SaveInfo();
                 } else {
                     if (progressDialog != null) {
-
                         progressDialog.dismiss();
                         progressDialog = null;
                     }
@@ -308,14 +307,14 @@ public class RegPersonActivity extends BaseActivity {
         });
         person_et_type.setOnClickListener(v -> searchType());
         person_btn_save.setOnClickListener(v -> {
-            progressDialog = new ProgressDialog(RegPersonActivity.this);
-            progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setMessage("注册中...");
-            progressDialog.show();
             if (YanView()) {
                 //读取页面上的值
+                progressDialog = new ProgressDialog(RegPersonActivity.this);
+                progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setMessage("注册中...");
+                progressDialog.show();
                 if (!path.equals(info.getIconurl())) {
                     sc();
                 } else {
@@ -384,7 +383,6 @@ public class RegPersonActivity extends BaseActivity {
                                         info.setTypeName(info.getType().getName());
                                         db.save(info);
                                         setResult(101);
-
                                         finish();
                                     } else {
                                         ToastShort("修改失败");
@@ -393,7 +391,6 @@ public class RegPersonActivity extends BaseActivity {
                             });
                         } else {
                             if (progressDialog != null) {
-
                                 progressDialog.dismiss();
                                 progressDialog = null;
                             }
@@ -408,7 +405,6 @@ public class RegPersonActivity extends BaseActivity {
                     @Override
                     public void done(BmobException e) {
                         if (progressDialog != null) {
-
                             progressDialog.dismiss();
                             progressDialog = null;
                         }
