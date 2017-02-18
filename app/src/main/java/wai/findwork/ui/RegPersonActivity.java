@@ -2,7 +2,7 @@ package wai.findwork.ui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.view.View;
+import android.os.Bundle;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
@@ -84,6 +85,10 @@ public class RegPersonActivity extends BaseActivity {
     @Bind(R.id.person_et_phone)
     EditText person_et_phone;
     UserInfo info;
+    @Bind(R.id.gz_tv)
+    TextView gzTv;
+    @Bind(R.id.remark_tv)
+    TextView remarkTv;
     private List<CodeModel> liststate;
     private SpinnerDialog spinnerDialog;
     //private List<CodeModel> listType;
@@ -138,6 +143,24 @@ public class RegPersonActivity extends BaseActivity {
                 .setShowGif(true)
                 .setPreviewEnabled(false)
                 .start(this, PhotoPicker.REQUEST_CODE));
+
+    }
+
+    private void initView(String position) {
+        switch (position) {
+            case "1":
+                gzTv.setText("工        资：");
+                remarkTv.setText("简        历：");
+                break;
+            case "2":
+                gzTv.setText("日  工  资：");
+                remarkTv.setText("班组简介：");
+                break;
+            default:
+                gzTv.setText("所需班组：");
+                remarkTv.setText("工程概况：");
+                break;
+        }
     }
 
     @Override
@@ -148,29 +171,8 @@ public class RegPersonActivity extends BaseActivity {
             if (data != null) {
                 ArrayList<String> photos =
                         data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-                // BmobFile bmobFile = new BmobFile(new File(photos.get(0)));
                 path = photos.get(0);
                 ivHeader.setImageBitmap(Utils.getBitmapByFile(photos.get(0)));
-//                bmobFile.uploadblock(new UploadFileListener() {
-//
-//                    @Override
-//                    public void done(BmobException e) {
-//                        if (e == null) {
-//                            String s = bmobFile.getFileUrl();
-//
-//                            Glide.with(RegPersonActivity.this)
-//                                    .load(s).transform(new GlideCircleTransform(RegPersonActivity.this))
-//                                    .into(ivHeader);
-//                        } else {
-//                            ToastShort(e.getMessage());
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onProgress(Integer value) {
-//                        // 返回的上传进度（百分比）
-//                    }
-//                });
             }
         }
     }
@@ -192,6 +194,7 @@ public class RegPersonActivity extends BaseActivity {
                         person_et_type.setText(list.get(position).getName());
                         info.setType(list.get(position));
                     }
+                    initView(val + "");
                     spinnerDialog = null;
                 });
             }
@@ -216,6 +219,7 @@ public class RegPersonActivity extends BaseActivity {
         code2.setType("3");
         liststate.add(code2);
         person_et_state.setText(liststate.get(0).getName());
+        initView("1");
         code2 = null;
     }
 

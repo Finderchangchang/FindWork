@@ -88,7 +88,7 @@ public class LoginActivity extends BaseActivity {
                                     if (e == null) {
                                         UserInfo info = list.get(0);
                                         info.setTypeName(info.getType().getName());
-                                        Map<String, String> map = new HashMap<String, String>();
+                                        Map<String, String> map = new HashMap<>();
                                         map.put(Config.KEY_Type_ID, info.getType().getObjectId());
                                         map.put(Config.KEY_TYPE_STATE, info.getType().getType());
                                         map.put(Config.KEY_ID, info.getObjectId());

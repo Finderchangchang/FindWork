@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">admin</string>
+    <string name="app_name">最美建设者</string>
     <string name="no_wang">请检查网络连接</string>
 
     <string name="title_activity_start">StartActivity</string>
