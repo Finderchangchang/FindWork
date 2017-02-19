@@ -73,7 +73,6 @@
                     android:layout_height="20dp"
                     android:layout_marginTop="7dp"
                     android:gravity="center_vertical"
-                    android:text="131182199302281014"
                     android:textColor="#E8F4F8"></TextView>
             </LinearLayout>
         </LinearLayout>

@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -79,6 +80,9 @@ public class PersonDetailActivity extends BaseActivity {
     public void initViews() {
         info = (UserInfo) getIntent().getSerializableExtra("user");
         index = getIntent().getStringExtra("index");
+        if (index == null) {
+            index = info.getType().getType();
+        }
         toolbar.setLeftClick(() -> finish());
     }
 
@@ -114,7 +118,10 @@ public class PersonDetailActivity extends BaseActivity {
                 .load(info.getIconurl()).transform(new GlideCircleTransform(this))
                 .into(userIv);
         userNameTv.setText(info.getRealname());
-        idCardTv.setText(info.getCardnum());
+        String num=info.getCardnum();
+        if(TextUtils.isEmpty(num)) {
+            idCardTv.setText(num.substring(0,num.length()-4)+"****");
+        }
         if (("").equals(info.getTypeName()) || info.getTypeName() == null) {
             userTypeTv.setText(info.getType().getName());
         } else {
@@ -140,7 +147,7 @@ public class PersonDetailActivity extends BaseActivity {
         getTelBtn.setOnClickListener(view -> {
             if (("拨打电话").equals(getTelBtn.getText().toString())) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
-                Uri data = Uri.parse("tel:" + Utils.getCache(Config.KEY_User_ID));
+                Uri data = Uri.parse("tel:" + info.getUsername());
                 intent.setData(data);
                 startActivity(intent);
             } else {
@@ -366,7 +373,7 @@ public class PersonDetailActivity extends BaseActivity {
 
     // 默认为0.02
     double getPrice() {
-        double price = 0.02;
+        double price = 1;
         try {
 //            price = Double.parseDouble(this.price.getText().toString());
         } catch (NumberFormatException e) {
@@ -376,12 +383,12 @@ public class PersonDetailActivity extends BaseActivity {
 
     // 商品详情(可不填)
     String getName() {
-        return "name";
+        return "";
     }
 
     // 商品详情(可不填)
     String getBody() {
-        return "123123";
+        return "";
     }
 
     // 支付订单号(查询时必填)

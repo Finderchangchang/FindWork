@@ -19,6 +19,15 @@ public class UserInfo extends BmobUser implements Serializable {
     private Boolean sex;
     CodeModel type;
     String typeName;
+    private String qq_wx;
+
+    public String getQq_wx() {
+        return qq_wx;
+    }
+
+    public void setQq_wx(String qq_wx) {
+        this.qq_wx = qq_wx;
+    }
 
     private String Nowcity;
 

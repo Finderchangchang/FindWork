@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-
     android:orientation="vertical">
 
     <net.tsz.afinal.view.TitleBar
@@ -12,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        app:center_tv="用户注册"
+        app:center_tv="最美建设值用户注册"
         app:left_iv="@drawable/toolbar_back" />
 
     <ScrollView
@@ -32,8 +31,11 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="20dp"
-                android:src="@mipmap/myheader"/>
-
+                android:src="@mipmap/myheader" />
+            <TextView
+                android:id="@+id/img_remark_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
@@ -93,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:background="@null"
-                    android:hint="请填写身份证号"
+                    android:hint="必须如实填写，后四位为您保密"
                     android:padding="10dp"
                     android:textSize="14dp" />
 
@@ -123,8 +125,8 @@
                     android:id="@+id/person_rg_sex"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="18dp">
+                    android:layout_marginLeft="18dp"
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/person_rb_nan"
@@ -166,14 +168,20 @@
 
                 <TextView
                     android:id="@+id/person_et_state"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
                     android:background="@null"
-                    android:hint="请选择当前状态"
+                    android:hint="请选择：找工作、有班组、有项目"
                     android:padding="10dp"
                     android:textSize="14dp" />
 
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@mipmap/sj" />
             </LinearLayout>
 
             <TextView
@@ -198,13 +206,20 @@
 
                 <TextView
                     android:id="@+id/person_et_type"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
                     android:background="@null"
-                    android:hint="请选择类型"
+                    android:hint="请选择您是什么工种"
                     android:padding="10dp"
                     android:textSize="14dp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@mipmap/sj" />
 
             </LinearLayout>
 
@@ -279,7 +294,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@color/black_overlay" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -291,7 +305,38 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="密        码：" />
+                    android:text="社交软件：" />
+
+                <EditText
+                    android:id="@+id/qqorwx_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@null"
+                    android:hint="QQ或者微信号码(仅管理员可见)"
+                    android:padding="10dp"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/black_overlay" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置密码：" />
 
                 <EditText
                     android:id="@+id/person_et_psw1"
@@ -365,7 +410,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:background="@null"
-                    android:hint="请填写备注"
+                    android:hint="勿填写任何联系方式，否则禁用！"
                     android:padding="10dp"
                     android:textSize="14dp" />
 

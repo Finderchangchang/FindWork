@@ -84,6 +84,8 @@ public class RegPersonActivity extends BaseActivity {
     EditText person_et_psw1;
     @Bind(R.id.person_et_phone)
     EditText person_et_phone;
+    @Bind(R.id.qqorwx_et)
+    EditText qqorwx_et;
     UserInfo info;
     @Bind(R.id.gz_tv)
     TextView gzTv;
@@ -96,6 +98,8 @@ public class RegPersonActivity extends BaseActivity {
     FinalDb db;
     ProgressDialog progressDialog;
     private String path = "";
+    @Bind(R.id.img_remark_tv)
+    TextView img_remark_tv;
 
     @Override
     public void initViews() {
@@ -110,6 +114,7 @@ public class RegPersonActivity extends BaseActivity {
             person_et_remark.setText(info.getRemark());
             person_real_name.setText(info.getRealname());
             person_et_phone.setText(Utils.getCache(Config.KEY_User_ID));
+            qqorwx_et.setText(info.getQq_wx());
             person_et_type.setText(info.getTypeName());
             Glide.with(this)
                     .load(info.getIconurl()).transform(new GlideCircleTransform(this))
@@ -149,19 +154,40 @@ public class RegPersonActivity extends BaseActivity {
     private void initView(String position) {
         switch (position) {
             case "1":
-                gzTv.setText("工        资：");
-                remarkTv.setText("简        历：");
+                gzTv.setText("日工或包工：");
+                remarkTv.setText("施工简历：");
+                person_et_remark.setHint("勿填写任何联系方式，否则禁用！");
+                person_et_type.setHint("请选择你是什么工种");
+                person_et_gongzi.setHint("请填写日工资或包工费");
+                img_remark_tv.setText("必须添加本人照片");
                 break;
             case "2":
                 gzTv.setText("日  工  资：");
                 remarkTv.setText("班组简介：");
+                person_et_type.setHint("请选择你有什么班组");
+                person_et_gongzi.setHint("请填写分包价格");
+                person_et_remark.setHint("勿填写任何联系方式，否则禁用！");
+                img_remark_tv.setText("必须添加本人照片");
                 break;
             default:
                 gzTv.setText("所需班组：");
                 remarkTv.setText("工程概况：");
+                person_et_type.setHint("请选择你是什么项目");
+                person_et_gongzi.setHint("请填写所需工种或班组");
+                person_et_remark.setHint("请介绍工程规模及施工内容");
+                img_remark_tv.setText("必须添加本人照片或项目照片");
                 break;
         }
+        HttpUtil.load(URL.ip_address)
+                .getIpAddress()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(ipAddress -> {
+                    address = ipAddress.getCity();
+                });
     }
+
+    String address;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -194,7 +220,7 @@ public class RegPersonActivity extends BaseActivity {
                         person_et_type.setText(list.get(position).getName());
                         info.setType(list.get(position));
                     }
-                    initView(val + "");
+                    initView((position + 1) + "");
                     spinnerDialog = null;
                 });
             }
@@ -258,12 +284,13 @@ public class RegPersonActivity extends BaseActivity {
         info.setUsername(person_et_phone.getText().toString().trim());
         info.setPassword(person_et_psw1.getText().toString().trim());
         info.setNowcity(Utils.getCache(Config.KEY_CITY));
+        info.setQq_wx(qqorwx_et.getText().toString().trim());
         if (person_rb_nan.isChecked()) {
             info.setSex(false);
         } else {
             info.setSex(true);
         }
-        info.setNowcity(Utils.getCache(Config.KEY_CITY));
+        info.setNowcity(address);
     }
 
     //验证页面的值

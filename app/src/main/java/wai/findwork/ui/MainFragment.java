@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,9 +130,12 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
     LinearLayout user_bottom_ll;
     TextView exit_tv;
     TextView about_us_tv;
+    TextView location_tv;
+    TextView qq_wx_tv;
     int page = 1;
     int positionIndex = 0;
     int totalPage = 0;
+    TextView title_tv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -140,6 +144,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             case 0:
                 view = inflater.inflate(R.layout.frag_user, container, false);
                 about_us_tv = (TextView) view.findViewById(R.id.about_us_tv);
+                location_tv = (TextView) view.findViewById(R.id.location_tv);
+                qq_wx_tv = (TextView) view.findViewById(R.id.qq_wx_tv);
                 exit_tv = (TextView) view.findViewById(R.id.exit_tv);
                 user_iv = (ImageView) view.findViewById(R.id.user_iv);
                 user_name_tv = (TextView) view.findViewById(R.id.user_name_tv);
@@ -175,6 +181,18 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 break;
             default:
                 view = inflater.inflate(R.layout.frag_gz, container, false);
+                title_tv = (TextView) view.findViewById(R.id.title_tv);
+                switch (mContent) {
+                    case 1:
+                        title_tv.setText("最美建设者工种大全");
+                        break;
+                    case 2:
+                        title_tv.setText("最美建设者班组大全");
+                        break;
+                    default:
+                        title_tv.setText("最美建设者项目大全");
+                        break;
+                }
                 recyclerviewCategory = (RecyclerView) view.findViewById(R.id.recyclerview_category);
                 main_ll = (LinearLayout) view.findViewById(R.id.main_ll);
                 no_data_ll = (LinearLayout) view.findViewById(R.id.no_data_ll);
@@ -197,6 +215,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         switch (mContent) {
             case 0:
                 refrush();
+                location_tv.setOnClickListener(v -> {
+                });//定位
                 user_left_ll.setOnClickListener(v ->
                         Utils.IntentPost(RiLiActivity.class, intent -> intent.putExtra("type", "left"))
                 );
@@ -230,13 +250,13 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                     });
                     builder.show();
                 });
-                user_bottom_ll.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class));
                 HttpUtil.load(URL.ip_address)
                         .getIpAddress()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(ipAddress -> {
                             Utils.putCache(Config.KEY_CITY, ipAddress.getCity());
+                            location_tv.setText(ipAddress.getCity());
                             HttpUtil.load(URL.city_weather)
                                     .getWeather(ipAddress.getCity())
                                     .subscribeOn(Schedulers.io())
@@ -263,7 +283,12 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                     .load(info.getIconurl()).transform(new GlideCircleTransform(MainActivity.main))
                     .into(user_iv);
             user_name_tv.setText(info.getRealname());
-            id_card_tv.setText(info.getCardnum());
+            qq_wx_tv.setText("QQ或微信：" + info.getQq_wx());
+            if (!TextUtils.isEmpty(info.getCardnum())) {
+                String val = info.getCardnum();
+                id_card_tv.setText(val.substring(0, val.length() - 4) + "****");
+            }
+
             user_type_tv.setText(info.getTypeName());
             tel_tv.setText("电话：" + Utils.getCache(Config.KEY_User_ID));
             switch (Utils.getCache(Config.KEY_TYPE_STATE)) {
@@ -319,7 +344,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 changeSelected(positionIndex);
             }
         });
-        categoryList = db.findAllByWhere(CodeModel.class, "Type='" + mContent + "'");
+        categoryList = db.findAllByWhere(CodeModel.class, "Type='" + mContent + "' order by sorts");
         categoryAdapter.setCategoryList(categoryList);
         if (categoryList.size() > 0) {
             CodeModel model = categoryList.get(0);

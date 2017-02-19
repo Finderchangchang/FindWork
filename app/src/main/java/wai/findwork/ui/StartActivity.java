@@ -65,6 +65,7 @@ public class StartActivity extends AppCompatActivity {
 //            db.deleteAll(CodeModel.class);
         } else {
             BmobQuery<CodeModel> query = new BmobQuery<>();
+            query.order("sorts");
             query.findObjects(new FindListener<CodeModel>() {
                 @Override
                 public void done(List<CodeModel> list, BmobException e) {

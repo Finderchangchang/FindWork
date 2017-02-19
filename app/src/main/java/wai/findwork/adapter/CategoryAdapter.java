@@ -40,7 +40,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.textView.setText(categoryList.get(position).getName().toString().trim());
         holder.textView.setSelected(categoryList.get(position).isSeleted());
-
+        holder.textView.setTextColor(categoryList.get(position).isSeleted() ? context.getResources().getColor(R.color.red) : context.getResources().getColor(R.color.title_lab_color));
         holder.textView.setOnClickListener(v -> {
             if (onItemClickListener != null) {
                 onItemClickListener.onItemClick(position);

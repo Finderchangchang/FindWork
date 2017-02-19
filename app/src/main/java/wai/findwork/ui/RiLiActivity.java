@@ -1,6 +1,7 @@
 package wai.findwork.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -61,7 +62,7 @@ public class RiLiActivity extends BaseActivity {
     public void initEvents() {
         switch (type) {
             case "left":
-                titleBar.setCentertv("工作日志");
+                titleBar.setCentertv("私密工作日志");
                 titleBar.setRightClose(true);
                 commonAdapter = new CommonAdapter<RiLi>(this, list, R.layout.item_new) {
                     @Override
@@ -82,11 +83,11 @@ public class RiLiActivity extends BaseActivity {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("RILIMODEL", list.get(position - 1));
                     intent.putExtras(bundle);
-                    startActivityForResult(intent,11);
+                    startActivityForResult(intent, 11);
                 });
                 break;
             default:
-                titleBar.setCentertv("购买记录");
+                titleBar.setCentertv("交易记录");
                 titleBar.setRightClose(false);
                 rightAdapter = new CommonAdapter<UserBuy>(this, right_list, R.layout.item_new) {
                     @Override
@@ -94,6 +95,13 @@ public class RiLiActivity extends BaseActivity {
                         holder.setText(R.id.title_tv, riLi.getUser().getRealname());
                         holder.setText(R.id.content_tv, riLi.getUser().getUsername());
                         holder.setText(R.id.content_create_time, riLi.getUser().getCreatedAt());
+                        holder.setOnClickListener(R.id.call_tel_btn, v -> {
+                            Intent intent = new Intent(Intent.ACTION_DIAL);
+                            Uri data = Uri.parse("tel:" + riLi.getUser().getUsername());
+                            intent.setData(data);
+                            startActivity(intent);
+                        });
+                        holder.setVisible(R.id.call_tel_btn,true);
                     }
                 };
                 riliLv.setAdapter(rightAdapter);
@@ -103,13 +111,6 @@ public class RiLiActivity extends BaseActivity {
                     startActivity(intent);
                 });
                 loadRight();
-                riliLv.setOnItemClickListener((parent, view, position, id) -> {
-                    Intent intent = new Intent(RiLiActivity.this, AddRiLiActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("RILIMODEL", right_list.get(position - 1));
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                });
                 break;
         }
     }

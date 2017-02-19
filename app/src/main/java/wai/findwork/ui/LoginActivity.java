@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.text.TextUtils;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import net.tsz.afinal.FinalDb;
@@ -39,6 +40,8 @@ public class LoginActivity extends BaseActivity {
     Button loginBtn;
     @Bind(R.id.reg_btn)
     Button regBtn;
+    @Bind(R.id.login_cb)
+    CheckBox login_cb;
     FinalDb db;
     ProgressDialog progressDialog;
 
@@ -57,12 +60,6 @@ public class LoginActivity extends BaseActivity {
             } else if (TextUtils.isEmpty(pwd)) {
                 ToastShort("请输入密码");
             } else {
-                progressDialog = new ProgressDialog(LoginActivity.this);
-                progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.setMessage("登录中...");
-                progressDialog.show();
                 UserInfo userInfo = new UserInfo();
                 userInfo.setPassword(pwd);
                 userInfo.setUsername(tel);
@@ -74,10 +71,12 @@ public class LoginActivity extends BaseActivity {
                         }
                         if (e == null) {
                             db.deleteAll(UserInfo.class);
-                            Map<String, String> map = new HashMap<String, String>();
-                            map.put(Config.KEY_User_ID, tel);
-                            map.put(Config.KEY_PassWord, pwd);
-                            Utils.putCache(map);
+                            if (login_cb.isChecked()) {
+                                Map<String, String> map = new HashMap<String, String>();
+                                map.put(Config.KEY_User_ID, tel);
+                                map.put(Config.KEY_PassWord, pwd);
+                                Utils.putCache(map);
+                            }
                             BmobQuery<UserInfo> query = new BmobQuery<UserInfo>();
                             query.addWhereEqualTo("username", tel);
                             query.addWhereEqualTo("password", pwd);
@@ -88,7 +87,7 @@ public class LoginActivity extends BaseActivity {
                                     if (e == null) {
                                         UserInfo info = list.get(0);
                                         info.setTypeName(info.getType().getName());
-                                        Map<String, String> map = new HashMap<>();
+                                        Map<String, String> map = new HashMap<String, String>();
                                         map.put(Config.KEY_Type_ID, info.getType().getObjectId());
                                         map.put(Config.KEY_TYPE_STATE, info.getType().getType());
                                         map.put(Config.KEY_ID, info.getObjectId());

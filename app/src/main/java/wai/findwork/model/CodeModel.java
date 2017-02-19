@@ -12,7 +12,16 @@ public class CodeModel extends BmobObject {
     String Type;
     String Name;
     String objectid;
+    Integer sorts;//排序用的
     private boolean seleted;
+
+    public Integer getSorts() {
+        return sorts;
+    }
+
+    public void setSorts(Integer sorts) {
+        this.sorts = sorts;
+    }
 
     public boolean isSeleted() {
         return seleted;
