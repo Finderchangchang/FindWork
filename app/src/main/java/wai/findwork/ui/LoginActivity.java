@@ -49,7 +49,7 @@ public class LoginActivity extends BaseActivity {
     public void initViews() {
         mInstail = this;
         db = FinalDb.create(this);
-        if(!Utils.getCache(Config.KEY_User_ID).equals("")){
+        if (!Utils.getCache(Config.KEY_User_ID).equals("")) {
             telEt.setText(Utils.getCache(Config.KEY_User_ID));
             pwdEt.setText(Utils.getCache(Config.KEY_PassWord));
         }
@@ -64,6 +64,7 @@ public class LoginActivity extends BaseActivity {
             } else if (TextUtils.isEmpty(pwd)) {
                 ToastShort("请输入密码");
             } else {
+                loginBtn.setClickable(false);
                 UserInfo userInfo = new UserInfo();
                 userInfo.setPassword(pwd);
                 userInfo.setUsername(tel);
@@ -79,7 +80,7 @@ public class LoginActivity extends BaseActivity {
                                 Map<String, String> map = new HashMap<String, String>();
                                 map.put(Config.KEY_CHECK, "1");
                                 Utils.putCache(map);
-                            }else{
+                            } else {
                                 Map<String, String> map = new HashMap<String, String>();
                                 map.put(Config.KEY_CHECK, "0");
                                 Utils.putCache(map);
@@ -98,19 +99,22 @@ public class LoginActivity extends BaseActivity {
                                         map.put(Config.KEY_Type_ID, info.getType().getObjectId());
                                         map.put(Config.KEY_TYPE_STATE, info.getType().getType());
                                         map.put(Config.KEY_ID, info.getObjectId());
-                                        map.put(Config.KEY_User_ID,info.getUsername());
-                                        map.put(Config.KEY_PassWord,pwd);
+                                        map.put(Config.KEY_User_ID, info.getUsername());
+                                        map.put(Config.KEY_PassWord, pwd);
                                         Utils.putCache(map);
                                         db.save(info);
                                         Utils.IntentPost(MainActivity.class);
+                                        loginBtn.setClickable(true);
                                         finish();
                                     } else {
                                         ToastShort("用户信息加载失败");
+                                        loginBtn.setClickable(true);
                                     }
                                 }
                             });
                         } else {
                             ToastShort("用户名或密码错误请重新输入");
+                            loginBtn.setClickable(true);
                         }
                     }
                 });
