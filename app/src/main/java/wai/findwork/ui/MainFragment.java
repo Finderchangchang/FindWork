@@ -283,9 +283,13 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         List<UserInfo> list = db.findAll(UserInfo.class);
         if (list.size() > 0) {
             info = list.get(0);
-            Glide.with(MainActivity.main)
-                    .load(info.getIconurl()).transform(new GlideCircleTransform(MainActivity.main))
-                    .into(user_iv);
+            if(!info.getIconurl().equals("")) {
+                Glide.with(MainActivity.main)
+                        .load(info.getIconurl()).transform(new GlideCircleTransform(MainActivity.main))
+                        .into(user_iv);
+            }else{
+                user_iv.setImageResource(R.mipmap.myheader);
+            }
             user_name_tv.setText(info.getRealname());
             qq_wx_tv.setText("QQ或微信：" + info.getQq_wx());
             if (!TextUtils.isEmpty(info.getCardnum())) {

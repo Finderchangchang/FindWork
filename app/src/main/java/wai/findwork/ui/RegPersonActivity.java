@@ -116,10 +116,13 @@ public class RegPersonActivity extends BaseActivity {
             person_et_phone.setText(Utils.getCache(Config.KEY_User_ID));
             qqorwx_et.setText(info.getQq_wx());
             person_et_type.setText(info.getTypeName());
-            Glide.with(this)
-                    .load(info.getIconurl()).transform(new GlideCircleTransform(this))
-                    .into(ivHeader);
-
+            if(info.getIconurl().equals("")){
+                ivHeader.setImageResource(R.mipmap.myheader);
+            }else {
+                Glide.with(this)
+                        .load(info.getIconurl()).transform(new GlideCircleTransform(this))
+                        .into(ivHeader);
+            }
             String psw = Utils.getCache(Config.KEY_PassWord);
             path = info.getIconurl();
             person_et_psw2.setText(psw);
@@ -148,7 +151,6 @@ public class RegPersonActivity extends BaseActivity {
                 .setShowGif(true)
                 .setPreviewEnabled(false)
                 .start(this, PhotoPicker.REQUEST_CODE));
-
     }
 
     private void initView(String position) {
@@ -159,7 +161,7 @@ public class RegPersonActivity extends BaseActivity {
                 person_et_remark.setHint("勿填写任何联系方式，否则禁用！");
                 person_et_type.setHint("请选择你是什么工种");
                 person_et_gongzi.setHint("请填写日工资或包工费");
-                img_remark_tv.setText("必须添加本人照片");
+                img_remark_tv.setText("请添加本人照片");
                 break;
             case "2":
                 gzTv.setText("日  工  资：");
@@ -167,7 +169,7 @@ public class RegPersonActivity extends BaseActivity {
                 person_et_type.setHint("请选择你有什么班组");
                 person_et_gongzi.setHint("请填写分包价格");
                 person_et_remark.setHint("勿填写任何联系方式，否则禁用！");
-                img_remark_tv.setText("必须添加本人照片");
+                img_remark_tv.setText("请添加本人照片");
                 break;
             default:
                 gzTv.setText("所需班组：");
@@ -175,7 +177,7 @@ public class RegPersonActivity extends BaseActivity {
                 person_et_type.setHint("请选择你是什么项目");
                 person_et_gongzi.setHint("请填写所需工种或班组");
                 person_et_remark.setHint("请介绍工程规模及施工内容");
-                img_remark_tv.setText("必须添加本人照片或项目照片");
+                img_remark_tv.setText("请添加本人照片或项目照片");
                 break;
         }
         HttpUtil.load(URL.ip_address)
@@ -252,28 +254,30 @@ public class RegPersonActivity extends BaseActivity {
 
     //保存头像
     private void sc() {
-        BmobFile bmobFile = new BmobFile(new File(path));
-        bmobFile.uploadblock(new UploadFileListener() {
-            @Override
-            public void done(BmobException e) {
-                if (e == null) {
-                    path = bmobFile.getFileUrl();
-                    //头像上传成功以后保存用户信息
-                    SaveInfo();
-                } else {
-                    if (progressDialog != null) {
-                        progressDialog.dismiss();
-                        progressDialog = null;
+        if(!path.equals("")) {
+            BmobFile bmobFile = new BmobFile(new File(path));
+            bmobFile.uploadblock(new UploadFileListener() {
+                @Override
+                public void done(BmobException e) {
+                    if (e == null) {
+                        path = bmobFile.getFileUrl();
+                        //头像上传成功以后保存用户信息
+                        SaveInfo();
+                    } else {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                            progressDialog = null;
+                        }
+                        ToastShort("上传文件失败：" + e.getMessage());
                     }
-                    ToastShort("上传文件失败：" + e.getMessage());
                 }
-            }
 
-            @Override
-            public void onProgress(Integer value) {
-                // 返回的上传进度（百分比）
-            }
-        });
+                @Override
+                public void onProgress(Integer value) {
+                    // 返回的上传进度（百分比）
+                }
+            });
+        }
     }
 
     //获取页面的值
@@ -307,6 +311,9 @@ public class RegPersonActivity extends BaseActivity {
             return false;
         } else if (person_et_phone.getText().toString().trim().equals("")) {
             ToastShort("请输入您的联系方式");
+            return false;
+        }else if(!Utils.isMobileNo(person_et_phone.getText().toString().trim())){
+            ToastShort("请检查您的联系方式");
             return false;
         } else if (person_et_psw1.getText().toString().trim().equals("")) {
             ToastShort("请输入登录密码");
@@ -377,7 +384,7 @@ public class RegPersonActivity extends BaseActivity {
                 }
             });
         } else {
-            if ((!path.equals(info.getIconurl()) && (!path.equals("")))) {
+            if ((!path.equals(info.getIconurl()) && (!path.equals(""))&&(!info.getIconurl().equals("")))) {
                 //删除以前的头像
                 BmobFile file = new BmobFile();
                 file.setUrl(info.getIconurl());//此url是上传文件成功之后通过bmobFile.getUrl()方法获取的。
