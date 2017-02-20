@@ -296,17 +296,8 @@ public class RegPersonActivity extends BaseActivity {
 
     //验证页面的值
     private boolean YanView() {
-        if (path.equals("")) {
-            ToastShort("请选择头像");
-            return false;
-        } else if (person_real_name.getText().toString().trim().equals("")) {
+        if (person_real_name.getText().toString().trim().equals("")) {
             ToastShort("请填写您的真实姓名");
-            return false;
-        } else if (person_cardnum.getText().toString().trim().equals("")) {
-            ToastShort("请填写身份证号码");
-            return false;
-        } else if (!IDCardUtils.IDCardValidate(person_cardnum.getText().toString().trim())) {
-            ToastShort("请检查身份证号");
             return false;
         } else if (person_et_type.getText().toString().trim().equals("")) {
             ToastShort("请选择工种类型");
@@ -348,7 +339,7 @@ public class RegPersonActivity extends BaseActivity {
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.setMessage("注册中...");
                 progressDialog.show();
-                if (!path.equals(info.getIconurl())) {
+                if (info.getIconurl()!=null&&!path.equals(info.getIconurl())) {
                     sc();
                 } else {
                     SaveInfo();

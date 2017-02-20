@@ -21,6 +21,7 @@ import wai.findwork.R;
 import wai.findwork.method.Utils;
 import wai.findwork.model.CodeModel;
 import wai.findwork.model.Config;
+import wai.findwork.model.UpdateManage;
 import wai.findwork.model.UserInfo;
 
 /**
@@ -36,44 +37,43 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_start);
         db = FinalDb.create(this);
-        if (db.findAll(CodeModel.class).size() > 0) {
-//            db.deleteAll(CodeModel.class);
-        } else {
-            BmobQuery<CodeModel> query = new BmobQuery<>();
-            query.order("sorts");
-            query.findObjects(new FindListener<CodeModel>() {
-                @Override
-                public void done(List<CodeModel> list, BmobException e) {
-                    if (e == null) {
-                        for (CodeModel model : list) {
-                            model.setObjectid(model.getObjectId());
-                            db.save(model);
+
+        BmobQuery<UpdateManage> query = new BmobQuery<>();
+        query.addWhereEqualTo("project", "1");
+        query.findObjects(new FindListener<UpdateManage>() {
+            @Override
+            public void done(List<UpdateManage> list, BmobException e) {
+                if (e == null && list != null) {
+                    if (list.size() > 0) {
+                        String time = Utils.getCache(Config.KEY_Code_Update_Time);
+                        if (!TextUtils.isEmpty(time) || list.get(0).getUpdatedAt().equals(time)) {
+
+                        } else {
+                            if (db.findAll(CodeModel.class).size() > 0) {
+                                db.deleteAll(CodeModel.class);
+                            }
+                            BmobQuery<CodeModel> query = new BmobQuery<>();
+                            query.order("sorts");
+                            query.findObjects(new FindListener<CodeModel>() {
+                                @Override
+                                public void done(List<CodeModel> list, BmobException e) {
+                                    if (e == null) {
+                                        for (CodeModel model : list) {
+                                            model.setObjectid(model.getObjectId());
+                                            db.save(model);
+                                        }
+                                    }
+                                }
+                            });
                         }
                     }
                 }
-            });
-        }
+            }
+        });
         new Handler().postDelayed(() -> {
-//            if (TextUtils.isEmpty(Utils.getCache(Config.KEY_User_ID))) {
-                Utils.IntentPost(LoginActivity.class);
-//            } else {
-//                UserInfo userInfo = new UserInfo();
-//                userInfo.setPassword(Utils.getCache(Config.KEY_PassWord));
-//                userInfo.setUsername(Utils.getCache(Config.KEY_User_ID));
-//                userInfo.login(new SaveListener<UserInfo>() {
-//                    @Override
-//                    public void done(UserInfo o, BmobException e) {
-//                        if (e == null) {
-//                            Utils.IntentPost(MainActivity.class);
-//                        } else {
-//                            Utils.IntentPost(LoginActivity.class);
-//                        }
-//                    }
-//                });
-//            }
+            Utils.IntentPost(LoginActivity.class);
             finish();
-        }, 0);
-
+        }, 3000);
     }
 
     @Override
