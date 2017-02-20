@@ -117,9 +117,9 @@ public class RegPersonActivity extends BaseActivity {
             person_et_phone.setText(Utils.getCache(Config.KEY_User_ID));
             qqorwx_et.setText(info.getQq_wx());
             person_et_type.setText(info.getTypeName());
-            if(info.getIconurl().equals("")){
+            if (info.getIconurl().equals("")) {
                 ivHeader.setImageResource(R.mipmap.myheader);
-            }else {
+            } else {
                 Glide.with(this)
                         .load(info.getIconurl()).transform(new GlideCircleTransform(this))
                         .into(ivHeader);
@@ -209,7 +209,7 @@ public class RegPersonActivity extends BaseActivity {
     //加载选择列表框
     private void loadDialog(List<CodeModel> list, boolean isTrue) {
         if (list.size() > 0) {
-            if (spinnerDialog==null||(!spinnerDialog.isShowing())) {
+            if (spinnerDialog == null || (!spinnerDialog.isShowing())) {
                 spinnerDialog = new SpinnerDialog(RegPersonActivity.this);
                 spinnerDialog.setListView(list);
                 spinnerDialog.setCanceledOnTouchOutside(false);
@@ -235,17 +235,17 @@ public class RegPersonActivity extends BaseActivity {
     private void loadState() {
         liststate = new ArrayList<>();
         CodeModel code = new CodeModel();
-        code.setName("找工作");
+        code.setName("找工作工种");
         code.setType("1");
         liststate.add(code);
         code = null;
         CodeModel code1 = new CodeModel();
-        code1.setName("有班组");
+        code1.setName("我是班组");
         code1.setType("2");
         liststate.add(code1);
         code1 = null;
         CodeModel code2 = new CodeModel();
-        code2.setName("有项目");
+        code2.setName("我有施工项目");
         code2.setType("3");
         liststate.add(code2);
         person_et_state.setText(liststate.get(0).getName());
@@ -255,7 +255,7 @@ public class RegPersonActivity extends BaseActivity {
 
     //保存头像
     private void sc() {
-        if(!path.equals("")) {
+        if (!path.equals("")) {
             BmobFile bmobFile = new BmobFile(new File(path));
             bmobFile.uploadblock(new UploadFileListener() {
                 @Override
@@ -313,7 +313,7 @@ public class RegPersonActivity extends BaseActivity {
         } else if (person_et_phone.getText().toString().trim().equals("")) {
             ToastShort("请输入您的联系方式");
             return false;
-        }else if(!Utils.isMobileNo(person_et_phone.getText().toString().trim())){
+        } else if (!Utils.isMobileNo(person_et_phone.getText().toString().trim())) {
             ToastShort("请检查您的联系方式");
             return false;
         } else if (person_et_psw1.getText().toString().trim().equals("")) {
@@ -347,7 +347,7 @@ public class RegPersonActivity extends BaseActivity {
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.setMessage("注册中...");
                 progressDialog.show();
-                if (info.getIconurl()!=null&&!path.equals(info.getIconurl())) {
+                if (info.getIconurl() != null && !path.equals(info.getIconurl())) {
                     sc();
                 } else {
                     SaveInfo();
@@ -385,7 +385,7 @@ public class RegPersonActivity extends BaseActivity {
                 }
             });
         } else {
-            if ((!path.equals(info.getIconurl()) && (!path.equals(""))&&(!info.getIconurl().equals("")))) {
+            if ((!path.equals(info.getIconurl()) && (!path.equals("")) && (!info.getIconurl().equals("")))) {
                 //删除以前的头像
                 BmobFile file = new BmobFile();
                 file.setUrl(info.getIconurl());//此url是上传文件成功之后通过bmobFile.getUrl()方法获取的。
