@@ -35,32 +35,7 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_start);
-        new Handler().postDelayed(() -> {
-            if (TextUtils.isEmpty(Utils.getCache(Config.KEY_User_ID))) {
-                Utils.IntentPost(LoginActivity.class);
-            } else {
-                UserInfo userInfo = new UserInfo();
-                userInfo.setPassword(Utils.getCache(Config.KEY_PassWord));
-                userInfo.setUsername(Utils.getCache(Config.KEY_User_ID));
-                userInfo.login(new SaveListener<UserInfo>() {
-                    @Override
-                    public void done(UserInfo o, BmobException e) {
-                        if (e == null) {
-                            Utils.IntentPost(MainActivity.class);
-                        } else {
-                            Utils.IntentPost(LoginActivity.class);
-                        }
-                    }
-                });
-            }
-            finish();
-        }, 0);
         db = FinalDb.create(this);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         if (db.findAll(CodeModel.class).size() > 0) {
 //            db.deleteAll(CodeModel.class);
         } else {
@@ -78,5 +53,32 @@ public class StartActivity extends AppCompatActivity {
                 }
             });
         }
+        new Handler().postDelayed(() -> {
+//            if (TextUtils.isEmpty(Utils.getCache(Config.KEY_User_ID))) {
+                Utils.IntentPost(LoginActivity.class);
+//            } else {
+//                UserInfo userInfo = new UserInfo();
+//                userInfo.setPassword(Utils.getCache(Config.KEY_PassWord));
+//                userInfo.setUsername(Utils.getCache(Config.KEY_User_ID));
+//                userInfo.login(new SaveListener<UserInfo>() {
+//                    @Override
+//                    public void done(UserInfo o, BmobException e) {
+//                        if (e == null) {
+//                            Utils.IntentPost(MainActivity.class);
+//                        } else {
+//                            Utils.IntentPost(LoginActivity.class);
+//                        }
+//                    }
+//                });
+//            }
+            finish();
+        }, 0);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
     }
 }

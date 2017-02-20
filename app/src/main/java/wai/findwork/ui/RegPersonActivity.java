@@ -206,9 +206,10 @@ public class RegPersonActivity extends BaseActivity {
     //加载选择列表框
     private void loadDialog(List<CodeModel> list, boolean isTrue) {
         if (list.size() > 0) {
-            if (spinnerDialog == null) {
+            if (spinnerDialog==null||(!spinnerDialog.isShowing())) {
                 spinnerDialog = new SpinnerDialog(RegPersonActivity.this);
                 spinnerDialog.setListView(list);
+                spinnerDialog.setCanceledOnTouchOutside(false);
                 spinnerDialog.show();
                 spinnerDialog.setOnItemClick((position, val) -> {
                     if (isTrue) {
@@ -343,6 +344,7 @@ public class RegPersonActivity extends BaseActivity {
                 progressDialog = new ProgressDialog(RegPersonActivity.this);
                 progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setCancelable(false);
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.setMessage("注册中...");
                 progressDialog.show();

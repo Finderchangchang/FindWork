@@ -4,12 +4,24 @@
         "source": "E:\\Project\\wai\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\indicator_arrow.png"
     },
     {
+        "merged": "C:\\Users\\Administrator\\Desktop\\17.2.7\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\indicator_arrow.png",
+        "source": "C:\\Users\\Administrator\\Desktop\\17.2.7\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\indicator_arrow.png"
+    },
+    {
         "merged": "E:\\Project\\wai\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\default_ptr_rotate.png",
         "source": "E:\\Project\\wai\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\default_ptr_rotate.png"
     },
     {
+        "merged": "C:\\Users\\Administrator\\Desktop\\17.2.7\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\default_ptr_rotate.png",
+        "source": "C:\\Users\\Administrator\\Desktop\\17.2.7\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\default_ptr_rotate.png"
+    },
+    {
         "merged": "D:\\app_project\\wai\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\default_ptr_rotate.png",
         "source": "D:\\app_project\\wai\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\default_ptr_rotate.png"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\Desktop\\17.2.7\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\default_ptr_flip.png",
+        "source": "C:\\Users\\Administrator\\Desktop\\17.2.7\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\default_ptr_flip.png"
     },
     {
         "merged": "E:\\Project\\wai\\FindWork\\pullToRefreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\default_ptr_flip.png",

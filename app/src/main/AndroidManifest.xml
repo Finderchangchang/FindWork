@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />//bmob支付
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -31,12 +32,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.PersonDetailActivity" />z
+        <activity android:name=".ui.PersonDetailActivity" />
         <activity android:name=".ui.RiLiActivity" />
         <activity android:name=".ui.NewDetailActivity" />
         <activity android:name=".ui.AddRiLiActivity" />
         <activity android:name="me.iwf.photopicker.PhotoPickerActivity" />
-
         <activity android:name="me.iwf.photopicker.PhotoPagerActivity" />
         <activity android:name=".ui.WebActivity"/>
         <activity android:name="cn.bmob.pay.v3.act.PayAct" /><!--bmob支付-->

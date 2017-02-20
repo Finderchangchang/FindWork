@@ -6,312 +6,326 @@
     android:background="@color/main_bg"
     android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:background="@mipmap/user_top"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="@string/app_name"
-                android:textColor="@android:color/white"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/location_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:gravity="center"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="无法定位" />
-        </RelativeLayout>
-
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="30dp">
-
-            <ImageView
-                android:id="@+id/user_iv"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:src="@color/main_bg" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/user_center_ll"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:gravity="center_vertical"
+                android:layout_height="220dp"
+                android:background="@mipmap/user_top"
                 android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="-25dp">
+                    android:layout_height="50dp">
 
                     <TextView
-                        android:id="@+id/user_name_tv"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:text="@string/app_name"
                         android:textColor="@android:color/white"
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/tq_tv"
+                        android:id="@+id/location_tv"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="20dp"
                         android:gravity="center"
-                        android:text="云\n25℃"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/user_type_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignTop="@+id/user_name_tv"
-                        android:layout_marginLeft="12dp"
-                        android:layout_marginStart="12dp"
-                        android:layout_toEndOf="@+id/user_name_tv"
-                        android:layout_toRightOf="@+id/user_name_tv"
-                        android:background="@drawable/login_btn_bg"
-                        android:padding="4dp"
-                        android:text="技术工"
-                        android:textColor="@android:color/white"
-                        android:textSize="10sp" />
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="无法定位" />
                 </RelativeLayout>
 
 
-                <TextView
-                    android:id="@+id/id_card_tv"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="7dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:textColor="#E8F4F8"></TextView>
+                    android:orientation="horizontal"
+                    android:paddingLeft="30dp">
+
+                    <ImageView
+                        android:id="@+id/user_iv"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:src="@color/main_bg" />
+
+                    <LinearLayout
+                        android:id="@+id/user_center_ll"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="-25dp">
+
+                            <TextView
+                                android:id="@+id/user_name_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:textColor="@android:color/white"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/tq_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="20dp"
+                                android:gravity="center"
+                                android:text="云\n25℃"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/user_type_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignTop="@+id/user_name_tv"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginStart="12dp"
+                                android:layout_toEndOf="@+id/user_name_tv"
+                                android:layout_toRightOf="@+id/user_name_tv"
+                                android:background="@drawable/login_btn_bg"
+                                android:padding="4dp"
+                                android:text="技术工"
+                                android:textColor="@android:color/white"
+                                android:textSize="10sp" />
+                        </RelativeLayout>
+
+
+                        <TextView
+                            android:id="@+id/id_card_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:layout_marginTop="7dp"
+                            android:gravity="center_vertical"
+                            android:textColor="#E8F4F8"></TextView>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/ts_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="43dp"
+                    android:background="#248EB5"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp"
+                    android:text="温馨提示：今天以多云天气为主~~"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"></TextView>
             </LinearLayout>
-        </LinearLayout>
 
-        <TextView
-            android:id="@+id/ts_tv"
-            android:layout_width="match_parent"
-            android:layout_height="43dp"
-            android:background="#248EB5"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="10dp"
-            android:text="温馨提示：今天以多云天气为主~~"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"></TextView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginTop="5dp"
-        android:background="@android:color/white"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:id="@+id/user_left_ll"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:src="@color/biaoqian_lab"
-                android:visibility="gone" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="私密工作日志"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="0.5dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="12dp"
-            android:layout_marginTop="12dp"
-            android:background="#333"
-            tools:ignore="Suspicious0dp" />
-
-        <LinearLayout
-            android:id="@+id/user_right_ll"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:src="@color/biaoqian_lab"
-                android:visibility="gone" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="交易记录"
-                android:textSize="18sp" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/user_bottom_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-
-                android:background="@android:color/white"
-                android:gravity="center_vertical"
-                android:paddingLeft="15dp"
-                android:paddingRight="10dp"
-                android:text="个人资料"
-                android:textSize="17sp" />
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="5dp"
                 android:background="@android:color/white"
-                android:gravity="center_vertical"
-                android:text="(点击资料可进行编辑)"
-                android:textSize="12sp" />
-        </LinearLayout>
+                android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tel_tv"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:layout_marginTop="1dp"
-            android:background="@android:color/white"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="10dp"
-            android:text="电话：17093215800"
-            android:textSize="14sp"></TextView>
+                <LinearLayout
+                    android:id="@+id/user_left_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@color/biaoqian_lab"
+                        android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/qq_wx_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:layout_marginTop="1dp"
-                android:background="@android:color/white"
-                android:gravity="center_vertical"
-                android:paddingLeft="15dp"
-                android:paddingRight="10dp"
-                android:text="QQ：17093215800"
-                android:textSize="14sp"></TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="私密工作日志"
+                        android:textSize="18sp" />
+                </LinearLayout>
 
-            <TextView
+                <TextView
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginTop="12dp"
+                    android:background="#333"
+                    tools:ignore="Suspicious0dp" />
+
+                <LinearLayout
+                    android:id="@+id/user_right_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@color/biaoqian_lab"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="交易记录"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_bottom_ll"
                 android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:layout_marginTop="1dp"
-                android:background="@android:color/white"
-                android:gravity="center_vertical"
-                android:text="(只有本人及管理员可见)"
-                android:textSize="12sp" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="10dp"
+                        android:text="个人资料"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:text="(点击资料可进行编辑)"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tel_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp"
+                    android:text="电话：17093215800"
+                    android:textSize="14sp"></TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/qq_wx_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="42dp"
+                        android:layout_marginTop="1dp"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="10dp"
+                        android:text="QQ：17093215800"
+                        android:textSize="14sp"></TextView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:layout_marginTop="1dp"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:text="(只有本人及管理员可见)"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/gz_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp"
+                    android:text="工资：300元/天"
+                    android:textSize="14sp"></TextView>
+
+                <TextView
+                    android:id="@+id/remark_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp"
+                    android:text="备注：17093215800"
+                    android:textSize="14sp"></TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/about_us_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/white"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp"
+                    android:text="关于我们"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/exit_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/white"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="10dp"
+                    android:text="退出登录"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
         </LinearLayout>
+    </ScrollView>
 
-        <TextView
-            android:id="@+id/gz_tv"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:layout_marginTop="1dp"
-            android:background="@android:color/white"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="10dp"
-            android:text="工资：300元/天"
-            android:textSize="14sp"></TextView>
-
-        <TextView
-            android:id="@+id/remark_tv"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:layout_marginTop="1dp"
-            android:background="@android:color/white"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="10dp"
-            android:text="备注：17093215800"
-            android:textSize="14sp"></TextView>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/about_us_tv"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="1dp"
-            android:layout_weight="1"
-            android:background="@android:color/white"
-            android:clickable="true"
-            android:gravity="center"
-            android:paddingLeft="15dp"
-            android:paddingRight="10dp"
-            android:text="关于我们"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/exit_tv"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="1dp"
-            android:layout_marginTop="1dp"
-            android:layout_weight="1"
-            android:background="@android:color/white"
-            android:clickable="true"
-            android:gravity="center"
-            android:paddingLeft="15dp"
-            android:paddingRight="10dp"
-            android:text="退出登录"
-            android:textSize="14sp" />
-    </LinearLayout>
 </LinearLayout>

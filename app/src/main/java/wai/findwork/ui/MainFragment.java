@@ -242,7 +242,11 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
 
                     });
                     builder.setNegativeButton("确定", (dialogInterface, i) -> {
-                        Utils.putCache(Config.KEY_User_ID, "");
+                        if(Utils.getCache(Config.KEY_CHECK).equals("0")){
+                            //Utils.putCache(Config.KEY_User_ID, "");
+                            Utils.putCache(Config.KEY_PassWord,"");
+                        }
+
                         Utils.putCache(Config.KEY_ID, "");
                         Utils.putCache(Config.KEY_NEW_ID, "");
                         BmobUser.logOut();
@@ -345,14 +349,16 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             }
         });
         categoryList = db.findAllByWhere(CodeModel.class, "Type='" + mContent + "' order by sorts");
-        categoryAdapter.setCategoryList(categoryList);
+
         if (categoryList.size() > 0) {
             CodeModel model = categoryList.get(0);
             model.setSeleted(true);
-            categoryList.remove(0);
+            //categoryList.remove(0);
             categoryList.set(0, model);
             changeSelected(0);
         }
+
+        categoryAdapter.setCategoryList(categoryList);
     }
 
     CommonAdapter<UserInfo> commonAdapter;
@@ -446,7 +452,6 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                         }
                         right_lv.onRefreshComplete();
                     }
-
                     //toast("count对象个数为："+count);
                 } else {
                     //Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());

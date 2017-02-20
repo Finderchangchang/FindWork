@@ -49,6 +49,10 @@ public class LoginActivity extends BaseActivity {
     public void initViews() {
         mInstail = this;
         db = FinalDb.create(this);
+        if(!Utils.getCache(Config.KEY_User_ID).equals("")){
+            telEt.setText(Utils.getCache(Config.KEY_User_ID));
+            pwdEt.setText(Utils.getCache(Config.KEY_PassWord));
+        }
         regBtn.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class));
         loginBtn.setOnClickListener(v -> {
             String tel = telEt.getText().toString().trim();
@@ -73,8 +77,11 @@ public class LoginActivity extends BaseActivity {
                             db.deleteAll(UserInfo.class);
                             if (login_cb.isChecked()) {
                                 Map<String, String> map = new HashMap<String, String>();
-                                map.put(Config.KEY_User_ID, tel);
-                                map.put(Config.KEY_PassWord, pwd);
+                                map.put(Config.KEY_CHECK, "1");
+                                Utils.putCache(map);
+                            }else{
+                                Map<String, String> map = new HashMap<String, String>();
+                                map.put(Config.KEY_CHECK, "0");
                                 Utils.putCache(map);
                             }
                             BmobQuery<UserInfo> query = new BmobQuery<UserInfo>();
@@ -91,6 +98,8 @@ public class LoginActivity extends BaseActivity {
                                         map.put(Config.KEY_Type_ID, info.getType().getObjectId());
                                         map.put(Config.KEY_TYPE_STATE, info.getType().getType());
                                         map.put(Config.KEY_ID, info.getObjectId());
+                                        map.put(Config.KEY_User_ID,info.getUsername());
+                                        map.put(Config.KEY_PassWord,pwd);
                                         Utils.putCache(map);
                                         db.save(info);
                                         Utils.IntentPost(MainActivity.class);
