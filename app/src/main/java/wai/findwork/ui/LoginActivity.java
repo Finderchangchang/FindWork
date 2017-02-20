@@ -50,8 +50,12 @@ public class LoginActivity extends BaseActivity {
         mInstail = this;
         db = FinalDb.create(this);
         if (!Utils.getCache(Config.KEY_User_ID).equals("")) {
+            String pwd = Utils.getCache(Config.KEY_PassWord);
             telEt.setText(Utils.getCache(Config.KEY_User_ID));
-            pwdEt.setText(Utils.getCache(Config.KEY_PassWord));
+            pwdEt.setText(pwd);
+            if (!TextUtils.isEmpty(pwd)) {
+                login_cb.setChecked(true);
+            }
         }
         regBtn.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class));
         loginBtn.setOnClickListener(v -> {

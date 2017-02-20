@@ -137,6 +137,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
     int positionIndex = 0;
     int totalPage = 0;
     TextView title_tv;
+    LinearLayout grzl_ll;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -144,6 +145,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         switch (mContent) {
             case 0:
                 view = inflater.inflate(R.layout.frag_user, container, false);
+                grzl_ll = (LinearLayout) view.findViewById(R.id.grzl_ll);
                 about_us_tv = (TextView) view.findViewById(R.id.about_us_tv);
                 location_tv = (TextView) view.findViewById(R.id.location_tv);
                 qq_wx_tv = (TextView) view.findViewById(R.id.qq_wx_tv);
@@ -217,7 +219,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                     intent.putExtra("UserInfo", info);
                     startActivityForResult(intent, 102);
                 });
-                user_bottom_ll.setOnClickListener(v -> {
+                grzl_ll.setOnClickListener(v -> {
                     Intent intent = new Intent(MainActivity.main, RegPersonActivity.class);
                     intent.putExtra("UserInfo", info);
                     startActivityForResult(intent, 102);
@@ -232,7 +234,6 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                     });
                     builder.setNegativeButton("确定", (dialogInterface, i) -> {
                         if (Utils.getCache(Config.KEY_CHECK).equals("0")) {
-                            //Utils.putCache(Config.KEY_User_ID, "");
                             Utils.putCache(Config.KEY_PassWord, "");
                         }
 
@@ -354,8 +355,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 if (page <= totalPage) {
                     page = page + 1;
                     changeSelected(positionIndex);
-                }else{
-                 Toast.makeText(MainActivity.main,"已经是最后一页",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.main, "已经是最后一页", Toast.LENGTH_SHORT).show();
                 }
             }
         });

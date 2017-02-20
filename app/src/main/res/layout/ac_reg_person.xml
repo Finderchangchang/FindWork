@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        app:center_tv="最美建设值用户注册"
+        app:center_tv="最美建设者用户注册"
         app:left_iv="@drawable/toolbar_back" />
 
     <ScrollView

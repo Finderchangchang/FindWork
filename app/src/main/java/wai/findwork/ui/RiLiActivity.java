@@ -47,8 +47,9 @@ public class RiLiActivity extends BaseActivity {
     //@Bind(R.id.rili_lv)
     PullToRefreshListView riliLv;
     String type;
-private int totalNum=1;
-    private int page=1;
+    private int totalNum = 1;
+    private int page = 1;
+
     @Override
     public void initViews() {
         titleBar.setLeftClick(() -> finish());
@@ -94,22 +95,22 @@ private int totalNum=1;
                 rightAdapter = new CommonAdapter<UserBuy>(this, right_list, R.layout.item_new) {
                     @Override
                     public void convert(CommonViewHolder holder, UserBuy riLi, int position) {
-                        holder.setText(R.id.title_tv, riLi.getUser().getRealname());
-                        holder.setText(R.id.content_tv, riLi.getUser().getUsername());
-                        holder.setText(R.id.content_create_time, riLi.getUser().getCreatedAt());
+                        holder.setText(R.id.title_tv, riLi.getBuyer().getRealname());
+                        holder.setText(R.id.content_tv, riLi.getBuyer().getUsername());
+                        holder.setText(R.id.content_create_time, riLi.getBuyer().getCreatedAt());
                         holder.setOnClickListener(R.id.call_tel_btn, v -> {
                             Intent intent = new Intent(Intent.ACTION_DIAL);
-                            Uri data = Uri.parse("tel:" + riLi.getUser().getUsername());
+                            Uri data = Uri.parse("tel:" + riLi.getBuyer().getUsername());
                             intent.setData(data);
                             startActivity(intent);
                         });
-                        holder.setVisible(R.id.call_tel_btn,true);
+                        holder.setVisible(R.id.call_tel_btn, true);
                     }
                 };
                 riliLv.setAdapter(rightAdapter);
                 riliLv.setOnItemClickListener((parent, view, position, id) -> {
                     Intent intent = new Intent(RiLiActivity.this, PersonDetailActivity.class);
-                    intent.putExtra("user", right_list.get(position - 1).getUser());
+                    intent.putExtra("user", right_list.get(position - 1).getBuyer());
                     startActivity(intent);
                 });
                 loadRight();
@@ -129,7 +130,7 @@ private int totalNum=1;
                 if (page <= totalNum) {
                     page = page + 1;
                     refresh();
-                }else{
+                } else {
                     ToastShort("已经是最后一页");
                 }
 
@@ -138,26 +139,26 @@ private int totalNum=1;
     }
 
     private void loadRight() {
-        page=1;
+        page = 1;
         BmobQuery<UserBuy> query = new BmobQuery<>();
         UserInfo buyer = new UserInfo();
         buyer.setObjectId(Utils.getCache(Config.KEY_ID));
-        query.addWhereEqualTo("buyer", buyer);
-        query.include("user.type");
+        query.addWhereEqualTo("user", buyer);
+        query.include("buyer.type");
         query.count(UserBuy.class, new CountListener() {
             @Override
             public void done(Integer integer, BmobException e) {
 
-                if(e==null){
-                    totalNum=integer;
+                if (e == null) {
+                    totalNum = integer;
                     query.setLimit(20);
-                    query.setSkip((page-1)*20);
+                    query.setSkip((page - 1) * 20);
                     query.findObjects(new FindListener<UserBuy>() {
                         @Override
                         public void done(List<UserBuy> lists, BmobException e) {
                             riliLv.onRefreshComplete();
                             if (e == null && lists.size() > 0) {
-                                if(page==1){
+                                if (page == 1) {
                                     right_list.removeAll(right_list);
                                 }
                                 right_list.addAll(lists);
@@ -166,7 +167,7 @@ private int totalNum=1;
                             }
                         }
                     });
-                }else{
+                } else {
                     riliLv.onRefreshComplete();
                     ToastShort("加载失败");
                 }
@@ -176,7 +177,7 @@ private int totalNum=1;
     }
 
     private void refresh() {
-        page=1;
+        page = 1;
         BmobQuery<RiLi> query = new BmobQuery<>();
         UserInfo buyer = new UserInfo();
         buyer.setObjectId(Utils.getCache(Config.KEY_ID));
@@ -185,17 +186,17 @@ private int totalNum=1;
             @Override
             public void done(Integer integer, BmobException e) {
 
-                if(e==null){
-                    totalNum=integer;
-                    if(page<totalNum) {
+                if (e == null) {
+                    totalNum = integer;
+                    if (page < totalNum) {
                         query.setLimit(20);
-                        query.setSkip((page-1) * 20);
+                        query.setSkip((page - 1) * 20);
                         query.findObjects(new FindListener<RiLi>() {
                             @Override
                             public void done(List<RiLi> lists, BmobException e) {
                                 riliLv.onRefreshComplete();
                                 if (e == null && lists.size() > 0) {
-                                    if(page==1){
+                                    if (page == 1) {
                                         list.removeAll(list);
                                     }
                                     list.addAll(lists);
@@ -204,7 +205,7 @@ private int totalNum=1;
                             }
                         });
                     }
-                }else{
+                } else {
                     riliLv.onRefreshComplete();
                     ToastShort("加载失败");
                 }
@@ -222,7 +223,7 @@ private int totalNum=1;
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 99) {//保存成功，执行刷新操作
-            page=1;
+            page = 1;
             refresh();
         }
     }

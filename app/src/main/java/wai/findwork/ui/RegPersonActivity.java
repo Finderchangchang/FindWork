@@ -165,7 +165,7 @@ public class RegPersonActivity extends BaseActivity {
                 img_remark_tv.setText("请添加本人照片");
                 break;
             case "2":
-                gzTv.setText("日  工  资：");
+                gzTv.setText("班组分包价格：");
                 remarkTv.setText("班组简介：");
                 person_et_type.setHint("请选择你有什么班组");
                 person_et_gongzi.setHint("请填写分包价格");
@@ -181,16 +181,7 @@ public class RegPersonActivity extends BaseActivity {
                 img_remark_tv.setText("请添加本人照片或项目照片");
                 break;
         }
-        HttpUtil.load(URL.ip_address)
-                .getIpAddress()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(ipAddress -> {
-                    address = ipAddress.getCity();
-                });
     }
-
-    String address;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -235,12 +226,12 @@ public class RegPersonActivity extends BaseActivity {
     private void loadState() {
         liststate = new ArrayList<>();
         CodeModel code = new CodeModel();
-        code.setName("找工作工种");
+        code.setName("找工作施工工种");
         code.setType("1");
         liststate.add(code);
         code = null;
         CodeModel code1 = new CodeModel();
-        code1.setName("我是班组");
+        code1.setName("我是施工班组");
         code1.setType("2");
         liststate.add(code1);
         code1 = null;
@@ -296,7 +287,6 @@ public class RegPersonActivity extends BaseActivity {
         } else {
             info.setSex(true);
         }
-        info.setNowcity(address);
     }
 
     //验证页面的值
@@ -334,7 +324,7 @@ public class RegPersonActivity extends BaseActivity {
         person_et_state.setOnClickListener(v -> {
             loadDialog(liststate, true);
             person_et_type.setText("");
-            info.setType(null);
+//            info.setType(null);
         });
         person_et_type.setOnClickListener(v -> searchType());
         person_btn_save.setOnClickListener(v -> {

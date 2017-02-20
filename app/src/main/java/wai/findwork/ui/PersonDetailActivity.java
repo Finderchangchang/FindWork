@@ -99,10 +99,10 @@ public class PersonDetailActivity extends BaseActivity {
         } else {
             BmobQuery<UserBuy> query = new BmobQuery<>();
             userInfo = new UserInfo();
-            userInfo.setObjectId(info.getObjectId());
+            userInfo.setObjectId(Utils.getCache(Config.KEY_ID));
             query.addWhereEqualTo("user", userInfo);
             buyer = new UserInfo();
-            buyer.setObjectId(Utils.getCache(Config.KEY_ID));
+            buyer.setObjectId(info.getObjectId());
             query.addWhereEqualTo("buyer", buyer);
             query.findObjects(new FindListener<UserBuy>() {
                 @Override
@@ -118,9 +118,9 @@ public class PersonDetailActivity extends BaseActivity {
                 .load(info.getIconurl()).transform(new GlideCircleTransform(this))
                 .into(userIv);
         userNameTv.setText(info.getRealname());
-        String num=info.getCardnum();
-        if(TextUtils.isEmpty(num)) {
-            idCardTv.setText(num.substring(0,num.length()-4)+"****");
+        String num = info.getCardnum();
+        if (!TextUtils.isEmpty(num)) {
+            idCardTv.setText(num.substring(0, num.length() - 4) + "****");
         }
         if (("").equals(info.getTypeName()) || info.getTypeName() == null) {
             userTypeTv.setText(info.getType().getName());
@@ -130,8 +130,8 @@ public class PersonDetailActivity extends BaseActivity {
         switch (index) {
             case "2":
                 toolbar.setCenter_str("班组详情");
-                gzTv.setText("日工资：" + info.getGongzi());
-                remarkTv.setText("人员构成：" + info.getRemark());
+                gzTv.setText("班组分包价格：" + info.getGongzi());
+                remarkTv.setText("班组简介：" + info.getRemark());
                 break;
             case "3":
                 toolbar.setCenter_str("工程详情");
@@ -139,8 +139,9 @@ public class PersonDetailActivity extends BaseActivity {
                 remarkTv.setText("工程概况：" + info.getRemark());
                 break;
             default:
-                gzTv.setText("工资：" + info.getGongzi());
-                remarkTv.setText("备注：" + info.getRemark());
+                toolbar.setCenter_str("工种详情");
+                gzTv.setText("日工或包工：" + info.getGongzi());
+                remarkTv.setText("施工简历：" + info.getRemark());
                 break;
         }
 

@@ -9,8 +9,8 @@ import cn.bmob.v3.BmobObject;
 
 public class UserBuy extends BmobObject {
     int id;
-    UserInfo user;
-    UserInfo buyer;
+    UserInfo user;//登录用户信息
+    UserInfo buyer;//购买的信息
 
     public int getId() {
         return id;
