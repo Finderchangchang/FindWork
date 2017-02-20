@@ -32,10 +32,12 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="20dp"
                 android:src="@mipmap/myheader" />
+
             <TextView
                 android:id="@+id/img_remark_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
@@ -95,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:background="@null"
-                    android:hint="必须如实填写，后四位为您保密"
+                    android:hint="请填写您的身份证信息"
                     android:padding="10dp"
                     android:textSize="14dp" />
 
@@ -294,6 +296,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@color/black_overlay" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -325,6 +328,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@color/black_overlay" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

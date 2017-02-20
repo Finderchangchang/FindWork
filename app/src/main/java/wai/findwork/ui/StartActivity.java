@@ -5,9 +5,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import net.tsz.afinal.FinalDb;
 
@@ -46,9 +48,10 @@ public class StartActivity extends AppCompatActivity {
                 if (e == null && list != null) {
                     if (list.size() > 0) {
                         String time = Utils.getCache(Config.KEY_Code_Update_Time);
-                        if (!TextUtils.isEmpty(time) || list.get(0).getUpdatedAt().equals(time)) {
+                        if (!TextUtils.isEmpty(time) && list.get(0).getUpdatedAt().equals(time)) {
 
                         } else {
+                            Utils.putCache(Config.KEY_Code_Update_Time, list.get(0).getUpdatedAt());
                             if (db.findAll(CodeModel.class).size() > 0) {
                                 db.deleteAll(CodeModel.class);
                             }
@@ -67,6 +70,9 @@ public class StartActivity extends AppCompatActivity {
                             });
                         }
                     }
+                } else {
+                    Toast.makeText(StartActivity.this, getResources().getText(R.string.no_wang), Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
         });

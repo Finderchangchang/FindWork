@@ -166,16 +166,6 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 view = inflater.inflate(R.layout.frag_zx, container, false);
                 ListView listView = (ListView) view.findViewById(R.id.zx_lv);
                 listView.setAdapter(articleModelCommonAdapter);
-                BmobQuery<ArticleModel> query = new BmobQuery<>();
-                query.findObjects(new FindListener<ArticleModel>() {
-                    @Override
-                    public void done(List<ArticleModel> list, BmobException e) {
-                        if (e == null) {
-                            articleModelCommonAdapter.refresh(list);
-                            articleModels = list;
-                        }
-                    }
-                });
                 listView.setOnItemClickListener((parent, view1, position, id) ->
                         Utils.IntentPost(NewDetailActivity.class, intent -> intent.putExtra(Config.KEY_NEW_ID, articleModels.get(position)))
                 );
@@ -201,8 +191,6 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 right_lv = (PullToRefreshListView) view.findViewById(R.id.right_lv);
                 right_lv.setMode(PullToRefreshBase.Mode.BOTH);
                 categoryList = new ArrayList<>();
-                db = FinalDb.create(MainActivity.main);
-                initViews();
                 break;
         }
         return view;
@@ -243,9 +231,9 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
 
                     });
                     builder.setNegativeButton("确定", (dialogInterface, i) -> {
-                        if(Utils.getCache(Config.KEY_CHECK).equals("0")){
+                        if (Utils.getCache(Config.KEY_CHECK).equals("0")) {
                             //Utils.putCache(Config.KEY_User_ID, "");
-                            Utils.putCache(Config.KEY_PassWord,"");
+                            Utils.putCache(Config.KEY_PassWord, "");
                         }
 
                         Utils.putCache(Config.KEY_ID, "");
@@ -274,6 +262,22 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                         }, throwable -> {
                         });
                 break;
+            case 4:
+                BmobQuery<ArticleModel> query = new BmobQuery<>();
+                query.findObjects(new FindListener<ArticleModel>() {
+                    @Override
+                    public void done(List<ArticleModel> list, BmobException e) {
+                        if (e == null) {
+                            articleModelCommonAdapter.refresh(list);
+                            articleModels = list;
+                        }
+                    }
+                });
+
+                break;
+            default:
+                initViews();
+                break;
         }
     }
 
@@ -284,11 +288,11 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         List<UserInfo> list = db.findAll(UserInfo.class);
         if (list.size() > 0) {
             info = list.get(0);
-            if(!info.getIconurl().equals("")) {
+            if (!info.getIconurl().equals("")) {
                 Glide.with(MainActivity.main)
                         .load(info.getIconurl()).transform(new GlideCircleTransform(MainActivity.main))
                         .into(user_iv);
-            }else{
+            } else {
                 user_iv.setImageResource(R.mipmap.myheader);
             }
             user_name_tv.setText(info.getRealname());
@@ -356,7 +360,6 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             }
         });
         categoryList = db.findAllByWhere(CodeModel.class, "Type='" + mContent + "' order by sorts");
-
         if (categoryList.size() > 0) {
             CodeModel model = categoryList.get(0);
             model.setSeleted(true);
