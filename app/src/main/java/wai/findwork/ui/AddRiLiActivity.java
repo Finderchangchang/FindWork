@@ -41,6 +41,7 @@ public class AddRiLiActivity extends BaseActivity {
         titleBar.setLeftClick(() -> finish());
         riLi = (RiLi) getIntent().getSerializableExtra("RILIMODEL");
         if (riLi != null) {
+            titleBar.setCenter_str("编辑私密工作日志");
             riji_et_title.setText(riLi.getTitle());
             contentEt.setText(riLi.getContent());
             riji_create_tiem.setVisibility(View.VISIBLE);
@@ -57,24 +58,40 @@ public class AddRiLiActivity extends BaseActivity {
             } else if (TextUtils.isEmpty(contentEt.getText().toString().trim())) {
                 ToastShort("请输入日记内容");
             } else {
-                RiLi riLi = new RiLi();
+
                 riLi.setContent(contentEt.getText().toString().trim());
                 riLi.setTitle(riji_et_title.getText().toString().trim());
                 UserInfo userInfo = new UserInfo();
                 userInfo.setObjectId(Utils.getCache(Config.KEY_ID));
                 riLi.setUser(userInfo);
-                riLi.save(new SaveListener<String>() {
-                    @Override
-                    public void done(String s, BmobException e) {
-                        if (e == null) {
-                            ToastShort("保存成功");
-                            setResult(99);
-                            finish();
-                        } else {
-                            ToastShort("保存失败，请稍后重试");
+                if (riLi.getObjectId()==null) {
+
+                    riLi.save(new SaveListener<String>() {
+                        @Override
+                        public void done(String s, BmobException e) {
+                            if (e == null) {
+                                ToastShort("保存成功");
+                                setResult(99);
+                                finish();
+                            } else {
+                                ToastShort("保存失败，请稍后重试");
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    riLi.update(riLi.getObjectId(), new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e == null) {
+                                ToastShort("修改成功");
+                                setResult(99);
+                                finish();
+                            } else {
+                                ToastShort("保存失败，请稍后重试");
+                            }
+                        }
+                    });
+                }
             }
         });
     }

@@ -109,6 +109,7 @@ public class RegPersonActivity extends BaseActivity {
         info = (UserInfo) getIntent().getSerializableExtra("UserInfo");
         if (info != null) {
             //给界面赋值
+            titleBar.setCenter_str("编辑个人信息");
             person_cardnum.setText(info.getCardnum());
             person_et_gongzi.setText(info.getGongzi());
             person_et_remark.setText(info.getRemark());

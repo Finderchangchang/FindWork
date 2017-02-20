@@ -19,6 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
 import wai.findwork.BaseActivity;
 import wai.findwork.R;
@@ -46,7 +47,8 @@ public class RiLiActivity extends BaseActivity {
     //@Bind(R.id.rili_lv)
     PullToRefreshListView riliLv;
     String type;
-
+private int totalNum=1;
+    private int page=1;
     @Override
     public void initViews() {
         titleBar.setLeftClick(() -> finish());
@@ -113,40 +115,102 @@ public class RiLiActivity extends BaseActivity {
                 loadRight();
                 break;
         }
+        riliLv.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                //刷新
+                page = 1;
+                refresh();
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                //加载下一页
+                if (page <= totalNum) {
+                    page = page + 1;
+                    refresh();
+                }else{
+                    ToastShort("已经是最后一页");
+                }
+
+            }
+        });
     }
 
     private void loadRight() {
+        page=1;
         BmobQuery<UserBuy> query = new BmobQuery<>();
         UserInfo buyer = new UserInfo();
         buyer.setObjectId(Utils.getCache(Config.KEY_ID));
         query.addWhereEqualTo("buyer", buyer);
         query.include("user.type");
-        query.findObjects(new FindListener<UserBuy>() {
+        query.count(UserBuy.class, new CountListener() {
             @Override
-            public void done(List<UserBuy> lists, BmobException e) {
-                if (e == null && lists.size() > 0) {
-                    rightAdapter.refresh(lists);
-                    right_list = lists;
+            public void done(Integer integer, BmobException e) {
+
+                if(e==null){
+                    totalNum=integer;
+                    query.setLimit(20);
+                    query.setSkip((page-1)*20);
+                    query.findObjects(new FindListener<UserBuy>() {
+                        @Override
+                        public void done(List<UserBuy> lists, BmobException e) {
+                            riliLv.onRefreshComplete();
+                            if (e == null && lists.size() > 0) {
+                                if(page==1){
+                                    right_list.removeAll(right_list);
+                                }
+                                right_list.addAll(lists);
+                                rightAdapter.refresh(right_list);
+
+                            }
+                        }
+                    });
+                }else{
+                    riliLv.onRefreshComplete();
+                    ToastShort("加载失败");
                 }
             }
         });
+
     }
 
     private void refresh() {
+        page=1;
         BmobQuery<RiLi> query = new BmobQuery<>();
         UserInfo buyer = new UserInfo();
         buyer.setObjectId(Utils.getCache(Config.KEY_ID));
         query.addWhereEqualTo("user", buyer);
-        query.findObjects(new FindListener<RiLi>() {
+        query.count(RiLi.class, new CountListener() {
             @Override
-            public void done(List<RiLi> lists, BmobException e) {
-                if (e == null && lists.size() > 0) {
-                    commonAdapter.refresh(lists);
-                    list = lists;
+            public void done(Integer integer, BmobException e) {
+
+                if(e==null){
+                    totalNum=integer;
+                    if(page<totalNum) {
+                        query.setLimit(20);
+                        query.setSkip((page-1) * 20);
+                        query.findObjects(new FindListener<RiLi>() {
+                            @Override
+                            public void done(List<RiLi> lists, BmobException e) {
+                                riliLv.onRefreshComplete();
+                                if (e == null && lists.size() > 0) {
+                                    if(page==1){
+                                        list.removeAll(list);
+                                    }
+                                    list.addAll(lists);
+                                    commonAdapter.refresh(list);
+                                }
+                            }
+                        });
+                    }
+                }else{
+                    riliLv.onRefreshComplete();
+                    ToastShort("加载失败");
                 }
-                list = lists;
             }
         });
+
     }
 
     @Override
@@ -158,6 +222,7 @@ public class RiLiActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 99) {//保存成功，执行刷新操作
+            page=1;
             refresh();
         }
     }

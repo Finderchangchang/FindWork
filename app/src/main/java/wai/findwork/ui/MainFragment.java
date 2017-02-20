@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -348,8 +349,10 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 //加载下一页
                 if (page <= totalPage) {
                     page = page + 1;
+                    changeSelected(positionIndex);
+                }else{
+                 Toast.makeText(MainActivity.main,"已经是最后一页",Toast.LENGTH_SHORT).show();
                 }
-                changeSelected(positionIndex);
             }
         });
         categoryList = db.findAllByWhere(CodeModel.class, "Type='" + mContent + "' order by sorts");
@@ -416,9 +419,9 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                         no_data_mes.setText("未查询到相关数据");
                         right_lv.setVisibility(View.GONE);
                     } else {
-                        query.setLimit(2);//20
+                        query.setLimit(20);//20
                         if (page > 1) {
-                            query.setSkip(page * 2);//1*20
+                            query.setSkip(page * 20);//1*20
                         }
                     }
                     if (page <= totalPage) {

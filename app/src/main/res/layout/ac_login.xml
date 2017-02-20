@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="注册/登录最美建设值APP\n过年挣钱@过年挣钱"
+            android:text="注册/登录最美建设者APP\n过年挣钱@挣钱过年"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
     </LinearLayout>
