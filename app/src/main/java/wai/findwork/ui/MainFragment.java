@@ -190,7 +190,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                         title_tv.setText("最美建设者班组大全");
                         break;
                     default:
-                        title_tv.setText("最美建设者项目大全");
+                        title_tv.setText("最美建设者施工项目大全");
                         break;
                 }
                 recyclerviewCategory = (RecyclerView) view.findViewById(R.id.recyclerview_category);
