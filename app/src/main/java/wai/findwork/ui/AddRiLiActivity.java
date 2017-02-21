@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.tsz.afinal.view.TitleBar;
 
@@ -73,8 +74,15 @@ public class AddRiLiActivity extends BaseActivity {
                                 ToastShort("保存成功");
                                 setResult(99);
                                 finish();
+                            } else if (e.getErrorCode() == 9010) {
+                                ToastShort(getResources().getString(R.string.chaoshi));
+
+                            } else if (e.getErrorCode() == 9016) {
+                                ToastShort(getResources().getString(R.string.wuwang));
+
                             } else {
-                                ToastShort("保存失败，请稍后重试");
+                                ToastShort(getResources().getString(R.string.neibu));
+
                             }
                         }
                     });
@@ -86,8 +94,15 @@ public class AddRiLiActivity extends BaseActivity {
                                 ToastShort("修改成功");
                                 setResult(99);
                                 finish();
+                            } else if (e.getErrorCode() == 9010) {
+                                ToastShort(getResources().getString(R.string.chaoshi));
+
+                            } else if (e.getErrorCode() == 9016) {
+                                ToastShort(getResources().getString(R.string.wuwang));
+
                             } else {
-                                ToastShort("保存失败，请稍后重试");
+                                ToastShort(getResources().getString(R.string.neibu));
+
                             }
                         }
                     });
@@ -110,8 +125,15 @@ public class AddRiLiActivity extends BaseActivity {
                             setResult(99);
                             ToastShort("删除成功");
                             finish();
+                        } else if (e.getErrorCode() == 9010) {
+                            ToastShort(getResources().getString(R.string.chaoshi));
+
+                        } else if (e.getErrorCode() == 9016) {
+                            ToastShort(getResources().getString(R.string.wuwang));
+
                         } else {
-                            ToastShort("删除失败" + e.getMessage());
+                            ToastShort(getResources().getString(R.string.neibu));
+
                         }
                     }
                 });

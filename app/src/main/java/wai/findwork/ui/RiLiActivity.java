@@ -209,7 +209,6 @@ public class RiLiActivity extends BaseActivity {
                 }
             }
         });
-
     }
 
     @Override

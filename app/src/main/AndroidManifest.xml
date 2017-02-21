@@ -35,27 +35,28 @@
 
         </meta-data>
 
-        <activity android:name=".ui.LoginActivity" />
-        <activity android:name=".ui.RegActivity" />
-        <activity android:name=".ui.MainActivity" />
-        <activity android:name=".ui.RegPersonActivity" />
+        <activity android:name=".ui.LoginActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.RegActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.MainActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.RegPersonActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.StartActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/FullscreenTheme">
+            android:theme="@style/FullscreenTheme"
+            android:launchMode="singleTask" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.PersonDetailActivity" />
-        <activity android:name=".ui.RiLiActivity" />
-        <activity android:name=".ui.NewDetailActivity" />
-        <activity android:name=".ui.AddRiLiActivity" />
-        <activity android:name="me.iwf.photopicker.PhotoPickerActivity" />
-        <activity android:name="me.iwf.photopicker.PhotoPagerActivity" />
-        <activity android:name=".ui.WebActivity" />
+        <activity android:name=".ui.PersonDetailActivity" android:launchMode="singleTask" android:screenOrientation="portrait" />
+        <activity android:name=".ui.RiLiActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.NewDetailActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.AddRiLiActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
+        <activity android:name="me.iwf.photopicker.PhotoPickerActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
+        <activity android:name="me.iwf.photopicker.PhotoPagerActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.WebActivity" android:launchMode="singleTask" android:screenOrientation="portrait" />
         <activity android:name="cn.bmob.pay.v3.act.PayAct" /><!--bmob支付-->
         <service android:name="com.amap.api.location.APSService"></service>
     </application>

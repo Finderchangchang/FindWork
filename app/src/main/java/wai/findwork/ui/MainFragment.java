@@ -469,10 +469,20 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                         right_lv.onRefreshComplete();
                     }
                     //toast("count对象个数为："+count);
-                } else {
-                    //Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
+                }else if(e.getErrorCode()==9010){
+                    no_data_mes.setText(getResources().getString(R.string.chaoshi));
                     no_data_ll.setVisibility(View.VISIBLE);
-                    no_data_mes.setText("网络请求失败");
+
+                    right_lv.setVisibility(View.GONE);
+                }else if(e.getErrorCode()==9016){
+                    no_data_mes.setText(getResources().getString(R.string.wuwang));
+                    no_data_ll.setVisibility(View.VISIBLE);
+
+                    right_lv.setVisibility(View.GONE);
+                }else {
+                    no_data_mes.setText(getResources().getString(R.string.neibu));
+                    no_data_ll.setVisibility(View.VISIBLE);
+
                     right_lv.setVisibility(View.GONE);
                 }
             }

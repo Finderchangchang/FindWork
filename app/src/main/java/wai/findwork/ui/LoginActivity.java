@@ -117,14 +117,26 @@ public class LoginActivity extends BaseActivity {
                                         Utils.IntentPost(MainActivity.class);
                                         loginBtn.setClickable(true);
                                         finish();
-                                    } else {
-                                        ToastShort("用户信息加载失败");
+                                    } else if(e.getErrorCode()==9010){
+                                        ToastShort(getResources().getString(R.string.chaoshi));
+                                        loginBtn.setClickable(true);
+                                    }else if(e.getErrorCode()==9016){
+                                        ToastShort(getResources().getString(R.string.wuwang));
+                                        loginBtn.setClickable(true);
+                                    }else {
+                                        ToastShort(getResources().getString(R.string.neibu));
                                         loginBtn.setClickable(true);
                                     }
                                 }
                             });
-                        } else {
-                            ToastShort("用户名或密码错误请重新输入");
+                        } else if(e.getErrorCode()==9010){
+                            ToastShort(getResources().getString(R.string.chaoshi));
+                            loginBtn.setClickable(true);
+                        }else if(e.getErrorCode()==9016){
+                            ToastShort(getResources().getString(R.string.wuwang));
+                            loginBtn.setClickable(true);
+                        }else {
+                            ToastShort(getResources().getString(R.string.neibu));
                             loginBtn.setClickable(true);
                         }
                     }

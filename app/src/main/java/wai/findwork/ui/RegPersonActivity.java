@@ -263,7 +263,7 @@ public class RegPersonActivity extends BaseActivity {
                             progressDialog.dismiss();
                             progressDialog = null;
                         }
-                        ToastShort("上传文件失败：" + e.getMessage());
+                        ToastShort(getResources().getString(R.string.neibu));
                     }
                 }
 
