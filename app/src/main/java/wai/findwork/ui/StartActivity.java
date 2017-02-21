@@ -31,7 +31,6 @@ import wai.findwork.model.UserInfo;
  * status bar and navigation/system bar) with user interaction.
  */
 public class StartActivity extends AppCompatActivity {
-    private View mContentView;
     FinalDb db;
 
     @Override
