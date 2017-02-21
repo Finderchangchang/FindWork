@@ -185,26 +185,24 @@ public class RiLiActivity extends BaseActivity {
         query.count(RiLi.class, new CountListener() {
             @Override
             public void done(Integer integer, BmobException e) {
-
                 if (e == null) {
                     totalNum = integer;
-                    if (page < totalNum) {
-                        query.setLimit(20);
-                        query.setSkip((page - 1) * 20);
-                        query.findObjects(new FindListener<RiLi>() {
-                            @Override
-                            public void done(List<RiLi> lists, BmobException e) {
-                                riliLv.onRefreshComplete();
-                                if (e == null && lists.size() > 0) {
-                                    if (page == 1) {
-                                        list.removeAll(list);
-                                    }
-                                    list.addAll(lists);
-                                    commonAdapter.refresh(list);
+                    query.setLimit(20);
+                    query.setSkip((page - 1) * 20);
+                    query.findObjects(new FindListener<RiLi>() {
+                        @Override
+                        public void done(List<RiLi> lists, BmobException e) {
+                            riliLv.onRefreshComplete();
+                            if (e == null && lists.size() > 0) {
+                                if (page == 1) {
+                                    list.removeAll(list);
                                 }
+                                list.addAll(lists);
+                                commonAdapter.refresh(list);
                             }
-                        });
-                    }
+                        }
+                    });
+                    
                 } else {
                     riliLv.onRefreshComplete();
                     ToastShort("加载失败");

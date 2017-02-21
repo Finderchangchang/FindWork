@@ -48,6 +48,7 @@ public class AddRiLiActivity extends BaseActivity {
             riji_create_tiem.setText(riLi.getCreatedAt());
             riji_btn_delete.setVisibility(View.VISIBLE);
         } else {
+            riLi = new RiLi();
             riji_create_tiem.setVisibility(View.GONE);
             riji_btn_delete.setVisibility(View.GONE);
         }
@@ -58,13 +59,12 @@ public class AddRiLiActivity extends BaseActivity {
             } else if (TextUtils.isEmpty(contentEt.getText().toString().trim())) {
                 ToastShort("请输入日记内容");
             } else {
-
                 riLi.setContent(contentEt.getText().toString().trim());
                 riLi.setTitle(riji_et_title.getText().toString().trim());
                 UserInfo userInfo = new UserInfo();
                 userInfo.setObjectId(Utils.getCache(Config.KEY_ID));
                 riLi.setUser(userInfo);
-                if (riLi.getObjectId()==null) {
+                if (riLi.getObjectId() == null) {
 
                     riLi.save(new SaveListener<String>() {
                         @Override
