@@ -229,7 +229,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                     intent.putExtra("UserInfo", info);
                     startActivityForResult(intent, 102);
                 });
-                about_us_tv.setOnClickListener(v -> Utils.IntentPost(WebActivity.class, intent -> intent.putExtra("url", "about_us")));
+                about_us_tv.setOnClickListener(v -> Utils.IntentPost(NewDetailActivity.class, intent -> intent.putExtra("url", "about_us")));
                 exit_tv.setOnClickListener(v -> {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.main);
                     builder.setTitle("提示");

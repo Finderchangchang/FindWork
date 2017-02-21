@@ -202,7 +202,7 @@ public class RiLiActivity extends BaseActivity {
                             }
                         }
                     });
-                    
+
                 } else {
                     riliLv.onRefreshComplete();
                     ToastShort("加载失败");
