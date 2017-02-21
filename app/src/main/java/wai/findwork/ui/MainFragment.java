@@ -408,7 +408,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         //根据id查询人员列表
         BmobQuery<UserInfo> query = new BmobQuery<>();
         CodeModel codeModel = new CodeModel();
-        codeModel.setObjectId(categoryList.get(position).getObjectid());
+        codeModel.setObjectId(categoryList.get(position).getOId());
         query.addWhereEqualTo("type", codeModel);
         if (!Utils.getCache(Config.KEY_CITY).equals("")) {
             query.addWhereEqualTo("nowcity", Utils.getCache(Config.KEY_CITY));

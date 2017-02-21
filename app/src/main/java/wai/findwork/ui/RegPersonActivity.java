@@ -131,7 +131,7 @@ public class RegPersonActivity extends BaseActivity {
             person_btn_save.setText("保存");
             CodeModel codeModel = new CodeModel();
             codeModel.setType(Utils.getCache(Config.KEY_TYPE_STATE));
-            codeModel.setObjectid(Utils.getCache(Config.KEY_Type_ID));
+            codeModel.setObjectId(Utils.getCache(Config.KEY_Type_ID));
             codeModel.setName(info.getTypeName());
             info.setType(codeModel);
             info.setObjectId(Utils.getCache(Config.KEY_ID));

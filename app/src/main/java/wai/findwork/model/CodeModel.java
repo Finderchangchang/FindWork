@@ -11,7 +11,7 @@ public class CodeModel extends BmobObject {
     int id;
     String Type;
     String Name;
-    String objectid;
+    String OId;
     Integer sorts;//排序用的
     private boolean seleted;
 
@@ -27,12 +27,12 @@ public class CodeModel extends BmobObject {
         return seleted;
     }
 
-    public String getObjectid() {
-        return objectid;
+    public String getOId() {
+        return OId;
     }
 
-    public void setObjectid(String objectid) {
-        this.objectid = objectid;
+    public void setOId(String OId) {
+        this.OId = OId;
     }
 
     public void setSeleted(boolean seleted) {

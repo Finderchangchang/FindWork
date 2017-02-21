@@ -62,7 +62,7 @@ public class StartActivity extends AppCompatActivity {
                                 public void done(List<CodeModel> list, BmobException e) {
                                     if (e == null) {
                                         for (CodeModel model : list) {
-                                            model.setObjectid(model.getObjectId());
+                                            model.setOId(model.getObjectId());
                                             db.save(model);
                                         }
                                     }
@@ -85,6 +85,5 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 }
