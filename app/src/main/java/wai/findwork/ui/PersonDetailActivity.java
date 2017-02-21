@@ -75,10 +75,15 @@ public class PersonDetailActivity extends BaseActivity {
     UserInfo info;
     String index;
     int PLUGINVERSION = 7;
-
+@Bind(R.id.city_tv)TextView city_tv;
     @Override
     public void initViews() {
         info = (UserInfo) getIntent().getSerializableExtra("user");
+        if(info.getNowcity().equals("")){
+            city_tv.setText("无");
+        }else{
+            city_tv.setText("城市:"+info.getNowcity());
+        }
         index = getIntent().getStringExtra("index");
         if (index == null) {
             index = info.getType().getType();

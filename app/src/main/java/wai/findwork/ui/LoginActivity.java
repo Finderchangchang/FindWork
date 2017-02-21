@@ -68,6 +68,13 @@ public class LoginActivity extends BaseActivity {
             } else if (TextUtils.isEmpty(pwd)) {
                 ToastShort("请输入密码");
             } else {
+                progressDialog = new ProgressDialog(LoginActivity.this);
+                progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setCancelable(false);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setMessage("登录中...");
+                progressDialog.show();
                 loginBtn.setClickable(false);
                 UserInfo userInfo = new UserInfo();
                 userInfo.setPassword(pwd);

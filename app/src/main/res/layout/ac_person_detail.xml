@@ -113,7 +113,17 @@
         android:paddingRight="10dp"
         android:text="工资：300元/天"
         android:textSize="14sp"></TextView>
-
+    <TextView
+        android:id="@+id/city_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="10dp"
+        android:text="城市：**"
+        android:textSize="14sp"></TextView>
     <TextView
         android:id="@+id/remark_tv"
         android:layout_width="match_parent"

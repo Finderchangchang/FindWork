@@ -100,6 +100,8 @@ public class RegPersonActivity extends BaseActivity {
     private String path = "";
     @Bind(R.id.img_remark_tv)
     TextView img_remark_tv;
+    @Bind(R.id.tv_nowcity)
+    TextView tv_nowcity;
 
     @Override
     public void initViews() {
@@ -208,12 +210,13 @@ public class RegPersonActivity extends BaseActivity {
                 spinnerDialog.setOnItemClick((position, val) -> {
                     if (isTrue) {
                         //状态
-                        person_et_state.setText(list.get(position).getName());
-                        typeString = list.get(position).getType();
+                        person_et_state.setText(val.getName());
+                        typeString = val.getType();
                     } else {
                         //类型
-                        person_et_type.setText(list.get(position).getName());
-                        info.setType(list.get(position));
+                        person_et_type.setText(val.getName());
+                        val.setObjectId(val.getOId());
+                        info.setType(val);
                     }
                     initView((position + 1) + "");
                     spinnerDialog = null;
@@ -291,14 +294,17 @@ public class RegPersonActivity extends BaseActivity {
 
     //验证页面的值
     private boolean YanView() {
-        if (person_real_name.getText().toString().trim().equals("")) {
+        if (tv_nowcity.getText().toString().trim().equals("定位失败")) {
+            ToastShort("定位信息失败，请检查网络");
+            return false;
+        } else if (person_real_name.getText().toString().trim().equals("")) {
             ToastShort("请填写您的真实姓名");
             return false;
         } else if (person_et_type.getText().toString().trim().equals("")) {
-            ToastShort("请选择工种类型");
+            ToastShort((String) person_et_type.getHint());
             return false;
         } else if (person_et_gongzi.getText().toString().trim().equals("")) {
-            ToastShort("请填写您现在的工资/每天");
+            ToastShort((String) person_et_gongzi.getHint());
             return false;
         } else if (person_et_phone.getText().toString().trim().equals("")) {
             ToastShort("请输入您的联系方式");
@@ -337,7 +343,9 @@ public class RegPersonActivity extends BaseActivity {
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.setMessage("注册中...");
                 progressDialog.show();
-                if (info.getIconurl() != null && !path.equals(info.getIconurl())) {
+                if (info.getIconurl() == null &&(!path.equals(""))) {
+                    sc();
+                }else if(info.getIconurl()!=null&&(!path.equals(info.getIconurl()))){
                     sc();
                 } else {
                     SaveInfo();
@@ -350,14 +358,16 @@ public class RegPersonActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(ipAddress -> {
                     Utils.putCache(Config.KEY_CITY, ipAddress.getCity());
+                    tv_nowcity.setText("当前城市：" + ipAddress.getCity());
                 }, throwable -> {
+                    tv_nowcity.setText("定位失败");
                 });
     }
 
     private void SaveInfo() {
         getViewValue();
         //修改或保存
-        if (Utils.getCache(Config.KEY_ID).equals("")) {
+        if (info.getObjectId()==null) {
             info.setIconurl(path);
             //保存
             info.signUp(new SaveListener<BmobUser>() {
@@ -455,19 +465,22 @@ public class RegPersonActivity extends BaseActivity {
 
     //查询类型
     private void searchType() {
-        BmobQuery<CodeModel> query = new BmobQuery<CodeModel>();
-        query.addWhereEqualTo("Type", typeString);
-        query.findObjects(new FindListener<CodeModel>() {
-            @Override
-            public void done(List<CodeModel> list, BmobException e) {
-                if (e == null) {
-                    //listType = list;
-                    loadDialog(list, false);
-                } else {
-                    ToastShort("字典类型加载失败");
-                }
-            }
-        });
+        List<CodeModel> list = new ArrayList<>();
+        list = db.findAllByWhere(CodeModel.class, "Type='" + typeString + "'");
+        loadDialog(list, false);
+//        BmobQuery<CodeModel> query = new BmobQuery<CodeModel>();
+//        query.addWhereEqualTo("Type", typeString);
+//        query.findObjects(new FindListener<CodeModel>() {
+//            @Override
+//            public void done(List<CodeModel> list, BmobException e) {
+//                if (e == null) {
+//                    //listType = list;
+//                    loadDialog(list, false);
+//                } else {
+//                    ToastShort("字典类型加载失败");
+//                }
+//            }
+//        });
     }
 
     @Override

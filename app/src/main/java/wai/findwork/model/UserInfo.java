@@ -29,14 +29,14 @@ public class UserInfo extends BmobUser implements Serializable {
         this.qq_wx = qq_wx;
     }
 
-    private String Nowcity;
+    private String nowcity;
 
     public String getNowcity() {
-        return Nowcity;
+        return nowcity;
     }
 
     public void setNowcity(String nowcity) {
-        Nowcity = nowcity;
+        this.nowcity = nowcity;
     }
 
     public Boolean getSex() {

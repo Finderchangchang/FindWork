@@ -101,7 +101,12 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 holder.setText(R.id.name_tv, userInfo.getRealname());
                 holder.setGliImage(R.id.user_iv, userInfo.getIconurl());
                 holder.setText(R.id.price_tv, userInfo.getGongzi());
-                holder.setText(R.id.content_tv, userInfo.getRemark());
+//                if(userInfo.getRemark().length()>10){
+//                    holder.setText(R.id.content_tv, userInfo.getRemark().substring(0,10)+"...");
+//                }else {
+//                    holder.setText(R.id.content_tv, userInfo.getRemark());
+//                }
+                holder.setText(R.id.item_city_tv,userInfo.getNowcity());
             }
         };
         articleModelCommonAdapter = new CommonAdapter<ArticleModel>(MainActivity.main, articleModels, R.layout.item_new) {
@@ -410,9 +415,9 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         CodeModel codeModel = new CodeModel();
         codeModel.setObjectId(categoryList.get(position).getOId());
         query.addWhereEqualTo("type", codeModel);
-        if (!Utils.getCache(Config.KEY_CITY).equals("")) {
-            query.addWhereEqualTo("nowcity", Utils.getCache(Config.KEY_CITY));
-        }
+//        if (!Utils.getCache(Config.KEY_CITY).equals("")) {
+//            query.addWhereEqualTo("nowcity", Utils.getCache(Config.KEY_CITY));
+//        }
         query.count(UserInfo.class, new CountListener() {
             @Override
             public void done(Integer count, BmobException e) {

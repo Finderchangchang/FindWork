@@ -23,8 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="多特蒙德"
-            android:textSize="16sp"
-            android:textColor="#000"/>
+            android:textColor="#000"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/price_tv"
@@ -33,6 +33,14 @@
             android:text="¥10.00"
             android:textSize="15sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/item_city_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="无"
+            android:textSize="10sp" />
+
 
     </LinearLayout>
 
@@ -45,7 +53,8 @@
         android:layout_toRightOf="@id/user_iv"
         android:maxLines="2"
         android:text="来自长白山的深层岩水"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:visibility="gone" />
 
 
 </RelativeLayout>
