@@ -297,7 +297,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             if (!info.getIconurl().equals("")) {
                 Glide.with(MainActivity.main)
                         .load(info.getIconurl()).transform(new GlideCircleTransform(MainActivity.main))
-                        .into(user_iv);
+                        .into(user_iv).onLoadFailed(new Exception(),getResources().getDrawable(R.mipmap.myheader));
             } else {
                 user_iv.setImageResource(R.mipmap.myheader);
             }

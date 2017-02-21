@@ -129,7 +129,10 @@ public class LoginActivity extends BaseActivity {
                                     }
                                 }
                             });
-                        } else if(e.getErrorCode()==9010){
+                        } else if(e.getErrorCode()==101){
+                            ToastShort("用户名或密码错误");
+                            loginBtn.setClickable(true);
+                        }else if(e.getErrorCode()==9010){
                             ToastShort(getResources().getString(R.string.chaoshi));
                             loginBtn.setClickable(true);
                         }else if(e.getErrorCode()==9016){

@@ -38,7 +38,7 @@
         <activity android:name=".ui.LoginActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
         <activity android:name=".ui.RegActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
         <activity android:name=".ui.MainActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.RegPersonActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.RegPersonActivity"  android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.StartActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -53,7 +53,7 @@
         <activity android:name=".ui.PersonDetailActivity" android:launchMode="singleTask" android:screenOrientation="portrait" />
         <activity android:name=".ui.RiLiActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
         <activity android:name=".ui.NewDetailActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.AddRiLiActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.AddRiLiActivity"  android:screenOrientation="portrait"/>
         <activity android:name="me.iwf.photopicker.PhotoPickerActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
         <activity android:name="me.iwf.photopicker.PhotoPagerActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
         <activity android:name=".ui.WebActivity" android:launchMode="singleTask" android:screenOrientation="portrait" />

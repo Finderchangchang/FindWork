@@ -177,7 +177,7 @@ public class RiLiActivity extends BaseActivity {
     }
 
     private void refresh() {
-        page = 1;
+       // page = 1;
         BmobQuery<RiLi> query = new BmobQuery<>();
         UserInfo buyer = new UserInfo();
         buyer.setObjectId(Utils.getCache(Config.KEY_ID));
@@ -218,7 +218,7 @@ public class RiLiActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 99) {//保存成功，执行刷新操作
             page = 1;
             refresh();
