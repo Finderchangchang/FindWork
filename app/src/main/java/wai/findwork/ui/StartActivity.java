@@ -69,14 +69,14 @@ public class StartActivity extends AppCompatActivity {
                             });
                         }
                     }
-                } else if(e.getErrorCode()==9010){
-                    Toast.makeText(StartActivity.this,getResources().getString(R.string.chaoshi), Toast.LENGTH_SHORT).show();
+                } else if (e.getErrorCode() == 9010) {
+                    Toast.makeText(StartActivity.this, getResources().getString(R.string.chaoshi), Toast.LENGTH_SHORT).show();
                     finish();
-                }else if(e.getErrorCode()==9016){
-                    Toast.makeText(StartActivity.this,getResources().getString(R.string.wuwang), Toast.LENGTH_SHORT).show();
+                } else if (e.getErrorCode() == 9016) {
+                    Toast.makeText(StartActivity.this, getResources().getString(R.string.wuwang), Toast.LENGTH_SHORT).show();
                     finish();
-                }else {
-                    Toast.makeText(StartActivity.this,getResources().getString(R.string.neibu), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(StartActivity.this, getResources().getString(R.string.neibu), Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }

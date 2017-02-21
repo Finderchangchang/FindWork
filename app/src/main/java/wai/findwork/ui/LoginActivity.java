@@ -117,28 +117,28 @@ public class LoginActivity extends BaseActivity {
                                         Utils.IntentPost(MainActivity.class);
                                         loginBtn.setClickable(true);
                                         finish();
-                                    } else if(e.getErrorCode()==9010){
+                                    } else if (e.getErrorCode() == 9010) {
                                         ToastShort(getResources().getString(R.string.chaoshi));
                                         loginBtn.setClickable(true);
-                                    }else if(e.getErrorCode()==9016){
+                                    } else if (e.getErrorCode() == 9016) {
                                         ToastShort(getResources().getString(R.string.wuwang));
                                         loginBtn.setClickable(true);
-                                    }else {
+                                    } else {
                                         ToastShort(getResources().getString(R.string.neibu));
                                         loginBtn.setClickable(true);
                                     }
                                 }
                             });
-                        } else if(e.getErrorCode()==101){
+                        } else if (e.getErrorCode() == 101) {
                             ToastShort("用户名或密码错误");
                             loginBtn.setClickable(true);
-                        }else if(e.getErrorCode()==9010){
+                        } else if (e.getErrorCode() == 9010) {
                             ToastShort(getResources().getString(R.string.chaoshi));
                             loginBtn.setClickable(true);
-                        }else if(e.getErrorCode()==9016){
+                        } else if (e.getErrorCode() == 9016) {
                             ToastShort(getResources().getString(R.string.wuwang));
                             loginBtn.setClickable(true);
-                        }else {
+                        } else {
                             ToastShort(getResources().getString(R.string.neibu));
                             loginBtn.setClickable(true);
                         }

@@ -1,5 +1,6 @@
 package wai.findwork.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -177,7 +178,7 @@ public class RiLiActivity extends BaseActivity {
     }
 
     private void refresh() {
-       // page = 1;
+        // page = 1;
         BmobQuery<RiLi> query = new BmobQuery<>();
         UserInfo buyer = new UserInfo();
         buyer.setObjectId(Utils.getCache(Config.KEY_ID));

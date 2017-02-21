@@ -242,7 +242,9 @@ public class RegPersonActivity extends BaseActivity {
         code2.setName("我有施工项目");
         code2.setType("3");
         liststate.add(code2);
-        person_et_state.setText(liststate.get(0).getName());
+        int type = Integer.parseInt(Utils.getCache(Config.KEY_TYPE_STATE)) - 1;
+        person_et_state.setText(liststate.get(type).getName());
+        typeString = (type + 1) + "";
         initView("1");
         code2 = null;
     }
@@ -343,9 +345,9 @@ public class RegPersonActivity extends BaseActivity {
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.setMessage("注册中...");
                 progressDialog.show();
-                if (info.getIconurl() == null &&(!path.equals(""))) {
+                if (info.getIconurl() == null && (!path.equals(""))) {
                     sc();
-                }else if(info.getIconurl()!=null&&(!path.equals(info.getIconurl()))){
+                } else if (info.getIconurl() != null && (!path.equals(info.getIconurl()))) {
                     sc();
                 } else {
                     SaveInfo();
@@ -367,7 +369,7 @@ public class RegPersonActivity extends BaseActivity {
     private void SaveInfo() {
         getViewValue();
         //修改或保存
-        if (info.getObjectId()==null) {
+        if (info.getObjectId() == null) {
             info.setIconurl(path);
             //保存
             info.signUp(new SaveListener<BmobUser>() {

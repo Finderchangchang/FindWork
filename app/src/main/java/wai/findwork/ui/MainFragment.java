@@ -106,7 +106,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
 //                }else {
 //                    holder.setText(R.id.content_tv, userInfo.getRemark());
 //                }
-                holder.setText(R.id.item_city_tv,userInfo.getNowcity());
+                holder.setText(R.id.item_city_tv, userInfo.getNowcity());
             }
         };
         articleModelCommonAdapter = new CommonAdapter<ArticleModel>(MainActivity.main, articleModels, R.layout.item_new) {
@@ -297,7 +297,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             if (!info.getIconurl().equals("")) {
                 Glide.with(MainActivity.main)
                         .load(info.getIconurl()).transform(new GlideCircleTransform(MainActivity.main))
-                        .into(user_iv).onLoadFailed(new Exception(),getResources().getDrawable(R.mipmap.myheader));
+                        .into(user_iv).onLoadFailed(new Exception(), getResources().getDrawable(R.mipmap.myheader));
             } else {
                 user_iv.setImageResource(R.mipmap.myheader);
             }
@@ -469,17 +469,17 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                         right_lv.onRefreshComplete();
                     }
                     //toast("count对象个数为："+count);
-                }else if(e.getErrorCode()==9010){
+                } else if (e.getErrorCode() == 9010) {
                     no_data_mes.setText(getResources().getString(R.string.chaoshi));
                     no_data_ll.setVisibility(View.VISIBLE);
 
                     right_lv.setVisibility(View.GONE);
-                }else if(e.getErrorCode()==9016){
+                } else if (e.getErrorCode() == 9016) {
                     no_data_mes.setText(getResources().getString(R.string.wuwang));
                     no_data_ll.setVisibility(View.VISIBLE);
 
                     right_lv.setVisibility(View.GONE);
-                }else {
+                } else {
                     no_data_mes.setText(getResources().getString(R.string.neibu));
                     no_data_ll.setVisibility(View.VISIBLE);
 

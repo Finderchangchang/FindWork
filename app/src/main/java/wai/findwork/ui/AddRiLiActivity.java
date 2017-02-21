@@ -1,7 +1,9 @@
 package wai.findwork.ui;
 
+import android.app.ProgressDialog;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -36,6 +38,7 @@ public class AddRiLiActivity extends BaseActivity {
     RiLi riLi;
     @Bind(R.id.riji_btn_delete)
     Button riji_btn_delete;
+    private ProgressDialog progressDialog;
 
     @Override
     public void initViews() {
@@ -60,6 +63,13 @@ public class AddRiLiActivity extends BaseActivity {
             } else if (TextUtils.isEmpty(contentEt.getText().toString().trim())) {
                 ToastShort("请输入日记内容");
             } else {
+                progressDialog = new ProgressDialog(AddRiLiActivity.this);
+                progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setCancelable(false);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setMessage("保存中...");
+                progressDialog.show();
                 riLi.setContent(contentEt.getText().toString().trim());
                 riLi.setTitle(riji_et_title.getText().toString().trim());
                 UserInfo userInfo = new UserInfo();
@@ -70,6 +80,9 @@ public class AddRiLiActivity extends BaseActivity {
                     riLi.save(new SaveListener<String>() {
                         @Override
                         public void done(String s, BmobException e) {
+                            if (progressDialog != null) {
+                                progressDialog.dismiss();
+                            }
                             if (e == null) {
                                 ToastShort("保存成功");
                                 setResult(99);
@@ -87,9 +100,19 @@ public class AddRiLiActivity extends BaseActivity {
                         }
                     });
                 } else {
+                    progressDialog = new ProgressDialog(AddRiLiActivity.this);
+                    progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.setCancelable(false);
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.setMessage("修改中...");
+                    progressDialog.show();
                     riLi.update(riLi.getObjectId(), new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
+                            if (progressDialog != null) {
+                                progressDialog.dismiss();
+                            }
                             if (e == null) {
                                 ToastShort("修改成功");
                                 setResult(99);
@@ -117,10 +140,20 @@ public class AddRiLiActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //删除
+                progressDialog = new ProgressDialog(AddRiLiActivity.this);
+                progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setCancelable(false);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setMessage("刪除中...");
+                progressDialog.show();
                 riLi.setObjectId(riLi.getObjectId());
                 riLi.delete(new UpdateListener() {
                     @Override
                     public void done(BmobException e) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
                         if (e == null) {
                             setResult(99);
                             ToastShort("删除成功");
