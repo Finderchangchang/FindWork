@@ -1,12 +1,18 @@
 package wai.findwork.ui;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import net.tsz.afinal.view.TitleBar;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import wai.findwork.BaseActivity;
 import wai.findwork.R;
 import wai.findwork.model.ArticleModel;
@@ -28,6 +34,9 @@ public class NewDetailActivity extends BaseActivity {
     @Bind(R.id.read_url_tv)
     TextView readUrlTv;
     ArticleModel model;
+    String url;
+    @Bind(R.id.time_tv)
+    TextView timeTv;
 
     @Override
     public void initViews() {
@@ -37,9 +46,29 @@ public class NewDetailActivity extends BaseActivity {
     @Override
     public void initEvents() {
         titleBar.setLeftClick(() -> finish());
-        model = (ArticleModel) getIntent().getSerializableExtra(Config.KEY_NEW_ID);
-        titleTv.setText(model.getTitle());
-        contentTv.setText(model.getContent());
+        url = getIntent().getStringExtra("url");
+        if (TextUtils.isEmpty(url)) {
+            model = (ArticleModel) getIntent().getSerializableExtra(Config.KEY_NEW_ID);
+            titleTv.setText(model.getTitle());
+            contentTv.setText(model.getContent());
+        } else {
+            BmobQuery<ArticleModel> query = new BmobQuery<>();
+            titleBar.setCentertv("关于我们");
+            query.addWhereEqualTo("title", "关于我们");
+            query.findObjects(new FindListener<ArticleModel>() {
+                @Override
+                public void done(List<ArticleModel> list, BmobException e) {
+                    if (e == null) {
+                        if (list.size() > 0) {
+                            model = list.get(0);
+                            titleTv.setText(model.getTitle());
+                            contentTv.setText(model.getContent());
+                            timeTv.setText(model.getUpdatedAt());
+                        }
+                    }
+                }
+            });
+        }
     }
 
     @Override
