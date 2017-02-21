@@ -3,6 +3,7 @@ package wai.findwork.ui;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -242,7 +243,11 @@ public class RegPersonActivity extends BaseActivity {
         code2.setName("我有施工项目");
         code2.setType("3");
         liststate.add(code2);
-        int type = Integer.parseInt(Utils.getCache(Config.KEY_TYPE_STATE)) - 1;
+        String type_state = Utils.getCache(Config.KEY_TYPE_STATE);
+        int type = 0;
+        if (!TextUtils.isEmpty(type_state)) {
+            type = Integer.parseInt(type_state) - 1;
+        }
         person_et_state.setText(liststate.get(type).getName());
         typeString = (type + 1) + "";
         initView("1");
