@@ -213,13 +213,13 @@ public class RegPersonActivity extends BaseActivity {
                         //状态
                         person_et_state.setText(val.getName());
                         typeString = val.getType();
+                        initView((position + 1) + "");
                     } else {
                         //类型
                         person_et_type.setText(val.getName());
                         val.setObjectId(val.getOId());
                         info.setType(val);
                     }
-                    initView((position + 1) + "");
                     spinnerDialog = null;
                 });
             }
@@ -336,7 +336,7 @@ public class RegPersonActivity extends BaseActivity {
     public void initEvents() {
         person_et_state.setOnClickListener(v -> {
             loadDialog(liststate, true);
-            person_et_type.setText("");
+//            person_et_type.setText("");
 //            info.setType(null);
         });
         person_et_type.setOnClickListener(v -> searchType());
