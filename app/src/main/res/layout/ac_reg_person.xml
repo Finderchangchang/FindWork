@@ -419,7 +419,8 @@
                     android:id="@+id/remark_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="班组简介：" />
+                    android:text="班组简介："
+                    android:textSize="14sp"/>
 
                 <EditText
                     android:id="@+id/person_et_remark"
@@ -429,7 +430,7 @@
                     android:background="@null"
                     android:hint="勿填写任何联系方式，否则禁用！"
                     android:padding="10dp"
-                    android:textSize="14dp" />
+                    android:textSize="14sp"/>
 
             </LinearLayout>
 

@@ -51,6 +51,7 @@ public class NewDetailActivity extends BaseActivity {
             model = (ArticleModel) getIntent().getSerializableExtra(Config.KEY_NEW_ID);
             titleTv.setText(model.getTitle());
             contentTv.setText(model.getContent());
+            timeTv.setText(model.getCreatedAt());
         } else {
             BmobQuery<ArticleModel> query = new BmobQuery<>();
             titleBar.setCentertv("关于我们");
@@ -63,7 +64,7 @@ public class NewDetailActivity extends BaseActivity {
                             model = list.get(0);
                             titleTv.setText(model.getTitle());
                             contentTv.setText(model.getContent());
-                            timeTv.setText(model.getUpdatedAt());
+                            timeTv.setText(model.getCreatedAt());
                         }
                     }
                 }
