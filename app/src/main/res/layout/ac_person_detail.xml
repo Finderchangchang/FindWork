@@ -111,7 +111,7 @@
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
         android:paddingRight="10dp"
-        android:text="工资：300元/天"
+        android:text="工资：00元/天"
         android:textSize="14sp"></TextView>
     <TextView
         android:id="@+id/city_tv"
@@ -135,7 +135,7 @@
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
         android:paddingRight="10dp"
-        android:text="备注：170932158090"
+        android:text="备注："
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:textSize="14sp"></TextView>

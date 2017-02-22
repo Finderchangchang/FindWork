@@ -3,6 +3,10 @@ package wai.findwork;
 import android.app.Application;
 import android.content.Context;
 
+import com.tencent.bugly.crashreport.CrashReport;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
 import c.b.BP;
 import cn.bmob.v3.Bmob;
 
@@ -13,7 +17,11 @@ import cn.bmob.v3.Bmob;
 
 public class App extends Application {
     private static Context context;
-    String key = "15e70d22f52e3af14f325cbb8e66989e";
+    private static String key = "15e70d22f52e3af14f325cbb8e66989e";
+    //你的应用从官方网站申请到的合法appid
+    private static String WeiXinKey = "";
+    //第三方app和微信通信的openapi接口
+    private IWXAPI api;
 
     @Override
     public void onCreate() {
@@ -21,6 +29,11 @@ public class App extends Application {
         context = getApplicationContext();
         Bmob.initialize(this, key);
         BP.init(key);
+        CrashReport.initCrashReport(getApplicationContext(), "ba77cf71-0a00-486d-bad5-42df3aab705b", false);
+        //通过工厂，获取实例
+        api = WXAPIFactory.createWXAPI(this, WeiXinKey, true);
+        //将应用的appid注册到微信
+        api.registerApp(WeiXinKey);
     }
 
 

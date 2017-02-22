@@ -1,6 +1,9 @@
 package wai.findwork.ui;
 
 import android.app.ProgressDialog;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Window;
 import android.widget.Button;
@@ -23,6 +26,7 @@ import wai.findwork.BaseActivity;
 import wai.findwork.R;
 import wai.findwork.method.Utils;
 import wai.findwork.model.Config;
+import wai.findwork.model.UpdateManage;
 import wai.findwork.model.UserInfo;
 
 /**
@@ -150,7 +154,50 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initEvents() {
+        //检查版本是否更新
 
+        BmobQuery<UpdateManage> query = new BmobQuery<>();
+        query.addWhereEqualTo("project", "2");
+        query.findObjects(new FindListener<UpdateManage>() {
+            @Override
+            public void done(List<UpdateManage> list, BmobException e) {
+                if (e == null) {
+                    if (list.size() > 0) {
+                        if (!list.get(0).getVersion().equals(getVersion())) {
+                            loadDialog();
+                        }
+                    }
+                }
+            }
+        });
+
+
+    }
+
+    //获取版本号
+    private String getVersion() {
+        try {
+            PackageManager manager = this.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
+            String version = info.versionName;
+            return version;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    private void loadDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setTitle("提示");
+        builder.setMessage("检查到有新版本，是否更新？");
+        builder.setPositiveButton("取消", (dialog1, which) -> {
+
+        });
+        builder.setNegativeButton("确定", (dialogInterface, i) -> {
+
+        });
+        builder.show();
     }
 
     @Override

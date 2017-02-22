@@ -46,11 +46,11 @@ public class StartActivity extends AppCompatActivity {
             public void done(List<UpdateManage> list, BmobException e) {
                 if (e == null && list != null) {
                     if (list.size() > 0) {
-                        String time = Utils.getCache(Config.KEY_Code_Update_Time);
-                        if (!TextUtils.isEmpty(time) && list.get(0).getUpdatedAt().equals(time)) {
+                        String version = Utils.getCache(Config.KEY_Code_Update_version);
+                        if (!TextUtils.isEmpty(version) && list.get(0).getVersion().equals(version)) {
 
                         } else {
-                            Utils.putCache(Config.KEY_Code_Update_Time, list.get(0).getUpdatedAt());
+                            Utils.putCache(Config.KEY_Code_Update_version, list.get(0).getVersion());
                             if (db.findAll(CodeModel.class).size() > 0) {
                                 db.deleteAll(CodeModel.class);
                             }

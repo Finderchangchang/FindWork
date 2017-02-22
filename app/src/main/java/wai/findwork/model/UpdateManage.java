@@ -7,7 +7,16 @@ import cn.bmob.v3.BmobObject;
  */
 
 public class UpdateManage extends BmobObject {
-    String project;
+    private String project;
+    private String version;
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
     public String getProject() {
         return project;

@@ -111,11 +111,12 @@ public class PersonDetailActivity extends BaseActivity {
             buyer = new UserInfo();
             buyer.setObjectId(info.getObjectId());
             query.addWhereEqualTo("buyer", buyer);
+            query.include("buyer");
             query.findObjects(new FindListener<UserBuy>() {
                 @Override
                 public void done(List<UserBuy> list, BmobException e) {
                     if (e == null && list.size() > 0) {
-                        telTv.setText("电话：" + Utils.getCache(Config.KEY_User_ID));
+                        telTv.setText("电话：" +list.get(0).getBuyer().getUsername());
                         getTelBtn.setText("拨打电话");
                     }
                 }
