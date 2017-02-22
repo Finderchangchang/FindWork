@@ -212,13 +212,14 @@ public class RegPersonActivity extends BaseActivity {
                         //状态
                         person_et_state.setText(val.getName());
                         typeString = val.getType();
+                        initView((position + 1) + "");
                     } else {
                         //类型
                         person_et_type.setText(val.getName());
                         val.setObjectId(val.getOId());
                         info.setType(val);
                     }
-                    initView((position + 1) + "");
+
                     spinnerDialog = null;
                 });
             }
@@ -245,7 +246,7 @@ public class RegPersonActivity extends BaseActivity {
         int type = Integer.parseInt(Utils.getCache(Config.KEY_TYPE_STATE)) - 1;
         person_et_state.setText(liststate.get(type).getName());
         typeString = (type + 1) + "";
-        initView("1");
+        initView(typeString);
         code2 = null;
     }
 
