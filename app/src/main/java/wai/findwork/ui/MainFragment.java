@@ -114,6 +114,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             public void convert(CommonViewHolder holder, ArticleModel articleModel, int position) {
                 holder.setText(R.id.title_tv, articleModel.getTitle());
                 holder.setText(R.id.content_tv, articleModel.getContent());
+                holder.setText(R.id.content_create_time, articleModel.getCreatedAt());
             }
         };
     }

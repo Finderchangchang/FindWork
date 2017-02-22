@@ -219,7 +219,6 @@ public class RegPersonActivity extends BaseActivity {
                         val.setObjectId(val.getOId());
                         info.setType(val);
                     }
-
                     spinnerDialog = null;
                 });
             }
@@ -243,10 +242,14 @@ public class RegPersonActivity extends BaseActivity {
         code2.setName("我有施工项目");
         code2.setType("3");
         liststate.add(code2);
-        int type = Integer.parseInt(Utils.getCache(Config.KEY_TYPE_STATE)) - 1;
+        String type_state = Utils.getCache(Config.KEY_TYPE_STATE);
+        int type = 0;
+        if (!TextUtils.isEmpty(type_state)) {
+            type = Integer.parseInt(type_state) - 1;
+        }
         person_et_state.setText(liststate.get(type).getName());
         typeString = (type + 1) + "";
-        initView(typeString);
+        initView("1");
         code2 = null;
     }
 
