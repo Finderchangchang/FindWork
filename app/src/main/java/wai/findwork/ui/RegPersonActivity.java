@@ -3,6 +3,7 @@ package wai.findwork.ui;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
