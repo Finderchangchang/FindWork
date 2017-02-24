@@ -118,22 +118,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginTop="-10dp">
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="140dp"
-                android:layout_weight="1"
-                android:background="@mipmap/ic_font"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="65dp"/>
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:background="@mipmap/ic_font" />
 
             <ImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_weight="1" />
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginLeft="70dp"
+                android:src="@mipmap/weixin_erweima" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -77,6 +77,8 @@ public class PersonDetailActivity extends BaseActivity {
     int PLUGINVERSION = 7;
     @Bind(R.id.city_tv)
     TextView city_tv;
+    @Bind(R.id.sex_tv)
+    TextView sex_tv;
 
     @Override
     public void initViews() {
@@ -85,6 +87,13 @@ public class PersonDetailActivity extends BaseActivity {
             city_tv.setText("城市:无");
         } else {
             city_tv.setText("城市:" + info.getNowcity());
+        }
+        if (info.getSex() != null) {
+            if (info.getSex()) {
+                sex_tv.setText("性别：女");
+            } else {
+                sex_tv.setText("性别：男");
+            }
         }
         index = getIntent().getStringExtra("index");
         if (index == null) {
@@ -116,7 +125,7 @@ public class PersonDetailActivity extends BaseActivity {
                 @Override
                 public void done(List<UserBuy> list, BmobException e) {
                     if (e == null && list.size() > 0) {
-                        telTv.setText("电话：" +list.get(0).getBuyer().getUsername());
+                        telTv.setText("电话：" + list.get(0).getBuyer().getUsername());
                         getTelBtn.setText("拨打电话");
                     }
                 }
@@ -128,8 +137,9 @@ public class PersonDetailActivity extends BaseActivity {
         userNameTv.setText(info.getRealname());
         String num = info.getCardnum();
         if (TextUtils.isEmpty(num)) {
-
             idCardTv.setText("无");
+        }else{
+            idCardTv.setText(info.getCardnum());
         }
         if (("").equals(info.getTypeName()) || info.getTypeName() == null) {
             userTypeTv.setText(info.getType().getName());

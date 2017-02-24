@@ -30,6 +30,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.tencent.connect.dataprovider.Constants;
 
 import net.tsz.afinal.FinalDb;
 
@@ -79,7 +80,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
     private int oldSelectedPosition = 0;
     LinearLayout main_ll;
     List<ArticleModel> articleModels;
-
+    FinalDb db;
     public static MainFragment newInstance(int content) {
         MainFragment fragment = new MainFragment();
         fragment.mContent = content;
@@ -292,7 +293,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         }
     }
 
-    FinalDb db;
+
 
     //刷新个人信息
     private void refrush() {
@@ -308,11 +309,10 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             }
             user_name_tv.setText(info.getRealname());
             qq_wx_tv.setText("QQ或微信：" + info.getQq_wx());
-            if (TextUtils.isEmpty(info.getCardnum())) {
-
-                id_card_tv.setText("无");
-
-
+            if (TextUtils.isEmpty(info.getBalance())) {
+                id_card_tv.setText("积分：0");
+            }else{
+                id_card_tv.setText("积分："+info.getBalance());
             }
 
             user_type_tv.setText(info.getTypeName());
@@ -507,4 +507,23 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             refrush();
         }
     }
+//    public void share(View view)
+//    {
+//        Bundle bundle = new Bundle();
+////这条分享消息被好友点击后的跳转URL。
+//        bundle.putString(Constants.PARAM_TARGET_URL, "http://connect.qq.com/");
+////分享的标题。注：PARAM_TITLE、PARAM_IMAGE_URL、PARAM_	SUMMARY不能全为空，最少必须有一个是有值的。
+//        bundle.putString(Constants.PARAM_TITLE, "我在测试");
+////分享的图片URL
+//        bundle.putString(Constants.PARAM_IMAGE_URL,
+//                "http://img3.cache.netease.com/photo/0005/2013-03-07/8PBKS8G400BV0005.jpg");
+////分享的消息摘要，最长50个字
+//        bundle.putString(Constants.PARAM_SUMMARY, "测试");
+////手Q客户端顶部，替换“返回”按钮文字，如果为空，用返回代替
+//        bundle.putString(Constants.PARAM_APPNAME, "??我在测试");
+////标识该消息的来源应用，值为应用名称+AppId。
+//        bundle.putString(Constants.PARAM_APP_SOURCE, "星期几" + AppId);
+//
+//        mTencent.shareToQQ(this, bundle , listener);
+//    }
 }

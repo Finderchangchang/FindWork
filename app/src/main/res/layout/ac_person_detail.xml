@@ -89,7 +89,17 @@
         android:paddingRight="10dp"
         android:text="个人资料"
         android:textSize="17sp"></TextView>
-
+    <TextView
+        android:id="@+id/sex_tv"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginTop="1dp"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="10dp"
+        android:text="性别：**"
+        android:textSize="14sp"></TextView>
     <TextView
         android:id="@+id/tel_tv"
         android:layout_width="match_parent"
