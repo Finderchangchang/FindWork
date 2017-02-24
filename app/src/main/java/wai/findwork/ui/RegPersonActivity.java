@@ -3,7 +3,9 @@ package wai.findwork.ui;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +24,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -184,6 +188,100 @@ public class RegPersonActivity extends BaseActivity {
                 img_remark_tv.setText("请添加本人照片或项目照片");
                 break;
         }
+        //只能输入8位数字
+        person_cardnum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 8) {
+                    person_cardnum.setText(s.toString().substring(0, start));
+                    person_cardnum.setSelection(start);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        person_real_name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (ISNumber(s.toString(), 1)) {
+                    person_real_name.setText(s.toString().substring(0, start));
+                    person_real_name.setSelection(start);
+                }
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        //限制只能包含连续五位数字
+        person_et_gongzi.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int counts = 0;
+                for (int i = 0; i < s.length(); i++) {
+                    char cs = s.charAt(i);
+                    if (cs >= '0' && cs <= '9') {
+                       counts=counts+1;
+                    }
+                }
+                if (counts >= 6) {
+                    person_et_gongzi.setText(s.toString().substring(0, start));
+                    person_et_gongzi.setSelection(start);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        person_et_remark.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int counts = 0;
+                for (int i = 0; i < s.length(); i++) {
+                    char cs = s.charAt(i);
+                    if (cs >= '0' && cs <= '9') {
+                        counts=counts+1;
+                    }
+                }
+                if (counts >= 6) {
+                    person_et_remark.setText(s.toString().substring(0, start));
+                    person_et_remark.setSelection(start);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override
@@ -337,7 +435,7 @@ public class RegPersonActivity extends BaseActivity {
     public void initEvents() {
         person_et_state.setOnClickListener(v -> {
             loadDialog(liststate, true);
-          //  person_et_type.setText("");
+            //  person_et_type.setText("");
 //            info.setType(null);
         });
         person_et_type.setOnClickListener(v -> searchType());
@@ -489,6 +587,14 @@ public class RegPersonActivity extends BaseActivity {
 //                }
 //            }
 //        });
+    }
+
+
+    public static boolean ISNumber(String strEmail, int num) {
+        String strPattern = "\\d{" + num + "}";
+        Pattern p = Pattern.compile(strPattern);
+        Matcher m = p.matcher(strEmail);
+        return m.find();
     }
 
     @Override

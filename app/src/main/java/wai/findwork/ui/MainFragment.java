@@ -99,14 +99,18 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             @Override
             public void convert(CommonViewHolder holder, UserInfo userInfo, int position) {
                 holder.setText(R.id.name_tv, userInfo.getRealname());
-                holder.setGliImage(R.id.user_iv, userInfo.getIconurl());
+                if (userInfo.getIconurl() == null || userInfo.getIconurl().equals("")) {
+                    holder.setImageResource(R.id.user_iv, R.mipmap.myheader);
+                }else {
+                    holder.setGliImage(R.id.user_iv, userInfo.getIconurl());
+                }
                 holder.setText(R.id.price_tv, userInfo.getGongzi());
 //                if(userInfo.getRemark().length()>10){
 //                    holder.setText(R.id.content_tv, userInfo.getRemark().substring(0,10)+"...");
 //                }else {
 //                    holder.setText(R.id.content_tv, userInfo.getRemark());
 //                }
-                holder.setText(R.id.item_city_tv, userInfo.getNowcity());
+                holder.setText(R.id.item_city_tv, userInfo.getNowcity() == null ? "无" : userInfo.getNowcity());
             }
         };
         articleModelCommonAdapter = new CommonAdapter<ArticleModel>(MainActivity.main, articleModels, R.layout.item_new) {
@@ -304,9 +308,11 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             }
             user_name_tv.setText(info.getRealname());
             qq_wx_tv.setText("QQ或微信：" + info.getQq_wx());
-            if (!TextUtils.isEmpty(info.getCardnum())) {
-                String val = info.getCardnum();
-                id_card_tv.setText(val.substring(0, val.length() - 4) + "****");
+            if (TextUtils.isEmpty(info.getCardnum())) {
+
+                id_card_tv.setText("无");
+
+
             }
 
             user_type_tv.setText(info.getTypeName());
@@ -415,7 +421,9 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         BmobQuery<UserInfo> query = new BmobQuery<>();
         CodeModel codeModel = new CodeModel();
         codeModel.setObjectId(categoryList.get(position).getOId());
+
         query.addWhereEqualTo("type", codeModel);
+        query.order("realname");
 //        if (!Utils.getCache(Config.KEY_CITY).equals("")) {
 //            query.addWhereEqualTo("nowcity", Utils.getCache(Config.KEY_CITY));
 //        }

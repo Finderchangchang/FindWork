@@ -82,7 +82,7 @@ public class PersonDetailActivity extends BaseActivity {
     public void initViews() {
         info = (UserInfo) getIntent().getSerializableExtra("user");
         if (info.getNowcity() == null || info.getNowcity().equals("")) {
-            city_tv.setText("无");
+            city_tv.setText("城市:无");
         } else {
             city_tv.setText("城市:" + info.getNowcity());
         }
@@ -127,8 +127,9 @@ public class PersonDetailActivity extends BaseActivity {
                 .into(userIv);
         userNameTv.setText(info.getRealname());
         String num = info.getCardnum();
-        if (!TextUtils.isEmpty(num)) {
-            idCardTv.setText(num.substring(0, num.length() - 4) + "****");
+        if (TextUtils.isEmpty(num)) {
+
+            idCardTv.setText("无");
         }
         if (("").equals(info.getTypeName()) || info.getTypeName() == null) {
             userTypeTv.setText(info.getType().getName());

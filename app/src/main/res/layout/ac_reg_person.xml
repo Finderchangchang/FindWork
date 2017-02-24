@@ -73,6 +73,7 @@
                     android:layout_marginLeft="10dp"
                     android:background="@null"
                     android:hint="请填写真实姓名"
+                    android:inputType="textPersonName"
                     android:padding="10dp"
                     android:textSize="14dp" />
 
@@ -96,7 +97,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="身份证号：" />
+                    android:text="出生年月日：" />
 
                 <EditText
                     android:id="@+id/person_cardnum"
@@ -105,6 +106,7 @@
                     android:layout_marginLeft="10dp"
                     android:background="@null"
                     android:hint="请填写您的身份证信息"
+                    android:inputType="number"
                     android:padding="10dp"
                     android:textSize="14dp" />
 
