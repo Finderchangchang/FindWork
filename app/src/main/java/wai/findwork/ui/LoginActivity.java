@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import com.bumptech.glide.Glide;
+
 import net.tsz.afinal.FinalDb;
 
 import java.util.HashMap;
@@ -61,6 +63,7 @@ public class LoginActivity extends BaseActivity {
                 login_cb.setChecked(true);
             }
         }
+
         regBtn.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class));
         loginBtn.setOnClickListener(v -> {
             String tel = telEt.getText().toString().trim();
