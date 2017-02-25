@@ -104,7 +104,6 @@ public class PersonDetailActivity extends BaseActivity {
 
     UserInfo userInfo;
     UserInfo buyer;
-
     ProgressDialog dialog;
 
     @Override
@@ -131,14 +130,18 @@ public class PersonDetailActivity extends BaseActivity {
                 }
             });
         }
-        Glide.with(this)
-                .load(info.getIconurl()).transform(new GlideCircleTransform(this))
-                .into(userIv);
+        if (info.getIconurl() == null || info.getIconurl().equals("")) {
+            userIv.setImageResource(R.mipmap.myheader);
+        } else {
+            Glide.with(this)
+                    .load(info.getIconurl()).transform(new GlideCircleTransform(this))
+                    .into(userIv);
+        }
         userNameTv.setText(info.getRealname());
         String num = info.getCardnum();
         if (TextUtils.isEmpty(num)) {
             idCardTv.setText("无");
-        }else{
+        } else {
             idCardTv.setText(info.getCardnum());
         }
         if (("").equals(info.getTypeName()) || info.getTypeName() == null) {
@@ -182,7 +185,6 @@ public class PersonDetailActivity extends BaseActivity {
                             pay(false);
                             break;
                     }
-
                 });
                 builder.show();
             }

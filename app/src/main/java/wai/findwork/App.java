@@ -29,11 +29,11 @@ public class App extends Application {
         context = getApplicationContext();
         Bmob.initialize(this, key);
         BP.init(key);
-        CrashReport.initCrashReport(getApplicationContext(), "5d80bd2424", true);
+        CrashReport.initCrashReport(getApplicationContext(), "5d80bd2424", false);
         //通过工厂，获取实例
-        api = WXAPIFactory.createWXAPI(this, WeiXinKey, true);
-        //将应用的appid注册到微信
-        api.registerApp(WeiXinKey);
+//        api = WXAPIFactory.createWXAPI(this, WeiXinKey, true);
+//        //将应用的appid注册到微信
+//        api.registerApp(WeiXinKey);
     }
 
 

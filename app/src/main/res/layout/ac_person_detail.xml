@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/main_bg">
+    android:background="@color/main_bg"
+    android:orientation="vertical">
 
 
     <LinearLayout
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:center_tv="工人详情"
-            app:no_bottom_line="true"/>
+            app:no_bottom_line="true" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -89,66 +89,84 @@
         android:paddingRight="10dp"
         android:text="个人资料"
         android:textSize="17sp"></TextView>
-    <TextView
-        android:id="@+id/sex_tv"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:layout_marginTop="1dp"
-        android:background="@android:color/white"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="10dp"
-        android:text="性别：**"
-        android:textSize="14sp"></TextView>
-    <TextView
-        android:id="@+id/tel_tv"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:layout_marginTop="1dp"
-        android:background="@android:color/white"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="10dp"
-        android:text="电话：***********"
-        android:textSize="14sp"></TextView>
 
-    <TextView
-        android:id="@+id/gz_tv"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:layout_marginTop="1dp"
-        android:background="@android:color/white"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="10dp"
-        android:text="工资：00元/天"
-        android:textSize="14sp"></TextView>
-    <TextView
-        android:id="@+id/city_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:background="@android:color/white"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="城市：**"
-        android:textSize="14sp"></TextView>
-    <TextView
-        android:id="@+id/remark_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:background="@android:color/white"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="10dp"
-        android:text="备注："
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:textSize="14sp"></TextView>
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/sex_tv"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:text="性别：**"
+                android:textSize="14sp"></TextView>
+
+            <TextView
+                android:id="@+id/tel_tv"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:text="电话：***********"
+                android:textSize="14sp"></TextView>
+
+            <TextView
+                android:id="@+id/gz_tv"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:text="工资：00元/天"
+                android:textSize="14sp"></TextView>
+
+            <TextView
+                android:id="@+id/city_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:text="城市：**"
+                android:textSize="14sp"></TextView>
+
+            <TextView
+                android:id="@+id/remark_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:text="备注："
+                android:textSize="14sp"></TextView>
+
+
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/get_tel_btn"

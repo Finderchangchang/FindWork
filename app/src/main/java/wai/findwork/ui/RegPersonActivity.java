@@ -198,8 +198,11 @@ public class RegPersonActivity extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 8) {
-                    person_cardnum.setText(s.toString().substring(0, start));
-                    person_cardnum.setSelection(start);
+                    String str=s.toString().substring(0, start);
+                    person_cardnum.setText(str);
+                    if(!TextUtils.isEmpty(str)) {
+                        person_cardnum.setSelection(str.length());
+                    }
                 }
             }
 
@@ -218,8 +221,11 @@ public class RegPersonActivity extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (ISNumber(s.toString(), 1)) {
-                    person_real_name.setText(s.toString().substring(0, start));
-                    person_real_name.setSelection(start);
+                    String str=s.toString().substring(0, start);
+                    person_real_name.setText(str);
+                    if(!TextUtils.isEmpty(str)) {
+                        person_real_name.setSelection(str.length());
+                    }
                 }
             }
 
@@ -246,8 +252,12 @@ public class RegPersonActivity extends BaseActivity {
                     }
                 }
                 if (counts >= 6) {
-                    person_et_gongzi.setText(s.toString().substring(0, start));
-                    person_et_gongzi.setSelection(start);
+                    String str=s.toString().substring(0,start);
+                    person_et_gongzi.setText(str);
+
+                    if(!TextUtils.isEmpty(str)) {
+                        person_et_gongzi.setSelection(str.length());
+                    }
                 }
             }
 
@@ -272,8 +282,11 @@ public class RegPersonActivity extends BaseActivity {
                     }
                 }
                 if (counts >= 6) {
-                    person_et_remark.setText(s.toString().substring(0, start));
-                    person_et_remark.setSelection(start);
+                    String str=s.toString().substring(0,start);
+                    person_et_remark.setText(str);
+                    if(!TextUtils.isEmpty(str)) {
+                        person_et_remark.setSelection(str.length());
+                    }
                 }
             }
 

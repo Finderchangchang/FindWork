@@ -52,7 +52,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-->qq分享<-->
+        <!-->qq分享
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:noHistory="true"
@@ -63,7 +63,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="1105918363" />
             </intent-filter>
-        </activity>
+        </activity><-->
         <activity android:name=".ui.PersonDetailActivity" android:screenOrientation="portrait" />
         <activity android:name=".ui.RiLiActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".ui.NewDetailActivity" android:screenOrientation="portrait"/>
@@ -72,6 +72,5 @@
         <activity android:name="me.iwf.photopicker.PhotoPagerActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".ui.WebActivity" android:launchMode="singleTask" android:screenOrientation="portrait" />
         <activity android:name="cn.bmob.pay.v3.act.PayAct" /><!--bmob支付-->
-        <service android:name="com.amap.api.location.APSService"></service>
     </application>
 </manifest>
