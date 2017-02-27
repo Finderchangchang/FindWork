@@ -1,8 +1,10 @@
 package wai.findwork.ui;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Window;
@@ -64,7 +66,7 @@ public class LoginActivity extends BaseActivity {
             }
         }
 
-        regBtn.setOnClickListener(v -> Utils.IntentPost(RegPersonActivity.class));
+        regBtn.setOnClickListener(v -> Utils.IntentPost(RegActivity.class));
         loginBtn.setOnClickListener(v -> {
             String tel = telEt.getText().toString().trim();
             String pwd = pwdEt.getText().toString().trim();
@@ -112,10 +114,14 @@ public class LoginActivity extends BaseActivity {
                                 public void done(List<UserInfo> list, BmobException e) {
                                     if (e == null) {
                                         UserInfo info = list.get(0);
-                                        info.setTypeName(info.getType().getName());
+
                                         Map<String, String> map = new HashMap<String, String>();
-                                        map.put(Config.KEY_Type_ID, info.getType().getObjectId());
-                                        map.put(Config.KEY_TYPE_STATE, info.getType().getType());
+                                        if(info.getType()!=null) {
+                                            info.setTypeName(info.getType().getName());
+                                            map.put(Config.KEY_Type_ID, info.getType().getObjectId());
+                                            map.put(Config.KEY_TYPE_STATE, info.getType().getType());
+
+                                        }
                                         map.put(Config.KEY_ID, info.getObjectId());
                                         map.put(Config.KEY_User_ID, info.getUsername());
                                         map.put(Config.KEY_PassWord, pwd);
@@ -158,23 +164,22 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initEvents() {
         //检查版本是否更新
-
-        BmobQuery<UpdateManage> query = new BmobQuery<>();
-        query.addWhereEqualTo("project", "2");
-        query.findObjects(new FindListener<UpdateManage>() {
-            @Override
-            public void done(List<UpdateManage> list, BmobException e) {
-                if (e == null) {
-                    if (list.size() > 0) {
-                        if (!list.get(0).getVersion().equals(getVersion())) {
-                            loadDialog();
-                        }
-                    }
-                }
-            }
-        });
-
-
+        loadDialog("");
+//        BmobQuery<UpdateManage> query = new BmobQuery<>();
+//        query.addWhereEqualTo("project", "2");
+//        query.findObjects(new FindListener<UpdateManage>() {
+//            @Override
+//            public void done(List<UpdateManage> list, BmobException e) {
+//                if (e == null) {
+//                    if (list.size() > 0) {
+//                        if (!list.get(0).getVersion().equals(getVersion())) {
+//                            loadDialog(list.get(0).getRemark());
+//
+//                        }
+//                    }
+//                }
+//            }
+//        });
     }
 
     //获取版本号
@@ -190,7 +195,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private void loadDialog() {
+    private void loadDialog(String str) {
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         builder.setTitle("提示");
         builder.setMessage("检查到有新版本，是否更新？");
@@ -198,7 +203,7 @@ public class LoginActivity extends BaseActivity {
 
         });
         builder.setNegativeButton("确定", (dialogInterface, i) -> {
-
+            launchAppDetail("","");
         });
         builder.show();
     }
@@ -206,5 +211,26 @@ public class LoginActivity extends BaseActivity {
     @Override
     public int setLayout() {
         return R.layout.ac_login;
+    }
+    /**
+     * 启动到应用商店app详情界面
+     *
+     * @param appPkg  目标App的包名
+     * @param marketPkg 应用商店包名 ,如果为""则由系统弹出应用商店列表供用户选择,否则调转到目标市场的应用详情界面，某些应用商店可能会失败
+     */
+    public void launchAppDetail(String appPkg, String marketPkg) {
+        try {
+            appPkg="com.tencent.android.qqdownloader";
+            if (TextUtils.isEmpty(appPkg)) return;
+            Uri uri = Uri.parse("market://details?id=" + appPkg);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            if (!TextUtils.isEmpty(marketPkg)) {
+                intent.setPackage("wai.findwork");
+            }
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

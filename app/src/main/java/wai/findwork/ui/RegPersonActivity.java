@@ -194,7 +194,6 @@ public class RegPersonActivity extends BaseActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 8) {
@@ -205,7 +204,6 @@ public class RegPersonActivity extends BaseActivity {
                     }
                 }
             }
-
             @Override
             public void afterTextChanged(Editable s) {
 

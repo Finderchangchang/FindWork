@@ -122,15 +122,15 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:background="@mipmap/ic_font" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/xin_login" />
 
-            <ImageView
+            <!--><ImageView
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_marginLeft="70dp"
-                android:src="@mipmap/weixin_erweima" />
+                android:src="@mipmap/weixin_erweima" /><-->
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

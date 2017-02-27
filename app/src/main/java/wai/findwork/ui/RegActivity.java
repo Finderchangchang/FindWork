@@ -52,6 +52,7 @@ RegActivity extends BaseActivity {
                     @Override
                     public void done(BmobUser s, BmobException e) {
                         if (e == null) {
+                            ToastShort("注册成功");
                             finish();
                         } else {
                             ToastShort(getResources().getString(R.string.no_wang));
