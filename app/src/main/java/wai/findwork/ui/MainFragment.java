@@ -380,7 +380,6 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             categoryList.set(0, model);
             changeSelected(0);
         }
-
         categoryAdapter.setCategoryList(categoryList);
     }
 
