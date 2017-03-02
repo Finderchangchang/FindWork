@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="wai.findwork">
 
+
+
      <uses-permission android:name="android.permission.READ_LOGS" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -52,6 +54,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tencent100424468" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
         <!-->qq分享
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -64,6 +89,10 @@
                 <data android:scheme="1105918363" />
             </intent-filter>
         </activity><-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="58b686d8734be4658000198e" >
+        </meta-data>
         <activity android:name=".ui.PersonDetailActivity" android:screenOrientation="portrait" />
         <activity android:name=".ui.RiLiActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".ui.NewDetailActivity" android:screenOrientation="portrait"/>

@@ -31,6 +31,9 @@ import com.google.gson.GsonBuilder;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.tencent.connect.dataprovider.Constants;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import net.tsz.afinal.FinalDb;
 
@@ -144,6 +147,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
     TextView about_us_tv;
     TextView location_tv;
     TextView qq_wx_tv;
+    TextView tv_jifen;
     int page = 1;
     int positionIndex = 0;
     int totalPage = 0;
@@ -172,6 +176,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 remark_tv = (TextView) view.findViewById(R.id.remark_tv);
                 ts_tv = (TextView) view.findViewById(R.id.ts_tv);
                 tq_tv = (TextView) view.findViewById(R.id.tq_tv);
+                tv_jifen= (TextView) view.findViewById(R.id.id_add_jifen);
                 user_center_ll = (LinearLayout) view.findViewById(R.id.user_center_ll);
                 user_bottom_ll = (LinearLayout) view.findViewById(R.id.user_bottom_ll);
                 break;
@@ -217,6 +222,12 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         switch (mContent) {
             case 0:
                 refrush();
+                tv_jifen.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Share();
+                    }
+                });
                 location_tv.setOnClickListener(v -> {
                 });//定位
                 user_left_ll.setOnClickListener(v ->
@@ -247,7 +258,6 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                         if (Utils.getCache(Config.KEY_CHECK).equals("0")) {
                             Utils.putCache(Config.KEY_PassWord, "");
                         }
-
                         Utils.putCache(Config.KEY_ID, "");
                         Utils.putCache(Config.KEY_NEW_ID, "");
                         BmobUser.logOut();
@@ -291,6 +301,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 initViews();
                 break;
         }
+
     }
 
 
@@ -298,7 +309,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
     //刷新个人信息
     private void refrush() {
         List<UserInfo> list = db.findAll(UserInfo.class);
-        if (list.size() > 0) {
+            if (list.size() > 0) {
             info = list.get(0);
             if (!info.getIconurl().equals("")) {
                 Glide.with(MainActivity.main)
@@ -331,7 +342,11 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                     remark_tv.setText("工程概况：" + info.getRemark());
                     break;
             }
-        }
+        }else{
+//                info=new UserInfo();
+//                info.setObjectId(Utils.getCache(Config.KEY_ID));
+                tel_tv.setText("电话：" + Utils.getCache(Config.KEY_User_ID));
+            }
     }
 
     private void initViews() {
@@ -480,17 +495,14 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 } else if (e.getErrorCode() == 9010) {
                     no_data_mes.setText(getResources().getString(R.string.chaoshi));
                     no_data_ll.setVisibility(View.VISIBLE);
-
                     right_lv.setVisibility(View.GONE);
                 } else if (e.getErrorCode() == 9016) {
                     no_data_mes.setText(getResources().getString(R.string.wuwang));
                     no_data_ll.setVisibility(View.VISIBLE);
-
                     right_lv.setVisibility(View.GONE);
                 } else {
                     no_data_mes.setText(getResources().getString(R.string.neibu));
                     no_data_ll.setVisibility(View.VISIBLE);
-
                     right_lv.setVisibility(View.GONE);
                 }
             }
@@ -506,23 +518,38 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             refrush();
         }
     }
-//    public void share(View view)
-//    {
-//        Bundle bundle = new Bundle();
-////这条分享消息被好友点击后的跳转URL。
-//        bundle.putString(Constants.PARAM_TARGET_URL, "http://connect.qq.com/");
-////分享的标题。注：PARAM_TITLE、PARAM_IMAGE_URL、PARAM_	SUMMARY不能全为空，最少必须有一个是有值的。
-//        bundle.putString(Constants.PARAM_TITLE, "我在测试");
-////分享的图片URL
-//        bundle.putString(Constants.PARAM_IMAGE_URL,
-//                "http://img3.cache.netease.com/photo/0005/2013-03-07/8PBKS8G400BV0005.jpg");
-////分享的消息摘要，最长50个字
-//        bundle.putString(Constants.PARAM_SUMMARY, "测试");
-////手Q客户端顶部，替换“返回”按钮文字，如果为空，用返回代替
-//        bundle.putString(Constants.PARAM_APPNAME, "??我在测试");
-////标识该消息的来源应用，值为应用名称+AppId。
-//        bundle.putString(Constants.PARAM_APP_SOURCE, "星期几" + AppId);
-//
-//        mTencent.shareToQQ(this, bundle , listener);
-//    }
+    private void Share(){
+        new ShareAction(MainActivity.main).setPlatform(SHARE_MEDIA.QQ)
+                .withText("hello")
+                .setCallback(umShareListener)
+                .share();
+
+    }
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //分享开始的回调
+        }
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+           // Log.d("plat","platform"+platform);
+
+            Toast.makeText(MainActivity.main, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(MainActivity.main,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            if(t!=null){
+               // Log.d("throw","throw:"+t.getMessage());
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(MainActivity.main,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    };
+
 }

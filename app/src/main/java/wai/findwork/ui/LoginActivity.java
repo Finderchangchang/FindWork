@@ -164,22 +164,20 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initEvents() {
         //检查版本是否更新
-        loadDialog("");
-//        BmobQuery<UpdateManage> query = new BmobQuery<>();
-//        query.addWhereEqualTo("project", "2");
-//        query.findObjects(new FindListener<UpdateManage>() {
-//            @Override
-//            public void done(List<UpdateManage> list, BmobException e) {
-//                if (e == null) {
-//                    if (list.size() > 0) {
-//                        if (!list.get(0).getVersion().equals(getVersion())) {
-//                            loadDialog(list.get(0).getRemark());
-//
-//                        }
-//                    }
-//                }
-//            }
-//        });
+        BmobQuery<UpdateManage> query = new BmobQuery<>();
+        query.addWhereEqualTo("project", "2");
+        query.findObjects(new FindListener<UpdateManage>() {
+            @Override
+            public void done(List<UpdateManage> list, BmobException e) {
+                if (e == null) {
+                    if (list.size() > 0) {
+                        if (!list.get(0).getVersion().equals(getVersion())) {
+                            loadDialog(list.get(0).getRemark());
+                        }
+                    }
+                }
+            }
+        });
     }
 
     //获取版本号
@@ -203,7 +201,12 @@ public class LoginActivity extends BaseActivity {
 
         });
         builder.setNegativeButton("确定", (dialogInterface, i) -> {
-            launchAppDetail("","");
+            //launchAppDetail("","");
+            Intent intent = new Intent();
+            intent.setAction("android.intent.action.VIEW");
+            Uri content_url = Uri.parse(str);
+            intent.setData(content_url);
+            startActivity(intent);
         });
         builder.show();
     }

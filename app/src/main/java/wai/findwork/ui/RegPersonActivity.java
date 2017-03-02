@@ -114,6 +114,12 @@ public class RegPersonActivity extends BaseActivity {
         db = FinalDb.create(this);
         //接收传过来的model
         info = (UserInfo) getIntent().getSerializableExtra("UserInfo");
+        person_et_phone.setText(Utils.getCache(Config.KEY_User_ID));
+        String psw = Utils.getCache(Config.KEY_PassWord);
+        person_et_psw2.setText(psw);
+        person_et_psw1.setText(psw);
+
+
         if (info != null) {
             //给界面赋值
             titleBar.setCenter_str("编辑个人信息");
@@ -121,7 +127,7 @@ public class RegPersonActivity extends BaseActivity {
             person_et_gongzi.setText(info.getGongzi());
             person_et_remark.setText(info.getRemark());
             person_real_name.setText(info.getRealname());
-            person_et_phone.setText(Utils.getCache(Config.KEY_User_ID));
+
             qqorwx_et.setText(info.getQq_wx());
             person_et_type.setText(info.getTypeName());
             if (info.getIconurl().equals("")) {
@@ -131,10 +137,9 @@ public class RegPersonActivity extends BaseActivity {
                         .load(info.getIconurl()).transform(new GlideCircleTransform(this))
                         .into(ivHeader);
             }
-            String psw = Utils.getCache(Config.KEY_PassWord);
+
             path = info.getIconurl();
-            person_et_psw2.setText(psw);
-            person_et_psw1.setText(psw);
+
             person_btn_save.setText("保存");
             CodeModel codeModel = new CodeModel();
             codeModel.setType(Utils.getCache(Config.KEY_TYPE_STATE));
@@ -151,7 +156,9 @@ public class RegPersonActivity extends BaseActivity {
             }
         } else {
             info = new UserInfo();
+
         }
+        info.setObjectId(Utils.getCache(Config.KEY_ID));
         loadState();
         ivHeader.setOnClickListener(view -> PhotoPicker.builder()
                 .setPhotoCount(1)
