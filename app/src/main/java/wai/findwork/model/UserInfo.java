@@ -20,13 +20,13 @@ public class UserInfo extends BmobUser implements Serializable {
     CodeModel type;
     String typeName;
     private String qq_wx;
-    private String balance;
+    private int balance;
 
-    public String getBalance() {
+    public int getBalance() {
         return balance;
     }
 
-    public void setBalance(String balance) {
+    public void setBalance(int balance) {
         this.balance = balance;
     }
 

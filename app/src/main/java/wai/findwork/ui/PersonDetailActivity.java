@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import net.tsz.afinal.FinalDb;
 import net.tsz.afinal.view.TitleBar;
 
 import java.io.File;
@@ -38,6 +39,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import wai.findwork.BaseActivity;
 import wai.findwork.R;
 import wai.findwork.method.Utils;
@@ -176,13 +178,40 @@ public class PersonDetailActivity extends BaseActivity {
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("请选择支付方式");
-                builder.setItems(new String[]{"支付宝", "微信"}, (dialogInterface, i) -> {
+                builder.setItems(new String[]{"支付宝", "微信","积分(10分)"}, (dialogInterface, i) -> {
                     switch (i) {
                         case 0:
                             pay(true);
                             break;
-                        default:
+                        case 1:
                             pay(false);
+                            break;
+                        default :
+                       //积分支付
+                            if(userInfo.getBalance()>=10) {
+                                userInfo.setBalance(userInfo.getBalance()-10);
+                                userInfo.update(Utils.getCache(Config.KEY_ID), new UpdateListener() {
+                                    @Override
+                                    public void done(BmobException e) {
+                                        if (e == null) {
+                                            FinalDb db=FinalDb.create(PersonDetailActivity.this);
+                                            db.deleteAll(UserInfo.class);
+                                            db.save(userInfo);
+                                            ToastShort("支付成功");
+                                        } else if (e.getErrorCode() == 9010) {
+                                            MainActivity.main.ToastShort(getResources().getString(R.string.chaoshi));
+                                        } else if (e.getErrorCode() == 9016) {
+                                            MainActivity.main.ToastShort(getResources().getString(R.string.wuwang));
+                                        } else {
+                                            MainActivity.main.ToastShort(getResources().getString(R.string.neibu));
+                                        }
+                                    }
+
+                                });
+                            }else{
+                                ToastShort("积分余额不足");
+                            }
+
                             break;
                     }
                 });

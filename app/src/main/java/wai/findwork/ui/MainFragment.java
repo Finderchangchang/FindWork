@@ -34,6 +34,8 @@ import com.tencent.connect.dataprovider.Constants;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import net.tsz.afinal.FinalDb;
 
@@ -44,13 +46,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.QueryListener;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -71,6 +78,8 @@ import wai.findwork.model.URL;
 import wai.findwork.model.UserInfo;
 import wai.findwork.view.GlideCircleTransform;
 
+import static wai.findwork.R.mipmap.pwd;
+
 /**
  * Created by Finder丶畅畅 on 2017/1/17 21:16
  * QQ群481606175
@@ -84,6 +93,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
     LinearLayout main_ll;
     List<ArticleModel> articleModels;
     FinalDb db;
+
     public static MainFragment newInstance(int content) {
         MainFragment fragment = new MainFragment();
         fragment.mContent = content;
@@ -105,7 +115,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 holder.setText(R.id.name_tv, userInfo.getRealname());
                 if (userInfo.getIconurl() == null || userInfo.getIconurl().equals("")) {
                     holder.setImageResource(R.id.user_iv, R.mipmap.myheader);
-                }else {
+                } else {
                     holder.setGliImage(R.id.user_iv, userInfo.getIconurl());
                 }
                 holder.setText(R.id.price_tv, userInfo.getGongzi());
@@ -176,7 +186,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 remark_tv = (TextView) view.findViewById(R.id.remark_tv);
                 ts_tv = (TextView) view.findViewById(R.id.ts_tv);
                 tq_tv = (TextView) view.findViewById(R.id.tq_tv);
-                tv_jifen= (TextView) view.findViewById(R.id.id_add_jifen);
+                tv_jifen = (TextView) view.findViewById(R.id.id_add_jifen);
                 user_center_ll = (LinearLayout) view.findViewById(R.id.user_center_ll);
                 user_bottom_ll = (LinearLayout) view.findViewById(R.id.user_bottom_ll);
                 break;
@@ -225,7 +235,13 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                 tv_jifen.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Share();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.main);
+                        builder.setTitle("请选择要分享到的平台");
+                        builder.setItems(new String[]{"QQ","QQ空间","微信","微信朋友圈"}, (dialogInterface, i) -> {
+                                    Share(i);
+                        });
+                        builder.show();
+
                     }
                 });
                 location_tv.setOnClickListener(v -> {
@@ -305,11 +321,10 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
     }
 
 
-
     //刷新个人信息
     private void refrush() {
         List<UserInfo> list = db.findAll(UserInfo.class);
-            if (list.size() > 0) {
+        if (list.size() > 0) {
             info = list.get(0);
             if (!info.getIconurl().equals("")) {
                 Glide.with(MainActivity.main)
@@ -320,10 +335,11 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             }
             user_name_tv.setText(info.getRealname());
             qq_wx_tv.setText("QQ或微信：" + info.getQq_wx());
-            if (TextUtils.isEmpty(info.getBalance())) {
+
+            if (info.getBalance()==0) {
                 id_card_tv.setText("积分：0");
-            }else{
-                id_card_tv.setText("积分："+info.getBalance());
+            } else {
+                id_card_tv.setText("积分：" + info.getBalance());
             }
 
             user_type_tv.setText(info.getTypeName());
@@ -342,11 +358,11 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                     remark_tv.setText("工程概况：" + info.getRemark());
                     break;
             }
-        }else{
+        } else {
 //                info=new UserInfo();
 //                info.setObjectId(Utils.getCache(Config.KEY_ID));
-                tel_tv.setText("电话：" + Utils.getCache(Config.KEY_User_ID));
-            }
+            tel_tv.setText("电话：" + Utils.getCache(Config.KEY_User_ID));
+        }
     }
 
     private void initViews() {
@@ -518,38 +534,131 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             refrush();
         }
     }
-    private void Share(){
-        new ShareAction(MainActivity.main).setPlatform(SHARE_MEDIA.QQ)
-                .withText("hello")
-                .setCallback(umShareListener)
-                .share();
+
+    private void Share(int type) {
+        UMImage image = new UMImage(MainActivity.main, R.mipmap.ic_font);//资源文件
+        image.setThumb(image);
+        //分享图片
+//        new ShareAction(MainActivity.main).setPlatform(SHARE_MEDIA.QQ)
+//                .withText("hello")
+//                .withMedia(image)
+//                .setCallback(umShareListener)
+//                .share();
+        UMWeb web = new UMWeb("http://a.app.qq.com/o/simple.jsp?pkgname=wai.findwork");
+        web.setTitle("最美建设者");//标题
+        web.setThumb(image);  //缩略图
+        web.setDescription("my description");//描述
+        switch (type){
+            case 0:
+                new ShareAction(MainActivity.main)
+                        .setPlatform(SHARE_MEDIA.QQ)
+                        .withMedia(web)
+                        .setCallback(umShareListener)
+                        .share();
+                break;
+            case 1:
+                new ShareAction(MainActivity.main)
+                        .setPlatform(SHARE_MEDIA.QZONE)
+                        .withMedia(web)
+                        .setCallback(umShareListener)
+                        .share();
+                break;
+            case 2:
+                new ShareAction(MainActivity.main)
+                        .setPlatform(SHARE_MEDIA.WEIXIN)
+                        .withMedia(web)
+                        .setCallback(umShareListener)
+                        .share();
+                break;
+            case 3:
+
+                new ShareAction(MainActivity.main)
+                        .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
+                        .withMedia(web)
+                        .setCallback(umShareListener)
+                        .share();
+                break;
+        }
 
     }
+
     private UMShareListener umShareListener = new UMShareListener() {
         @Override
         public void onStart(SHARE_MEDIA platform) {
             //分享开始的回调
         }
+
         @Override
         public void onResult(SHARE_MEDIA platform) {
-           // Log.d("plat","platform"+platform);
+            // Log.d("plat","platform"+platform);
 
+            //添加积分
+            addBalance();
             Toast.makeText(MainActivity.main, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
-
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(MainActivity.main,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
-            if(t!=null){
-               // Log.d("throw","throw:"+t.getMessage());
+            Toast.makeText(MainActivity.main, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            if (t != null) {
+                // Log.d("throw","throw:"+t.getMessage());
             }
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(MainActivity.main,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.main, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
         }
     };
 
+    //添加积分
+    private void addBalance() {
+        BmobQuery<UserInfo> query = new BmobQuery<UserInfo>();
+
+        query.getObject(Utils.getCache(Config.KEY_ID), new QueryListener<UserInfo>() {
+            @Override
+            public void done(UserInfo userInfo, BmobException e) {
+                if (e == null) {
+//                    Map<String, String> map = new HashMap<String, String>();
+//                    if(info.getType()!=null) {
+//                        info.setTypeName(info.getType().getName());
+//                        map.put(Config.KEY_Type_ID, info.getType().getObjectId());
+//                        map.put(Config.KEY_TYPE_STATE, info.getType().getType());
+//                    }
+//                    if (userInfo.getBalance() != null && (!userInfo.getBalance().equals(""))) {
+//                        userInfo.setBalance(userInfo.getBalance() + 1);
+//                    } else {
+                        userInfo.setBalance(userInfo.getBalance()+1);
+//                    }
+
+                    userInfo.update(Utils.getCache(Config.KEY_ID),new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e == null) {
+                                db.deleteAll(UserInfo.class);
+                                db.save(userInfo);
+                                refrush();
+                            } else if (e.getErrorCode() == 9010) {
+                                MainActivity.main.ToastShort(getResources().getString(R.string.chaoshi));
+                            } else if (e.getErrorCode() == 9016) {
+                                MainActivity.main.ToastShort(getResources().getString(R.string.wuwang));
+                            } else {
+                                MainActivity.main.ToastShort(getResources().getString(R.string.neibu));
+                            }
+                        }
+
+                    });
+
+                } else if (e.getErrorCode() == 9010) {
+                    MainActivity.main.ToastShort(getResources().getString(R.string.chaoshi));
+                } else if (e.getErrorCode() == 9016) {
+                    MainActivity.main.ToastShort(getResources().getString(R.string.wuwang));
+                } else {
+                    MainActivity.main.ToastShort(getResources().getString(R.string.neibu));
+                }
+            }
+
+
+        });
+    }
 }
