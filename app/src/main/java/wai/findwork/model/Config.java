@@ -15,5 +15,7 @@ public class Config {
     public static final String KEY_CITY = "key_city";//定位当前城市
     public static final String KEY_CHECK = "key_check";//是否记住密码1记住0否
     public static final String KEY_Code_Update_version = "KEY_Code_Update_version";//字典更新时间
+    public static final String KEY_SHARETIME="";
+    public static final String KEY_SHARE_NUM="1";
 
 }

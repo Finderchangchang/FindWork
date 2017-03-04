@@ -188,33 +188,54 @@ public class PersonDetailActivity extends BaseActivity {
                             break;
                         default :
                        //积分支付
-                            if(userInfo.getBalance()>=10) {
-                                userInfo.setBalance(userInfo.getBalance()-10);
-                                userInfo.update(Utils.getCache(Config.KEY_ID), new UpdateListener() {
-                                    @Override
-                                    public void done(BmobException e) {
-                                        if (e == null) {
-                                            FinalDb db=FinalDb.create(PersonDetailActivity.this);
-                                            db.deleteAll(UserInfo.class);
-                                            db.save(userInfo);
-                                            ToastShort("支付成功");
-                                        } else if (e.getErrorCode() == 9010) {
-                                            MainActivity.main.ToastShort(getResources().getString(R.string.chaoshi));
-                                        } else if (e.getErrorCode() == 9016) {
-                                            MainActivity.main.ToastShort(getResources().getString(R.string.wuwang));
-                                        } else {
-                                            MainActivity.main.ToastShort(getResources().getString(R.string.neibu));
-                                        }
-                                    }
+                            UserInfo myuser=null;
+                            List<UserInfo> list=FinalDb.create(PersonDetailActivity.this).findAll(UserInfo.class);
+                            if(list.size()>0){
+                                myuser=list.get(0);
+                            }
+                            if(myuser!=null) {
+                                if (myuser.getBalance() >= 10) {
+                                    myuser.setBalance(myuser.getBalance() - 10);
+                                    myuser.update(Utils.getCache(Config.KEY_ID), new UpdateListener() {
+                                        @Override
+                                        public void done(BmobException e) {
+                                            if (e == null) {
+                                                FinalDb db = FinalDb.create(PersonDetailActivity.this);
+                                                db.deleteAll(UserInfo.class);
+                                                db.save(userInfo);
 
-                                });
+                                                UserBuy buy = new UserBuy();
+                                                buy.setUser(userInfo);
+                                                buy.setBuyer(buyer);
+                                                buy.save(new SaveListener<String>() {
+                                                    @Override
+                                                    public void done(String s, BmobException e) {
+                                                        if (e == null) {
+                                                            ToastShort("支付成功");
+                                                            finish();
+                                                        } else {
+                                                            ToastShort("购买失败，请联系工作人员");
+                                                        }
+                                                    }
+                                                });
+                                            } else if (e.getErrorCode() == 9010) {
+                                                MainActivity.main.ToastShort(getResources().getString(R.string.chaoshi));
+                                            } else if (e.getErrorCode() == 9016) {
+                                                MainActivity.main.ToastShort(getResources().getString(R.string.wuwang));
+                                            } else {
+                                                MainActivity.main.ToastShort(getResources().getString(R.string.neibu));
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    ToastShort("积分余额不足");
+                                }
                             }else{
                                 ToastShort("积分余额不足");
                             }
-
-                            break;
                     }
                 });
+
                 builder.show();
             }
         });

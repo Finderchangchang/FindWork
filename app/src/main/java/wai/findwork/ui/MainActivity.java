@@ -1,7 +1,10 @@
 package wai.findwork.ui;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+
+import com.umeng.socialize.UMShareAPI;
 
 import butterknife.Bind;
 import wai.findwork.BaseActivity;
@@ -34,4 +37,9 @@ public class MainActivity extends BaseActivity {
         return R.layout.ac_main;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(MainActivity.main).onActivityResult(requestCode,resultCode,data);
+    }
 }

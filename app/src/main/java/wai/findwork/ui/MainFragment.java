@@ -32,6 +32,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.tencent.connect.dataprovider.Constants;
 import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
@@ -336,11 +337,11 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             user_name_tv.setText(info.getRealname());
             qq_wx_tv.setText("QQ或微信：" + info.getQq_wx());
 
-            if (info.getBalance()==0) {
-                id_card_tv.setText("积分：0");
-            } else {
+//            if (info.getBalance()==0) {
+//                id_card_tv.setText("积分：0");
+//            } else {
                 id_card_tv.setText("积分：" + info.getBalance());
-            }
+//            }
 
             user_type_tv.setText(info.getTypeName());
             tel_tv.setText("电话：" + Utils.getCache(Config.KEY_User_ID));
@@ -594,12 +595,12 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
 
             //添加积分
             addBalance();
-            Toast.makeText(MainActivity.main, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.main,  " 分享成功啦", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(MainActivity.main, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.main, " 分享失败啦", Toast.LENGTH_SHORT).show();
             if (t != null) {
                 // Log.d("throw","throw:"+t.getMessage());
             }
@@ -607,7 +608,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(MainActivity.main, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.main," 分享取消了", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -646,7 +647,6 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                                 MainActivity.main.ToastShort(getResources().getString(R.string.neibu));
                             }
                         }
-
                     });
 
                 } else if (e.getErrorCode() == 9010) {
@@ -657,8 +657,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                     MainActivity.main.ToastShort(getResources().getString(R.string.neibu));
                 }
             }
-
-
         });
     }
+
 }

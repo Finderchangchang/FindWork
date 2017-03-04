@@ -114,13 +114,11 @@ public class LoginActivity extends BaseActivity {
                                 public void done(List<UserInfo> list, BmobException e) {
                                     if (e == null) {
                                         UserInfo info = list.get(0);
-
                                         Map<String, String> map = new HashMap<String, String>();
                                         if(info.getType()!=null) {
                                             info.setTypeName(info.getType().getName());
                                             map.put(Config.KEY_Type_ID, info.getType().getObjectId());
                                             map.put(Config.KEY_TYPE_STATE, info.getType().getType());
-
                                         }
                                         map.put(Config.KEY_ID, info.getObjectId());
                                         map.put(Config.KEY_User_ID, info.getUsername());
