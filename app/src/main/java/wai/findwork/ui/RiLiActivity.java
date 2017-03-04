@@ -146,6 +146,7 @@ public class RiLiActivity extends BaseActivity {
         buyer.setObjectId(Utils.getCache(Config.KEY_ID));
         query.addWhereEqualTo("user", buyer);
         query.include("buyer.type");
+        query.order("-createdAt");
         query.count(UserBuy.class, new CountListener() {
             @Override
             public void done(Integer integer, BmobException e) {
@@ -183,6 +184,7 @@ public class RiLiActivity extends BaseActivity {
         UserInfo buyer = new UserInfo();
         buyer.setObjectId(Utils.getCache(Config.KEY_ID));
         query.addWhereEqualTo("user", buyer);
+        query.order("-createdAt");
         query.count(RiLi.class, new CountListener() {
             @Override
             public void done(Integer integer, BmobException e) {

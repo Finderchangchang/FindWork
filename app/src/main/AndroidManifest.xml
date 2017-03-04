@@ -41,7 +41,7 @@
 
         <activity android:name=".ui.LoginActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
         <activity android:name=".ui.RegActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.MainActivity" android:launchMode="singleTask" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.MainActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".ui.RegPersonActivity"  android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.StartActivity"
