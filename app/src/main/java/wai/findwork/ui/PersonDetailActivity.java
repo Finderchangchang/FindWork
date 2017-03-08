@@ -178,7 +178,7 @@ public class PersonDetailActivity extends BaseActivity {
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("请选择支付方式");
-                builder.setItems(new String[]{"支付宝", "微信","积分(10分)"}, (dialogInterface, i) -> {
+                builder.setItems(new String[]{"支付宝支付", "微信支付","10积分兑换"}, (dialogInterface, i) -> {
                     switch (i) {
                         case 0:
                             pay(true);

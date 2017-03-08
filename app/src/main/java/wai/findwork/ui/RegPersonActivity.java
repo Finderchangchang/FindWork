@@ -130,7 +130,7 @@ public class RegPersonActivity extends BaseActivity {
 
             qqorwx_et.setText(info.getQq_wx());
             person_et_type.setText(info.getTypeName());
-            if (info.getIconurl().equals("")) {
+            if (info.getIconurl()==null||info.getIconurl().equals("")) {
                 ivHeader.setImageResource(R.mipmap.myheader);
             } else {
                 Glide.with(this)
@@ -373,7 +373,7 @@ public class RegPersonActivity extends BaseActivity {
 
     //保存头像
     private void sc() {
-        if (!path.equals("")) {
+
             BmobFile bmobFile = new BmobFile(new File(path));
             bmobFile.uploadblock(new UploadFileListener() {
                 @Override
@@ -396,7 +396,7 @@ public class RegPersonActivity extends BaseActivity {
                     // 返回的上传进度（百分比）
                 }
             });
-        }
+
     }
 
     //获取页面的值
@@ -467,6 +467,8 @@ public class RegPersonActivity extends BaseActivity {
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.setMessage("注册中...");
                 progressDialog.show();
+                if(path==null)
+                    path="";
                 if (info.getIconurl() == null && (!path.equals(""))) {
                     sc();
                 } else if (info.getIconurl() != null && (!path.equals(info.getIconurl()))) {

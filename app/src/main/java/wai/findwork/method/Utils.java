@@ -156,7 +156,13 @@ public class Utils {
         SharedPreferences sharedPreferences = App.getContext().getSharedPreferences("waichangepwd", MODE_PRIVATE);
         return sharedPreferences.getString(key, "");
     }
-
+public static String isNUll(String str){
+    if(str==null||str.equals("")){
+        return "无";
+    }else{
+        return str;
+    }
+}
 
     /*
     * 获取当前程序的版本号

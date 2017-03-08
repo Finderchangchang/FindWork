@@ -238,8 +238,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
                     public void onClick(View v) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.main);
                         builder.setTitle("请选择要分享到的平台");
-                        builder.setItems(new String[]{"QQ","QQ空间","微信","微信朋友圈"}, (dialogInterface, i) -> {
-                                    Share(i);
+                        builder.setItems(new String[]{"分享到QQ好友", "分享到QQ空间", "分享到微信好友", "分享到朋友圈"}, (dialogInterface, i) -> {
+                            Share(i);
                         });
                         builder.show();
 
@@ -327,36 +327,49 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         List<UserInfo> list = db.findAll(UserInfo.class);
         if (list.size() > 0) {
             info = list.get(0);
-            if (!info.getIconurl().equals("")) {
+
+            if (info.getIconurl() != null && (!info.getIconurl().equals(""))) {
                 Glide.with(MainActivity.main)
                         .load(info.getIconurl()).transform(new GlideCircleTransform(MainActivity.main))
                         .into(user_iv).onLoadFailed(new Exception(), getResources().getDrawable(R.mipmap.myheader));
             } else {
                 user_iv.setImageResource(R.mipmap.myheader);
             }
-            user_name_tv.setText(info.getRealname());
-            qq_wx_tv.setText("QQ或微信：" + info.getQq_wx());
 
+            if (info.getRealname() == null || info.getRealname().equals("")) {
+                user_name_tv.setText("无");
+            } else {
+                user_name_tv.setText(info.getRealname());
+            }
+            if (info.getQq_wx() == null || info.getQq_wx().equals("")) {
+                qq_wx_tv.setText("QQ或微信：无");
+            } else {
+                qq_wx_tv.setText("QQ或微信：" + info.getQq_wx());
+            }
 //            if (info.getBalance()==0) {
 //                id_card_tv.setText("积分：0");
 //            } else {
-                id_card_tv.setText("积分：" + info.getBalance());
+            id_card_tv.setText("积分：" + info.getBalance());
 //            }
+            if (info.getTypeName() == null || info.getTypeName().equals("")) {
+                user_type_tv.setText("无");
+            } else {
+                user_type_tv.setText(info.getTypeName());
+            }
 
-            user_type_tv.setText(info.getTypeName());
             tel_tv.setText("电话：" + Utils.getCache(Config.KEY_User_ID));
             switch (Utils.getCache(Config.KEY_TYPE_STATE)) {
                 case "1":
-                    gz_tv.setText("工资：" + info.getGongzi());
-                    remark_tv.setText("简历：" + info.getRemark());
+                    gz_tv.setText("工资：" + Utils.isNUll(info.getGongzi()));
+                    remark_tv.setText("简历：" + Utils.isNUll(info.getRemark()));
                     break;
                 case "2":
-                    gz_tv.setText("日工资：" + info.getGongzi());
-                    remark_tv.setText("班组简介：" + info.getRemark());
+                    gz_tv.setText("日工资：" + Utils.isNUll(info.getGongzi()));
+                    remark_tv.setText("班组简介：" + Utils.isNUll(info.getRemark()));
                     break;
                 default:
-                    gz_tv.setText("所需班组：" + info.getGongzi());
-                    remark_tv.setText("工程概况：" + info.getRemark());
+                    gz_tv.setText("所需班组：" + Utils.isNUll(info.getGongzi()));
+                    remark_tv.setText("工程概况：" + Utils.isNUll(info.getRemark()));
                     break;
             }
         } else {
@@ -548,8 +561,8 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
         UMWeb web = new UMWeb("http://a.app.qq.com/o/simple.jsp?pkgname=wai.findwork");
         web.setTitle("最美建设者");//标题
         web.setThumb(image);  //缩略图
-        web.setDescription("my description");//描述
-        switch (type){
+        web.setDescription("欢迎您下载、注册、登录到“最美建设者APP”软件");//描述
+        switch (type) {
             case 0:
                 new ShareAction(MainActivity.main)
                         .setPlatform(SHARE_MEDIA.QQ)
@@ -595,7 +608,7 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
 
             //添加积分
             addBalance();
-            Toast.makeText(MainActivity.main,  " 分享成功啦", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.main, " 分享成功啦", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -606,9 +619,10 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
             }
         }
 
+
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(MainActivity.main," 分享取消了", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.main, " 分享取消了", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -629,16 +643,17 @@ public class MainFragment extends Fragment implements CategoryAdapter.OnItemClic
 //                    if (userInfo.getBalance() != null && (!userInfo.getBalance().equals(""))) {
 //                        userInfo.setBalance(userInfo.getBalance() + 1);
 //                    } else {
-                        userInfo.setBalance(userInfo.getBalance()+1);
+                    userInfo.setBalance(userInfo.getBalance() + 1);
 //                    }
 
-                    userInfo.update(Utils.getCache(Config.KEY_ID),new UpdateListener() {
+                    userInfo.update(Utils.getCache(Config.KEY_ID), new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
                             if (e == null) {
                                 db.deleteAll(UserInfo.class);
                                 db.save(userInfo);
-                                refrush();
+
+                                id_card_tv.setText("积分：" + userInfo.getBalance());
                             } else if (e.getErrorCode() == 9010) {
                                 MainActivity.main.ToastShort(getResources().getString(R.string.chaoshi));
                             } else if (e.getErrorCode() == 9016) {
